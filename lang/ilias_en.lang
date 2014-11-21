@@ -1,0 +1,6 @@
+take_over_user_view#:#Take over User View
+leave_user_view#:#Leave User View
+user_taker_over_success#:#You have taken the user view of user %s successfully.
+user_taker_back_success#:#You are now logged in again as:  %s
+user_taker_over_failure#:#Take over User View: An error has occured.
+no_permission#:#You do not have the necessary permission!

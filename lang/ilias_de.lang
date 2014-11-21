@@ -1,0 +1,6 @@
+take_over_user_view#:#Benutzersicht einnehmen
+leave_user_view#:#Benutzersicht verlassen
+user_taker_over_success#:#Sie haben die Benutzersicht von %s erfolgreich eingenommen.
+user_taker_back_success#:#Sie sind nun wieder eingeloggt als:  %s
+user_taker_over_failure#:#Bei der Benutzerübernahme ist ein Fehler aufgetreten
+no_permission#:#Sie haben nicht die entsprechenden Zugriffsrechte!
