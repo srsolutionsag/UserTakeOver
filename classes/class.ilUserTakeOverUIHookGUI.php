@@ -66,8 +66,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				if (!self::isLoaded('user_take_back')) {
 					if ($ilToolbar instanceof ilToolbarGUI) {
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-						$ilCtrl->setCmd(usrtoGUI::CMD_PERFORM_USER_TAKE_BACK);
-						$ilCtrl->setParameterByClass('usrtoGUI', 'cmd', 'performUserTakeBack');
+						$ilCtrl->setParameterByClass('usrtoGUI', 'cmd', usrtoGUI::CMD_PERFORM_USER_TAKE_BACK);
 						$link = $ilCtrl->getLinkTargetByClass(array( 'ilAdministrationGUI', 'ilRouterGUI', 'usrtoGUI' ));
 
 						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
