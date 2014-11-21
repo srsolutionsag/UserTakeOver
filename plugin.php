@@ -1,8 +1,8 @@
 <?php
 $id = 'usrto';
-$version = '0.0.4';
+$version = '1.0.0';
 $ilias_min_version = '4.3.0';
-$ilias_max_version = '5.3.999';
+$ilias_max_version = '4.4.999';
 $responsible = 'Martin Studer';
 $responsible_mail = 'ms@studer-raimann.ch';
 ?>
