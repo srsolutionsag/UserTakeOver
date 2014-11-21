@@ -73,7 +73,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 							. '</a>';
 						self::setLoaded('user_take_back');
 
-						return array( "mode" => ilUIHookPluginGUI::APPEND, "html" => $html );
+						return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
 					}
 				}
 			}
