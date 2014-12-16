@@ -2,7 +2,7 @@ UserTakeOver
 ============
 The UserTakeOver-Plugin gives you the possibility to take the view of another user.
 
-Please read the Documentation on [Documentation.docx](https://github.com/studer-raimann/CtrlMainMenu/blob/master/doc/DocumentationPluginUserTakeOver.docx?raw=true)
+Please read the Documentation on [Documentation.docx](https://github.com/studer-raimann/UserTakeOver/blob/master/doc/DocumentationPluginUserTakeOver.docx?raw=true)
 
 ###Installation
 Start at your ILIAS root directory  
