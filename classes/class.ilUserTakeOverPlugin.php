@@ -20,7 +20,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	 * @return ilUserTakeOverPlugin
 	 */
 	public static function getInstance() {
-		if (!isset(self::$instance)) {
+		if (! isset(self::$instance)) {
 			self::$instance = new self();
 		}
 
