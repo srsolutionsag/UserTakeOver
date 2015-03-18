@@ -2,6 +2,7 @@
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
 require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoGUI.php';
+require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoHelper.php');
 
 /**
  * Class ilUserTakeOverUIHookGUI
@@ -58,17 +59,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 * @var $rbacreview ilRbacReview
 		 * @var $ilUser     ilObjUser
 		 */
-		global $ilCtrl;
 
 		if ($a_comp == 'Services/MainMenu') {
 			if ($_SESSION['usrtoOriginalAccountId']) {
 				$ilToolbar = new ilToolbarGUI();
-				if (!self::isLoaded('user_take_back')) {
+				if (! self::isLoaded('user_take_back')) {
 					if ($ilToolbar instanceof ilToolbarGUI) {
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-						$ilCtrl->setParameterByClass('usrtoGUI', 'cmd', usrtoGUI::CMD_PERFORM_USER_TAKE_BACK);
-						$link = $ilCtrl->getLinkTargetByClass(array( 'ilAdministrationGUI', 'ilRouterGUI', 'usrtoGUI' ));
-
+						$link = 'goto.php?target=usr_takeback';
 						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
 							. '</a>';
 						self::setLoaded('user_take_back');
@@ -79,11 +77,11 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			}
 		}
 
-		if (!self::isLoaded('user_take_over')) {
+		if (! self::isLoaded('user_take_over')) {
 			if ($_GET['cmdClass'] == 'ilobjusergui' AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
 				global $rbacreview, $ilUser;
 				// Only Administrators
-				if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+				if (! in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
 					self::setLoaded('user_take_over');
 
 					return false;
@@ -92,13 +90,22 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				global $ilToolbar;
 				if ($ilToolbar instanceof ilToolbarGUI) {
 					$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-					$ilCtrl->setParameterByClass('usrtoGUI', usrtoGUI::USR_ID, $_GET['obj_id']);
-					$link = $ilCtrl->getLinkTargetByClass(array( 'ilAdministrationGUI', 'ilRouterGUI', 'usrtoGUI' ));
+					$link = 'goto.php?target=usr_takeover_' . $_GET['obj_id'];
 					// TODO: Refactor in ILIAS 5.0: ilLinkButton::getInstance(); and $ilToolbar->addButtonInstance();
 					$ilToolbar->addButton($ilUserTakeOverPlugin->txt('take_over_user_view'), $link, '', '', 'take_over_user_view');
 					self::setLoaded('user_take_over');
 				}
 			}
+		}
+	}
+
+
+	public function gotoHook() {
+		if (preg_match("/usr_takeover_(.*)/uim", $_GET['target'], $matches)) {
+			usrtoHelper::getInstance()->takeOver($matches[1]);
+		}
+		if (preg_match("/usr_takeback/uim", $_GET['target'], $matches)) {
+			usrtoHelper::getInstance()->switchBack();
 		}
 	}
 }
