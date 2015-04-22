@@ -89,7 +89,7 @@ class usrtoHelper {
 		$ilLog->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
-		ilUtil::redirect('');
+		ilUtil::redirect('login.php');
 	}
 
 
@@ -105,7 +105,7 @@ class usrtoHelper {
 			$ilLog->write('Plugin usrto: ' . $ilObjUser->getLogin() . ' has left the user view of ' . $ilUser->getLogin());
 
 			ilUtil::sendSuccess(sprintf($pl->txt('user_taker_back_success'), $ilObjUser->getLogin()), true);
-			ilUtil::redirect('');
+			ilUtil::redirect('login.php');
 		}
 	}
 
@@ -115,7 +115,7 @@ class usrtoHelper {
 		$pl = ilUserTakeOverPlugin::getInstance();
 		if (! in_array(2, $rbacreview->assignedGlobalRoles($this->getOriginalUsrId()))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
-			ilUtil::redirect('');
+			ilUtil::redirect('login.php');
 
 			return false;
 		}
