@@ -61,9 +61,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 */
 
 		if ($a_comp == 'Services/MainMenu') {
-			if ($_SESSION['usrtoOriginalAccountId']) {
+			if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 				$ilToolbar = new ilToolbarGUI();
-				if (! self::isLoaded('user_take_back')) {
+				if (!self::isLoaded('user_take_back')) {
 					if ($ilToolbar instanceof ilToolbarGUI) {
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 						$link = 'goto.php?target=usr_takeback';
@@ -77,13 +77,12 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			}
 		}
 
-		if (! self::isLoaded('user_take_over')) {
+		if (!self::isLoaded('user_take_over')) {
 			if ($_GET['cmdClass'] == 'ilobjusergui' AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
 				global $rbacreview, $ilUser;
 				// Only Administrators
-				if (! in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+				if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
 					self::setLoaded('user_take_over');
-
 					return false;
 				}
 
@@ -102,12 +101,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 	public function gotoHook() {
 		if (preg_match("/usr_takeover_(.*)/uim", $_GET['target'], $matches)) {
-			usrtoHelper::getInstance()->takeOver($matches[1]);
+			usrtoHelper::getInstance()->takeOver((int)$matches[1]);
 		}
 		if (preg_match("/usr_takeback/uim", $_GET['target'], $matches)) {
 			usrtoHelper::getInstance()->switchBack();
 		}
 	}
 }
-
-?>
