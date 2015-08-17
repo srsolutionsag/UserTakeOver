@@ -22,7 +22,7 @@ class usrtoHelper {
 	 * @return usrtoHelper
 	 */
 	public static function getInstance() {
-		if (! isset(self::$instance)) {
+		if (!isset(self::$instance)) {
 			self::$instance = new self();
 		}
 
@@ -73,13 +73,22 @@ class usrtoHelper {
 
 
 	/**
+	 * @return bool
+	 */
+	public function isTakenOver()
+	{
+		return (isset($_SESSION[self::USR_ID_BACKUP]));
+	}
+
+
+	/**
 	 * @param $usr_id
 	 */
 	public function takeOver($usr_id) {
+		global $ilUser, $ilLog;
 		$this->checkAccess();
 		$this->setTemporaryUsrId($usr_id);
-
-		global $ilUser, $ilLog;
+		$this->setOriginalUsrId($ilUser->getId());
 		$pl = ilUserTakeOverPlugin::getInstance();
 		$_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
 		$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
@@ -113,7 +122,7 @@ class usrtoHelper {
 	protected function checkAccess() {
 		global $rbacreview;
 		$pl = ilUserTakeOverPlugin::getInstance();
-		if (! in_array(2, $rbacreview->assignedGlobalRoles($this->getOriginalUsrId()))) {
+		if (!in_array(2, $rbacreview->assignedGlobalRoles($this->getOriginalUsrId()))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 
@@ -121,5 +130,3 @@ class usrtoHelper {
 		}
 	}
 }
-
-?>
