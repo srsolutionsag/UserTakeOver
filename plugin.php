@@ -1,6 +1,6 @@
 <?php
 $id = 'usrto';
-$version = '1.1.3';
+$version = '1.1.4';
 $ilias_min_version = '4.3.0';
 $ilias_max_version = '5.1.999';
 $responsible = 'Martin Studer, Fabian Schmid';
