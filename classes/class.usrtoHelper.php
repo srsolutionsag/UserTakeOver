@@ -75,8 +75,7 @@ class usrtoHelper {
 	/**
 	 * @return bool
 	 */
-	public function isTakenOver()
-	{
+	public function isTakenOver() {
 		return (isset($_SESSION[self::USR_ID_BACKUP]));
 	}
 
@@ -86,7 +85,7 @@ class usrtoHelper {
 	 */
 	public function takeOver($usr_id) {
 		global $ilUser, $ilLog;
-		$this->checkAccess();
+		$this->checkAccess($ilUser->getId());
 		$this->setTemporaryUsrId($usr_id);
 		$this->setOriginalUsrId($ilUser->getId());
 		$pl = ilUserTakeOverPlugin::getInstance();
@@ -119,10 +118,14 @@ class usrtoHelper {
 	}
 
 
-	protected function checkAccess() {
+	/**
+	 * @param $usr_id
+	 * @return bool
+	 */
+	protected function checkAccess($usr_id) {
 		global $rbacreview;
 		$pl = ilUserTakeOverPlugin::getInstance();
-		if (!in_array(2, $rbacreview->assignedGlobalRoles($this->getOriginalUsrId()))) {
+		if (!isset($usr_id) || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 
