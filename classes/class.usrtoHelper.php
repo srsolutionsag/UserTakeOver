@@ -33,11 +33,11 @@ class usrtoHelper {
 	/**
 	 * @var int
 	 */
-	protected $original_usr_id = 6;
+	protected $original_usr_id = 0;
 	/**
 	 * @var int
 	 */
-	protected $temporary_usr_id = 6;
+	protected $temporary_usr_id = 0;
 
 
 	/**
@@ -125,7 +125,7 @@ class usrtoHelper {
 	protected function checkAccess($usr_id) {
 		global $rbacreview;
 		$pl = ilUserTakeOverPlugin::getInstance();
-		if (!isset($usr_id) || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id))) {
+		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 
