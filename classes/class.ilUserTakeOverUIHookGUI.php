@@ -67,8 +67,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 					if ($ilToolbar instanceof ilToolbarGUI) {
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 						$link = 'goto.php?target=usr_takeback';
-						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
-							. '</a>';
+
+						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view") . '</a>';
+
+						// add list in ILIAS 5 and newer
+						if(ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
+							$html = '<li>'.$html.'</li>';
+						}
+
 						self::setLoaded('user_take_back');
 
 						return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
