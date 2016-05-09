@@ -105,16 +105,11 @@ class usrtoHelper {
 		if ($_SESSION[self::USR_ID_BACKUP]) {
 			$_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
 
-			$ilObjUser = new ilObjUser($_SESSION[self::USR_ID_BACKUP]);
-			unset($_SESSION[self::USR_ID_BACKUP]);
-			global $ilUser, $ilLog;
 			$pl = ilUserTakeOverPlugin::getInstance();
-
-			$ilLog->write('Plugin usrto: ' . $ilObjUser->getLogin() . ' has left the user view of ' . $ilUser->getLogin());
-
-			ilUtil::sendSuccess(sprintf($pl->txt('user_taker_back_success'), $ilObjUser->getLogin()), true);
-			ilUtil::redirect('login.php');
+			ilUtil::sendSuccess(sprintf($pl->txt('user_taker_back_success'), ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])), true);
+			unset($_SESSION[self::USR_ID_BACKUP]);
 		}
+		ilUtil::redirect('login.php');
 	}
 
 
