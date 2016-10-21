@@ -64,15 +64,25 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 				$ilToolbar = new ilToolbarGUI();
 				if (!self::isLoaded('user_take_back')) {
+					global $ilPluginAdmin;
+					/**
+					 * @var $ilPluginAdmin ilPluginAdmin
+					 */
 					if ($ilToolbar instanceof ilToolbarGUI) {
+						if ($ilPluginAdmin->isActive(IL_COMP_SERVICE, 'UIComponent', 'uihk', 'CtrlMainMenu')) {
+							self::setLoaded('user_take_back');
+							return array( "mode" => ilUIHookPluginGUI::KEEP, "html" => '' );
+						}
+
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 						$link = 'goto.php?target=usr_takeback';
 
-						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view") . '</a>';
+						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
+						        . '</a>';
 
 						// add list in ILIAS 5 and newer
-						if(ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
-							$html = '<li>'.$html.'</li>';
+						if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
+							$html = '<li>' . $html . '</li>';
 						}
 
 						self::setLoaded('user_take_back');
@@ -89,6 +99,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				// Only Administrators
 				if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
 					self::setLoaded('user_take_over');
+
 					return false;
 				}
 
