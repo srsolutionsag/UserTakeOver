@@ -100,7 +100,9 @@ class usrtoHelper {
 		ilUtil::redirect('login.php');
 	}
 
-
+	/**
+	 * swiches the user-session back
+	 */
 	public function switchBack() {
 		if ($_SESSION[self::USR_ID_BACKUP]) {
 			$_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
