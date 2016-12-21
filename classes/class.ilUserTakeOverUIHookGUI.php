@@ -77,7 +77,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 						$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 						$link = 'goto.php?target=usr_takeback';
 
-						$html = '<a class="MMInactive" id="leave_user_view" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
+						$html = '<a class="MMInactive" id="leave_user_view" target="" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
 						        . '</a>';
 
 						// add list in ILIAS 5 and newer

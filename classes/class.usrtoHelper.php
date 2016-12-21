@@ -10,6 +10,7 @@ require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHoo
 class usrtoHelper {
 
 	const USR_ID_GLOBAL = 'AccountId';
+	const USR_ID_AUTHSESSION = '_authsession_user_id';
 	const USR_ID_BACKUP = 'usrtoOriginalAccountId';
 	const USR_ID = 'usr_id';
 	/**
@@ -90,6 +91,7 @@ class usrtoHelper {
 		$this->setOriginalUsrId($ilUser->getId());
 		$pl = ilUserTakeOverPlugin::getInstance();
 		$_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
+		$_SESSION[self::USR_ID_AUTHSESSION] = $this->getTemporaryUsrId();
 		$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
@@ -97,7 +99,7 @@ class usrtoHelper {
 		$ilLog->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
-		ilUtil::redirect('login.php');
+		ilUtil::redirect('ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems');
 	}
 
 	/**
@@ -106,12 +108,13 @@ class usrtoHelper {
 	public function switchBack() {
 		if ($_SESSION[self::USR_ID_BACKUP]) {
 			$_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
+			$_SESSION[self::USR_ID_AUTHSESSION] = $_SESSION[self::USR_ID_BACKUP];
 
 			$pl = ilUserTakeOverPlugin::getInstance();
 			ilUtil::sendSuccess(sprintf($pl->txt('user_taker_back_success'), ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])), true);
 			unset($_SESSION[self::USR_ID_BACKUP]);
 		}
-		ilUtil::redirect('login.php');
+		ilUtil::redirect('ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems');
 	}
 
 

@@ -54,6 +54,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 			$hub_menu->setUrl('goto.php?target=usr_takeback');
 			$hub_menu->setTitle($ilUserTakeOverPlugin->txt("leave_user_view"));
 			$hub_menu->setPermissionType(ctrlmmMenu::PERM_NONE);
+			$hub_menu->setTarget('');
 			$hub_menu->setPlugin(true);
 
 			$entries[0][] = $hub_menu;
