@@ -59,11 +59,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 * @var $rbacreview ilRbacReview
 		 * @var $ilUser     ilObjUser
 		 */
-
 		if ($a_comp == 'Services/MainMenu') {
 			if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 				$ilToolbar = new ilToolbarGUI();
 				if (!self::isLoaded('user_take_back')) {
+					global $ilUser;
+					/** @var ilUserTakeOverConfig $config */
+					$config = ilUserTakeOverConfig::first();
+//					if($ilUser)
 					global $ilPluginAdmin;
 					/**
 					 * @var $ilPluginAdmin ilPluginAdmin
