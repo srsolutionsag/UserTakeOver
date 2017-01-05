@@ -4,3 +4,12 @@ user_taker_over_success#:#Sie haben die Benutzersicht von %s erfolgreich eingeno
 user_taker_back_success#:#Sie sind nun wieder eingeloggt als:  %s
 user_taker_over_failure#:#Bei der Benutzerübernahme ist ein Fehler aufgetreten
 no_permission#:#Sie haben nicht die entsprechenden Zugriffsrechte!
+configuration#:#Einstellungen
+demo_group#:#Demo Gruppe
+demo_group_info#:#Benutzer in der Demo Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Demo Gruppe sein, alle Demo Gruppen Benutzer de facto Administrationsrechte haben.
+save#:#Speichern
+success#:#Erfolgreich gespeichert.
+something_went_wrong#:#Etwas ist schief gelaufen.
+loading#:#Lade...
+no_results#:#Keine Resultate
+

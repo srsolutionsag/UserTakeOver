@@ -13,7 +13,8 @@ require_once("./Services/Exceptions/classes/class.ilException.php");
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  *
  * @version 1.0.00
- * ilCtrl_IsCalledBy ilUserTakeOverConfigGUI : ilObjComponentSettingsGUI
+ *
+ * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
@@ -76,9 +77,10 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected function getForm() {
 		$form = new ilPropertyFormGUI();
-		$form->setTitle($this->lng->txt("configuration"));
+		$form->setTitle($this->pl->txt("configuration"));
 
 		$input = new ilusrtoMultiSelectSearchInput2GUI($this->pl->txt("demo_group"), "demo_group");
+		$input->setInfo($this->pl->txt("demo_group_info"));
 		$input->setAjaxLink($this->ctrl->getLinkTarget($this, "searchUsers"));
 		$form->addItem($input);
 
@@ -94,7 +96,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$form = $this->getForm();
 		$form->setValuesByPost();
 		if($form->checkInput()) {
-			$demo_group = $form->getInput("demo_group");
+			$demo_group = explode(",",$form->getInput("demo_group")[0]);
 			$config = ilUserTakeOverConfig::first();
 			$config->setDemoGroup($demo_group);
 			$config->save();
@@ -121,6 +123,12 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	}
 
 	protected function searchUsers() {
+		global $rbacreview, $ilUser;
+		// Only Administrators
+		if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+			echo json_encode([]);exit;
+		}
+
 		$term = $_GET['term'];
 		/** @var ilObjUser[] $users */
 		$users = ilObjUser::searchUsers($term);

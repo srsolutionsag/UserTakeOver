@@ -1,8 +1,8 @@
 <?php
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
-//require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoGUI.php';
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoHelper.php');
+require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php");
 
 /**
  * Class ilUserTakeOverUIHookGUI
@@ -60,13 +60,44 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 * @var $ilUser     ilObjUser
 		 */
 		if ($a_comp == 'Services/MainMenu') {
-			if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
+			if (!self::isLoaded('user_take_back')) {
+
+				/////////// For the Demo Group //////////////////
+				global $ilUser;
+				/** @var ilUserTakeOverConfig $config */
+				$config = ilUserTakeOverConfig::first();
+				if(in_array($ilUser->getId(), $config->getDemoGroup()) && in_array($_SESSION[usrtoHelper::USR_ID_BACKUP], $config->getDemoGroup())) {
+					$inner_html = "";
+					foreach ($config->getDemoGroup() as $userId) {
+						$user = new ilObjUser($userId);
+						$b = "";
+						if($userId == $ilUser->getId())
+							$b = " style='font-weight: bold;'";
+						$inner_html .= "<li>
+								<a href=\"goto.php?target=usr_takeover_$userId\"$b>{$user->getPresentationTitle()}</a>
+							</li>";
+					}
+					$html = "<a href='#' class='dropdown-toggle' data-toggle='dropdown'>
+								<b>{$ilUser->getPresentationTitle()}</b>
+							</a>
+							<ul class=\"dropdown-menu pull-right\" role=\"menu\">
+							$inner_html
+						</ul>";
+
+					// add list in ILIAS 5 and newer
+					if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
+						$html = '<li>' . $html . '</li>';
+					}
+
+					self::setLoaded('user_take_back');
+
+					return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
+				}
+
+				/////////////////// FOR EXITING THE VIEW ///////////////////////
+				if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 				$ilToolbar = new ilToolbarGUI();
-				if (!self::isLoaded('user_take_back')) {
-					global $ilUser;
-					/** @var ilUserTakeOverConfig $config */
-					$config = ilUserTakeOverConfig::first();
-//					if($ilUser)
+
 					global $ilPluginAdmin;
 					/**
 					 * @var $ilPluginAdmin ilPluginAdmin
@@ -96,16 +127,18 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			}
 		}
 
+
 		if (!self::isLoaded('user_take_over')) {
+			global $rbacreview, $ilUser;
+			// Only Administrators
+			if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+				self::setLoaded('user_take_over');
+
+				return false;
+			}
+
+			///////////////// IN THE USER ADMINISTRATION /////////////////
 			if ($_GET['cmdClass'] == 'ilobjusergui' AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
-				global $rbacreview, $ilUser;
-				// Only Administrators
-				if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
-					self::setLoaded('user_take_over');
-
-					return false;
-				}
-
 				global $ilToolbar;
 				if ($ilToolbar instanceof ilToolbarGUI) {
 					$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
@@ -114,6 +147,25 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 					$ilToolbar->addButton($ilUserTakeOverPlugin->txt('take_over_user_view'), $link, '', '', 'take_over_user_view');
 					self::setLoaded('user_take_over');
 				}
+			}
+
+			//////////////TOP BAR /////////////
+			if ($a_comp == 'Services/MainMenu') {
+				global $ilCtrl;
+				$plugin = new ilUserTakeOverPlugin();
+				$template = $plugin->getTemplate("tpl.MMUserTakeOver.html", false, false);
+				$template->setVariable("SEARCHUSERLINK", $ilCtrl->getLinkTargetByClass(array("ilUIPluginRouterGUI", "ilUserTakeOverConfigGUI"), "searchUsers"));
+				$template->setVariable("TAKEOVERPREFIX", "goto.php?target=usr_takeover_");
+				$template->setVariable("LOADING_TEXT", $plugin->txt("loading"));
+				$template->setVariable("NO_RESULTS", $plugin->txt("no_results"));
+				self::setLoaded('user_take_over');
+				$html = $template->get();
+
+				// add list in ILIAS 5 and newer
+				if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
+					$html = '<li>' . $html . '</li>';
+				}
+				return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
 			}
 		}
 	}

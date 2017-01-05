@@ -11,6 +11,7 @@
         };
         if(sr_link_input.length > 0){
             settings["ajax"] = {
+                minimumInputLength: 3,
                 url: sr_link_input,
                 dataType: 'json',
                 data: function(term, page){
