@@ -3,7 +3,6 @@
 use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
 require_once('./Services/Component/classes/class.ilPluginConfigGUI.php');
-require_once('./Customizing/global/plugins/Services/EventHandling/EventHook/UserDefaults/classes/UserSetting/class.ilUserSettingsGUI.php');
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/Form/class.ilusrtoMultiSelectSearchInput2GUI.php");
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php");
 require_once("./Services/Exceptions/classes/class.ilException.php");
