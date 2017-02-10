@@ -1,0 +1,36 @@
+<script>
+    $(document).ready(function(){
+        var sr_id_input = "{ESCAPED_ID}";
+        var sr_link_input = "{AJAX_LINK}";
+        var preload = {PRELOAD};
+        var replacer = new RegExp('amp;', 'g');
+        sr_link_input = sr_link_input.replace(replacer, '');
+        var settings = {placeholder: "{PLACEHOLDER}",
+            minimumInputLength: "{MINIMUM_INPUT_LENGTH}",
+            multiple: true
+        };
+        if(sr_link_input.length > 0){
+            settings["ajax"] = {
+                minimumInputLength: 3,
+                url: sr_link_input,
+                dataType: 'json',
+                data: function(term, page){
+                    return {
+                        term: term,
+	                    container_type:'{CONTAINER_TYPE}',
+                        page_limit: 10
+                    }
+                },
+                results: function(data, page){
+                    return {
+                        results: data
+                    }
+                }
+            }
+
+        }
+        $("#"+sr_id_input).select2(settings);
+        $("#"+sr_id_input).select2('data', preload);
+    });
+</script>
+<input type="hidden" style="width:{WIDTH}; height:{HEIGHT}" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>

@@ -1,0 +1,80 @@
+<script>
+    $(document).ready(function () {
+        var a = $("#srag-usrto-search");
+        a.click(function (event) {
+            event.preventDefault();
+        });
+        var href = a.attr("href");
+        var input = a.children(".srag-seach-input");
+        var results = $("#srag-usrto-search-results");
+        var takeoverprefix = results.attr("srag-usrto-takeover-prefix");
+        var loading_text = results.attr("srag-loading-text");
+        var no_results_text = results.attr("srag-no-results");
+
+        input.focus(function () {
+            results.slideDown();
+        });
+
+        input.focusout(function () {
+            setTimeout(
+                function () {
+                    results.slideUp();
+                }, 1000);
+        });
+
+
+        console.log(href);
+        var previousRequest = null;
+        input.keydown(function (e) {
+            var key = e.which;
+            if(key == 13) {
+                var link = $("a.user-takeover-link").first();
+                var takeoverLink = link.attr("href");
+                link.fadeTo(100, 0.1).fadeTo(500, 1.0);
+                window.location.href = takeoverLink;
+                console.log($("a.user-takeover-link").first());
+                return;
+            }
+            if (previousRequest) {
+                previousRequest.abort();
+            } else {
+                results.prepend("<li>" + loading_text + "<li/>");
+            }
+            var term = input.val();
+            if (term.length < 3) {
+                results.empty();
+                return;
+            }
+            previousRequest = $.ajax({
+                url: href,
+                type: "get",
+                data: {
+                    term: term
+                },
+                success: function (response) {
+                    console.log(response);
+                    response = JSON.parse(response);
+                    results.empty();
+                    for (var i = 0; i < response.length; i++) {
+                        results.append("<li><a class='user-takeover-link' href=" + takeoverprefix + response[i].id + ">" + response[i].text + "</a></li>");
+                    }
+                    if (response.length == 0) {
+                        results.append("<li>" + no_results_text + "</li>")
+                    }
+
+                    previousRequest = null;
+                }
+            })
+        });
+    })
+
+
+</script>
+
+
+<a href='{SEARCHUSERLINK}' id='srag-usrto-search' class='dropdown-toggle'>
+    Benutzerübernahme: <input class="srag-seach-input" style='color: black;' type='text'/>
+</a>
+<ul srag-usrto-takeover-prefix="{TAKEOVERPREFIX}" srag-no-results="{NO_RESULTS}" srag-loading-text="{LOADING_TEXT}"
+    id="srag-usrto-search-results" class="dropdown-menu pull-right" role="menu">
+</ul>
