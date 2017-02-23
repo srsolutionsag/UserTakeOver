@@ -26,7 +26,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	 * @con_fieldtype  text
 	 * @con_length     4000
 	 */
-	protected $demo_group = '';
+	protected $demo_group = array();
 
 	/**
 	 * @return string
@@ -46,7 +46,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
 			case 'demo_group':
-				return json_decode($field_value);
+				return (array) json_decode($field_value);
 				break;
 		}
 
