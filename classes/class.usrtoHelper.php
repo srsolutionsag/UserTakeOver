@@ -84,7 +84,7 @@ class usrtoHelper {
 	/**
 	 * @param $usr_id
 	 */
-	public function takeOver($usr_id) {
+	public function takeOver($usr_id, $track = true) {
 		global $ilUser, $ilLog;
 		$this->checkAccess($ilUser->getId(), $usr_id);
 		$this->setTemporaryUsrId($usr_id);
@@ -92,7 +92,8 @@ class usrtoHelper {
 		$pl = ilUserTakeOverPlugin::getInstance();
 		$_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
 		$_SESSION[self::USR_ID_AUTHSESSION] = $this->getTemporaryUsrId();
-		$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
+		if($track == true)
+			$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
 
