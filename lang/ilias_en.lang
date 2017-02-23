@@ -4,3 +4,12 @@ user_taker_over_success#:#You have taken successfully the user view of user %s.
 user_taker_back_success#:#You are now logged in again as:  %s
 user_taker_over_failure#:#Take over User View: An error has occured.
 no_permission#:#You do not have the necessary permission!
+configuration#:#Configuration
+demo_group#:#Demo Group
+demo_group_info#:#Users in the demo group can take over each others accounts. Take care: If you add an administrator to the demo group all the accounts in the group gain de facto administration privileges.
+save#:#Save
+success#:#Saved successfully.
+something_went_wrong#:#Something went wrong.
+loading#:#Loading...
+no_results#:#No results.
+
