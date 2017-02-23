@@ -119,7 +119,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		$tpl->setVariable('WIDTH', $this->getWidth());
 		$tpl->setVariable('PRELOAD', $values);
 		$tpl->setVariable('HEIGHT', $this->getHeight());
-		$tpl->setVariable('PLACEHOLDER', $this->pl->txt($this->getContainerType() . '_placeholder'));
+		$tpl->setVariable('PLACEHOLDER', '');
 		$tpl->setVariable('MINIMUM_INPUT_LENGTH', $this->getMinimumInputLength());
 		$tpl->setVariable('CONTAINER_TYPE', $this->getContainerType());
 		$tpl->setVariable('Class', $this->getCssClass());

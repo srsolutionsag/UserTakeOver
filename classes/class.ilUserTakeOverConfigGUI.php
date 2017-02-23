@@ -19,15 +19,15 @@ require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
-	/** @var ilCtrl ilCtrl */
+	/** @var ilCtrl */
 	protected $ctrl;
-	/** @var  tabs ilTabsGUI */
+	/** @var ilTabsGUI */
 	protected $tabs;
-	/** @var tpl ilTemplate */
+	/** @var  ilTemplate */
 	protected $tpl;
-	/** @var lng ilLanguage */
+	/** @var ilLanguage */
 	protected $lng;
-	/** @var ilUserTakeOverPlugin ilUserTakeOverPlugin */
+	/** @var ilUserTakeOverPlugin */
 	protected $pl;
 
 	public function __construct() {
