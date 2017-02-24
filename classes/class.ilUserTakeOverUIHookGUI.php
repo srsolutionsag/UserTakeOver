@@ -137,6 +137,11 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 			if (!self::isLoaded('user_take_over')) {
 				global $rbacreview, $ilUser;
+
+				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
+				if(!($rbacreview instanceof ilRbacReview))
+					return false;
+
 				// Only Administrators
 				if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
 					self::setLoaded('user_take_over');
