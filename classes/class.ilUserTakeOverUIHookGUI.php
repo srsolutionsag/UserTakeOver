@@ -59,28 +59,20 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 * @var $rbacreview ilRbacReview
 		 * @var $ilUser     ilObjUser
 		 */
-		if ($a_comp == 'Services/MainMenu') {
-			$html = '';
-
-			global $ilUser;
-			/** @var ilUserTakeOverConfig $config */
-			$config = ilUserTakeOverConfig::first();
-
+		if ($a_comp == 'Services/MainMenu' && $a_part=='main_menu_search') {
 			if (!self::isLoaded('user_take_over')) {
-
+				$html = '';
+				global $ilUser;
+				/** @var ilUserTakeOverConfig $config */
+				$config = ilUserTakeOverConfig::first();
 				/////////////////// FOR EXITING THE VIEW ///////////////////////
 				if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
-
 						$html .= $this->takeBackHtml();
 				}
 
 				/////////// For the Demo Group //////////////////
-
-
 				if (in_array($ilUser->getId(), $config->getDemoGroup())) {
-					$tmpHtml = $this->getDemoGroupHtml($config, $ilUser);
-
-					$html .= $tmpHtml;
+					$html .= $this->getDemoGroupHtml($config, $ilUser);
 				}
 
 				global $rbacreview, $ilUser;
@@ -95,12 +87,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 						//////////////TOP BAR /////////////
 						$html .= $this->getTopBarHtml();
 				}
+
+				self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
+				return array("mode" => ilUIHookPluginGUI::PREPEND, "html" => $html);
+			} else {
+				return array('mode' => ilUIHookPluginGUI::KEEP, "html" => '');
 			}
 
-			self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
-			return array("mode" => ilUIHookPluginGUI::PREPEND, "html" => $html);
 		}
-
 	}
 
 
@@ -199,15 +193,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 		$ilToolbar = new ilToolbarGUI();
 
-		global $ilPluginAdmin;
 		/**
 		 * @var $ilPluginAdmin ilPluginAdmin
 		 */
 		if ($ilToolbar instanceof ilToolbarGUI) {
-//			if ($ilPluginAdmin->isActive(IL_COMP_SERVICE, 'UIComponent', 'uihk', 'CtrlMainMenu')) {
-//				self::setLoaded('user_take_back');
-//				return array("mode" => ilUIHookPluginGUI::KEEP, "html" => '');
-//			}
 
 			$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 			$link = 'goto.php?target=usr_takeback';
