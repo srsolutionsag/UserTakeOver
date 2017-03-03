@@ -73,9 +73,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 						$html .= $this->takeBackHtml();
 				}
-			}
 
-			if (!self::isLoaded('user_take_over')) {
 				/////////// For the Demo Group //////////////////
 
 
@@ -84,19 +82,18 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 					$html .= $tmpHtml;
 				}
-			}
 
-			if (!self::isLoaded('user_take_over')) {
 				global $rbacreview, $ilUser;
 
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($rbacreview instanceof ilRbacReview) && in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId())) && !in_array($ilUser->getId(), $config->getDemoGroup())) {
+				if (($rbacreview instanceof ilRbacReview) && in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar($ilToolbar);
 
-					//////////////TOP BAR /////////////
-					$html .= $this->getTopBarHtml();
+					if(!in_array($ilUser->getId(), $config->getDemoGroup()))
+						//////////////TOP BAR /////////////
+						$html .= $this->getTopBarHtml();
 				}
 			}
 
@@ -188,7 +185,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			global $ilToolbar;
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-				$link = 'goto.php?target=usr_takeover_' . $_GET['obj_id'];
+				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];
 				// TODO: Refactor in ILIAS 5.0: ilLinkButton::getInstance(); and $ilToolbar->addButtonInstance();
 				$ilToolbar->addButton($ilUserTakeOverPlugin->txt('take_over_user_view'), $link, '', '', 'take_over_user_view');
 				return $ilToolbar;
