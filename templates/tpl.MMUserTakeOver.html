@@ -19,22 +19,14 @@
             setTimeout(
                 function () {
                     results.slideUp();
-                }, 1000);
+                }, 2000);
         });
 
 
-        console.log(href);
+
         var previousRequest = null;
-        input.keydown(function (e) {
-            var key = e.which;
-            if(key == 13) {
-                var link = $("a.user-takeover-link").first();
-                var takeoverLink = link.attr("href");
-                link.fadeTo(100, 0.1).fadeTo(500, 1.0);
-                window.location.href = takeoverLink;
-                console.log($("a.user-takeover-link").first());
-                return;
-            }
+
+        function handleRequest() {
             if (previousRequest) {
                 previousRequest.abort();
             } else {
@@ -52,7 +44,7 @@
                     term: term
                 },
                 success: function (response) {
-                    console.log(response);
+                    console.log("BEGIN"+response+"END OF RESPONSE");
                     response = JSON.parse(response);
                     results.empty();
                     for (var i = 0; i < response.length; i++) {
@@ -65,6 +57,23 @@
                     previousRequest = null;
                 }
             })
+        }
+
+        input.on('paste', function () {
+            handleRequest();
+        });
+
+        input.keydown(function (e) {
+            var key = e.which;
+            if(key == 13) {
+                var link = $("a.user-takeover-link").first();
+                var takeoverLink = link.attr("href");
+                link.fadeTo(100, 0.1).fadeTo(500, 1.0);
+                console.log($("a.user-takeover-link").first());
+                window.location.href = takeoverLink;
+                return;
+            }
+            handleRequest();
         });
     })
 
