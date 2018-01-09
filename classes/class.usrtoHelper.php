@@ -135,8 +135,15 @@ class usrtoHelper {
 		if(in_array($usr_id, $demo_group) && in_array($take_over_id, $demo_group))
 			return true;
 
+        $portal_admin = false;
+        foreach($rbacreview->assignedGlobalRoles($usr_id) as $role){
+            $title = ilObject::_lookupTitle($role);
+            if($title === 'Portal Administration' || $title === 'Portal Administrator'){
+                $portal_admin = true;
+            }
+        }
 		// If the user taking over is of id 13? or is not in the admin role he does not have permission.
-		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id))) {
+		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id)) && ! $portal_admin) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 

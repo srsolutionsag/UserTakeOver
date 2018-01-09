@@ -78,8 +78,15 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				global $rbacreview, $ilUser;
 
 				// If we are admin
+                $portal_admin = false;
+                foreach($rbacreview->assignedGlobalRoles($ilUser->getId()) as $role){
+                    $title = ilObject::_lookupTitle($role);
+                    if($title === 'Portal Administration' || $title === 'Portal Administrator'){
+                        $portal_admin = true;
+                    }
+                }
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($rbacreview instanceof ilRbacReview) && in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+				if (($rbacreview instanceof ilRbacReview) && in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId())) || $portal_admin) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar($ilToolbar);
 
