@@ -126,7 +126,14 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	protected function searchUsers() {
 		global $rbacreview, $ilUser;
 		// Only Administrators
-		if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId()))) {
+        $portal_admin = false;
+        foreach($rbacreview->assignedGlobalRoles($ilUser->getId()) as $role){
+            $title = ilObject::_lookupTitle($role);
+            if($title === 'Portal Administration' || $title === 'Portal Administrator'){
+                $portal_admin = true;
+            }
+        }
+		if (!in_array(2, $rbacreview->assignedGlobalRoles($ilUser->getId())) && ! $portal_admin) {
 			echo json_encode([]);exit;
 		}
 
