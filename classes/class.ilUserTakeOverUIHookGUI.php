@@ -130,10 +130,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		self::setLoaded('user_take_over');
 		$html = $template->get();
 
-		// add list in ILIAS 5 and newer
-		if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
-			$html = '<li>' . $html . '</li>';
-		}
+		$html = '<li>' . $html . '</li>';
 
 		return $html;
 
@@ -162,11 +159,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 							$inner_html
 						</ul>";
 
-		// add list in ILIAS 5 and newer
-		if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
-			$tmpHtml = '<li>' . $tmpHtml . '</li>';
-			return $tmpHtml;
-		}
+		$tmpHtml = '<li>' . $tmpHtml . '</li>';
 		return $tmpHtml;
 	}
 
@@ -204,10 +197,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			$tmpHtml = '<a class="MMInactive" id="leave_user_view" target="" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
 				. '</a>';
 
-			// add list in ILIAS 5 and newer
-			if (ilComponent::isVersionGreaterString(ILIAS_VERSION_NUMERIC, "4.9.999")) {
-				$tmpHtml = '<li>' . $tmpHtml . '</li>';
-			}
+			$tmpHtml = '<li>' . $tmpHtml . '</li>';
 			return $tmpHtml;
 		}
 		return '';
