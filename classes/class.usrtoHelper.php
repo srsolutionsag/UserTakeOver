@@ -85,7 +85,7 @@ class usrtoHelper {
 	 * @param $usr_id
 	 */
 	public function takeOver($usr_id, $track = true) {
-		global $DIC, $ilLog;
+		global $DIC;
 		$ilUser = $DIC->user();
 		$this->checkAccess($ilUser->getId(), $usr_id);
 		$this->setTemporaryUsrId($usr_id);
@@ -98,7 +98,7 @@ class usrtoHelper {
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
 
-		$ilLog->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
+		$DIC["ilLog"]->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
 		ilUtil::redirect('ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems');
