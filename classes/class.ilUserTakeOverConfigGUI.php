@@ -32,7 +32,11 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	/**
 	 * @var ilObjUser
 	 */
-	protected $user;
+	protected $usr;
+	/**
+	 * @var ilRbacReview
+	 */
+	protected $rbacview;
 
 	public function __construct() {
 		global $DIC;
@@ -42,7 +46,8 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$this->tpl = $DIC->ui()->mainTemplate();
 		$this->lng = $DIC->language();
 		$this->pl = new ilUserTakeOverPlugin();
-		$this->user = $DIC->user();
+		$this->usr = $DIC->user();
+		$this->rbacview = $DIC->rbac()->review();
 	}
 
 	public function executeCommand() {
@@ -131,7 +136,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	protected function searchUsers() {
 		global $DIC;
 		// Only Administrators
-		if (!in_array(2, $DIC->rbac()->review()->assignedGlobalRoles($this->user->getId()))) {
+		if (!in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
 			echo json_encode([]);exit;
 		}
 

@@ -45,16 +45,21 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	/**
 	 * @var ilObjUser
 	 */
-	protected $user;
+	protected $usr;
 	/**
 	 * @var ilCtrl
 	 */
 	protected $ctrl;
+	/**
+	 * @var ilRbacReview
+	 */
+	protected $rbacview;
 
 	public function __construct() {
 		global $DIC;
-		$this->user = $DIC->user();
+		$this->usr = $DIC->user();
 		$this->ctrl = $DIC->ctrl();
+		$this->rbacview = $DIC->rbac()->review();
 	}
 
 
@@ -78,18 +83,17 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				}
 
 				/////////// For the Demo Group //////////////////
-				if (in_array($this->user->getId(), $config->getDemoGroup())) {
-					$html .= $this->getDemoGroupHtml($config, $this->user);
+				if (in_array($this->usr->getId(), $config->getDemoGroup())) {
+					$html .= $this->getDemoGroupHtml($config, $this->usr);
 				}
-				
-				$rbacreview = $DIC->rbac()->review();
+
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($rbacreview instanceof ilRbacReview) && in_array(2, $rbacreview->assignedGlobalRoles($this->user->getId()))) {
+				if (($this->rbacview  instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar($DIC->toolbar());
 
-					if(!in_array($this->user->getId(), $config->getDemoGroup()))
+					if(!in_array($this->usr->getId(), $config->getDemoGroup()))
 						//////////////TOP BAR /////////////
 						$html .= $this->getTopBarHtml();
 				}
