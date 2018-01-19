@@ -173,8 +173,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];
-				// TODO: Refactor in ILIAS 5.0: ilLinkButton::getInstance(); and $ilToolbar->addButtonInstance();
-				$ilToolbar->addButton($ilUserTakeOverPlugin->txt('take_over_user_view'), $link, '', '', 'take_over_user_view');
+				$button = ilLinkButton::getInstance();
+				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'),false);
+				$button->setUrl($link);
+				$ilToolbar->addButtonInstance($button);
 				return $ilToolbar;
 			}
 			return $ilToolbar;
