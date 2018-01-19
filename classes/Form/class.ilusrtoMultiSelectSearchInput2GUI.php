@@ -37,6 +37,10 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @var \ilTemplate
 	 */
 	protected $input_template;
+	/**
+	 * @var \ilUserTakeOverPlugin
+	 */
+	protected $pl;
 
 
 	/**
@@ -44,17 +48,18 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @param string $post_var
 	 */
 	public function __construct($title, $post_var) {
-		global $tpl, $ilUser, $lng;
+		global $DIC;
 		if (substr($post_var, - 2) != '[]') {
 			$post_var = $post_var . '[]';
 		}
 		parent::__construct($title, $post_var);
 
-		$this->lng = $lng;
+		$this->lng = $DIC->language();
 		$this->pl = \ilUserTakeOverPlugin::getInstance();
+		$tpl = $DIC->ui()->mainTemplate();
 		$tpl->addJavaScript('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2.min.js');
 		$tpl->addJavaScript('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2_locale_'
-		                    . $ilUser->getCurrentLanguage() . '.js');
+		                    . $DIC->user()->getCurrentLanguage() . '.js');
 		$tpl->addCss('././Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2.css');
 		$this->setInputTemplate($this->pl->getTemplate('tpl.multiple_select.html'));
 		$this->setWidth('300px');
@@ -65,10 +70,8 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return bool
 	 */
 	public function checkInput() {
-		global $lng;
-
 		if ($this->getRequired() && count($this->getValue()) == 0) {
-			$this->setAlert($lng->txt('msg_input_is_required'));
+			$this->setAlert($this->lng->txt('msg_input_is_required'));
 
 			return false;
 		}
@@ -155,7 +158,8 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return string
 	 */
 	protected function getValueAsJson() {
-		global $ilDB;
+		global $DIC;
+		$ilDB = $DIC->database();
 
 		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE ".$ilDB->in("usr_id", $this->getValue(), false, "integer");
 		$res = $ilDB->query($query);

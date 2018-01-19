@@ -85,7 +85,8 @@ class usrtoHelper {
 	 * @param $usr_id
 	 */
 	public function takeOver($usr_id, $track = true) {
-		global $ilUser, $ilLog;
+		global $DIC, $ilLog;
+		$ilUser = $DIC->user();
 		$this->checkAccess($ilUser->getId(), $usr_id);
 		$this->setTemporaryUsrId($usr_id);
 		$this->setOriginalUsrId($ilUser->getId());
@@ -125,7 +126,7 @@ class usrtoHelper {
 	 * @return bool
 	 */
 	protected function checkAccess($usr_id, $take_over_id) {
-		global $rbacreview;
+		global $DIC;
 		$pl = ilUserTakeOverPlugin::getInstance();
 
 		// If they are both in the Demo Group then it's fine.
@@ -136,7 +137,7 @@ class usrtoHelper {
 			return true;
 
 		// If the user taking over is of id 13? or is not in the admin role he does not have permission.
-		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $rbacreview->assignedGlobalRoles($usr_id))) {
+		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $DIC->rbac()->review()->assignedGlobalRoles($usr_id))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 
