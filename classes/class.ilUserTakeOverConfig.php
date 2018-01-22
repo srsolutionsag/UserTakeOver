@@ -6,7 +6,7 @@
  * @author Oskar Truffer <ot@studer-raimann.ch>
  */
 class ilUserTakeOverConfig extends ActiveRecord {
-
+	const TABLE_NAME = 'ui_uihk_usrto_config';
 	/**
 	 * @var int
 	 *
@@ -34,7 +34,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	 * @deprecated
 	 */
 	static function returnDbTableName() {
-		return 'ui_uihk_usrto_config';
+		return self::TABLE_NAME;
 	}
 
 	/**
