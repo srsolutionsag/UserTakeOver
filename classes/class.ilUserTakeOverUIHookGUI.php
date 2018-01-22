@@ -3,6 +3,7 @@
 require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
 require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoHelper.php');
 require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php");
+require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfigGUI.php");
 
 /**
  * Class ilUserTakeOverUIHookGUI
@@ -125,7 +126,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	protected function getTopBarHtml() {
 		$plugin = new ilUserTakeOverPlugin();
 		$template = $plugin->getTemplate("tpl.MMUserTakeOver.html", false, false);
-		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array("ilUIPluginRouterGUI", "ilUserTakeOverConfigGUI"), "searchUsers"));
+		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(ilUIPluginRouterGUI::class, ilUserTakeOverConfigGUI::class), ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
 		// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
 		if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 			$track = 1;
@@ -176,7 +177,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @return mixed
 	 */
 	protected function initTakeOverToolbar($ilToolbar) {
-		if ($_GET['cmdClass'] == 'ilobjusergui' AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
+		if (strcasecmp($_GET['cmdClass'],ilObjUserGUI::class) == 0 AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];

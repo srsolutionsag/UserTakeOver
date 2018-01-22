@@ -18,7 +18,9 @@ require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
  * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
-
+	const CMD_CONFIGURE = 'configure';
+	const CMD_SAVE = 'save';
+	const CMD_SEARCH_USERS = 'searchUsers';
 	/** @var ilCtrl */
 	protected $ctrl;
 	/** @var ilTabsGUI */
@@ -66,9 +68,9 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	public function performCommand($cmd) {
 		$cmd = $this->ctrl->getCmd();
 		switch ($cmd) {
-			case "configure":
-			case "searchUsers":
-			case "save":
+			case self::CMD_CONFIGURE:
+			case self::CMD_SEARCH_USERS:
+			case self::CMD_SAVE:
 				$this->$cmd();
 				break;
 			default:
@@ -92,12 +94,12 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 		$input = new ilusrtoMultiSelectSearchInput2GUI($this->pl->txt("demo_group"), "demo_group");
 		$input->setInfo($this->pl->txt("demo_group_info"));
-		$input->setAjaxLink($this->ctrl->getLinkTarget($this, "searchUsers"));
+		$input->setAjaxLink($this->ctrl->getLinkTarget($this, self::CMD_SEARCH_USERS));
 		$form->addItem($input);
 
-		$form->addCommandButton("save", $this->pl->txt("save"));
+		$form->addCommandButton(self::CMD_SAVE, $this->pl->txt("save"));
 
-		$form->setFormAction($this->ctrl->getFormAction($this, "save"));
+		$form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SAVE));
 
 		return $form;
 
@@ -112,7 +114,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 			$config->setDemoGroup($demo_group);
 			$config->save();
 			ilUtil::sendSuccess($this->pl->txt("success"), true);
-			$this->ctrl->redirect($this, "configure");
+			$this->ctrl->redirect($this, self::CMD_CONFIGURE);
 		} else {
 			ilUtil::sendFailure($this->pl->txt("something_went_wrong"), true);
 			$this->tpl->setContent($form->getHTML());
