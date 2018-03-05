@@ -101,7 +101,7 @@ class usrtoHelper {
 		$DIC["ilLog"]->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
-		ilUtil::redirect('ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems');
+		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
 	}
 
 	/**
@@ -116,7 +116,7 @@ class usrtoHelper {
 			ilUtil::sendSuccess(sprintf($pl->txt('user_taker_back_success'), ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])), true);
 			unset($_SESSION[self::USR_ID_BACKUP]);
 		}
-		ilUtil::redirect('ilias.php?baseClass=ilPersonalDesktopGUI&cmd=jumpToSelectedItems');
+		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
 	}
 
 
