@@ -28,10 +28,35 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
+	const ID = "srsu";
+	/**
+	 * @var ilDB
+	 */
+	protected $db;
+
+
+	public function __construct() {
+		parent::__construct();
+
+		global $DIC;
+
+		$this->db = $DIC->database();
+	}
+
+
 	/**
 	 * @return string
 	 */
 	public function getPluginName() {
 		return 'UserTakeOver';
+	}
+
+
+	protected function beforeUninstall() {
+		require_once "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php";
+
+		$this->db->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+
+		return true;
 	}
 }
