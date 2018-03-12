@@ -53,7 +53,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 
 	protected function beforeUninstall() {
-		require_once "./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php";
+		require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php';
 
 		$this->db->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
 
