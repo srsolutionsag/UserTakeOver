@@ -10,6 +10,8 @@ include_once('./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php
  */
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
+	const PLUGIN_ID = 'usrto';
+	const PLUGIN_NAME = 'UserTakeOver';
 	/**
 	 * @var ilUserTakeOverPlugin
 	 */
@@ -28,7 +30,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
-	const ID = "srsu";
 	/**
 	 * @var ilDB
 	 */
@@ -48,7 +49,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	 * @return string
 	 */
 	public function getPluginName() {
-		return 'UserTakeOver';
+		return self::PLUGIN_NAME;
 	}
 
 
