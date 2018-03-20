@@ -63,7 +63,7 @@
             handleRequest();
         });
 
-        input.keydown(function (e) {
+        input.keyup(function (e) {
             var key = e.which;
             if(key == 13) {
                 var link = $("a.user-takeover-link").first();

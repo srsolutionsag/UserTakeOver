@@ -1,10 +1,10 @@
 <?php
+
 namespace srag\plugins\UserTakeOver;
 
 require_once('./Services/Form/classes/class.ilMultiSelectInputGUI.php');
 require_once('./Services/User/classes/class.ilObjUser.php');
 require_once('./Services/UICore/classes/class.ilTemplate.php');
-
 
 /**
  * Class ilMultiSelectSearchInput2GUI
@@ -37,6 +37,10 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @var \ilTemplate
 	 */
 	protected $input_template;
+	/**
+	 * @var \ilUserTakeOverPlugin
+	 */
+	protected $pl;
 
 
 	/**
@@ -44,18 +48,18 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @param string $post_var
 	 */
 	public function __construct($title, $post_var) {
-		global $tpl, $ilUser, $lng;
+		global $DIC;
 		if (substr($post_var, - 2) != '[]') {
 			$post_var = $post_var . '[]';
 		}
 		parent::__construct($title, $post_var);
 
-		$this->lng = $lng;
+		$this->lng = $DIC->language();
 		$this->pl = \ilUserTakeOverPlugin::getInstance();
-		$tpl->addJavaScript('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2.min.js');
-		$tpl->addJavaScript('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2_locale_'
-		                    . $ilUser->getCurrentLanguage() . '.js');
-		$tpl->addCss('././Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/lib/select2/select2.css');
+		$tpl = $DIC->ui()->mainTemplate();
+		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2.min.js');
+		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2_locale_' . $DIC->user()->getCurrentLanguage() . '.js');
+		$tpl->addCss($this->pl->getDirectory() . '/lib/select2/select2.css');
 		$this->setInputTemplate($this->pl->getTemplate('tpl.multiple_select.html'));
 		$this->setWidth('300px');
 	}
@@ -65,10 +69,8 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return bool
 	 */
 	public function checkInput() {
-		global $lng;
-
 		if ($this->getRequired() && count($this->getValue()) == 0) {
-			$this->setAlert($lng->txt('msg_input_is_required'));
+			$this->setAlert($this->lng->txt('msg_input_is_required'));
 
 			return false;
 		}
@@ -151,23 +153,26 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		return $tpl->get();
 	}
 
+
 	/**
 	 * @return string
 	 */
 	protected function getValueAsJson() {
-		global $ilDB;
+		global $DIC;
+		$ilDB = $DIC->database();
 
-		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE ".$ilDB->in("usr_id", $this->getValue(), false, "integer");
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . $ilDB->in("usr_id", $this->getValue(), false, "integer");
 		$res = $ilDB->query($query);
 		while ($user = $ilDB->fetchAssoc($res)) {
 			$result[] = [
 				"id" => $user['usr_id'],
-				"text" => $user['firstname']." ".$user['lastname']." (".$user['login'].")"
+				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
 			];
 		}
 
 		return json_encode($result);
 	}
+
 
 	/**
 	 * @deprecated setting inline style items from the controller is bad practice. please use the setClass together with an appropriate css class.
@@ -315,23 +320,28 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		$this->setValue($val);
 	}
 
+
 	protected function escapePostVar($postVar) {
 		$postVar = $this->stripLastStringOccurrence($postVar, "[]");
 		$postVar = str_replace("[", '\\\\[', $postVar);
 		$postVar = str_replace("]", '\\\\]', $postVar);
+
 		return $postVar;
 	}
 
+
 	/**
-	 * @param $text string
+	 * @param $text   string
 	 * @param $string string
+	 *
 	 * @return string
 	 */
 	private function stripLastStringOccurrence($text, $string) {
 		$pos = strrpos($text, $string);
-		if($pos !== false) {
+		if ($pos !== false) {
 			$text = substr_replace($text, "", $pos, strlen($string));
 		}
+
 		return $text;
 	}
 }
