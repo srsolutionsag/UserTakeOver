@@ -1,5 +1,4 @@
 <?php
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverPlugin.php');
 
 /**
  * Class usrtoHelper
@@ -93,8 +92,9 @@ class usrtoHelper {
 		$pl = ilUserTakeOverPlugin::getInstance();
 		$_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
 		$_SESSION[self::USR_ID_AUTHSESSION] = $this->getTemporaryUsrId();
-		if($track == true)
+		if ($track == true) {
 			$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
+		}
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
 
@@ -103,6 +103,7 @@ class usrtoHelper {
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
 	}
+
 
 	/**
 	 * swiches the user-session back
@@ -123,6 +124,7 @@ class usrtoHelper {
 	/**
 	 * @param $usr_id
 	 * @param $take_over_id
+	 *
 	 * @return bool
 	 */
 	protected function checkAccess($usr_id, $take_over_id) {
@@ -133,8 +135,9 @@ class usrtoHelper {
 		/** @var ilUserTakeOverConfig $config */
 		$config = ilUserTakeOverConfig::first();
 		$demo_group = $config->getDemoGroup();
-		if(in_array($usr_id, $demo_group) && in_array($take_over_id, $demo_group))
+		if (in_array($usr_id, $demo_group) && in_array($take_over_id, $demo_group)) {
 			return true;
+		}
 
 		// If the user taking over is of id 13? or is not in the admin role he does not have permission.
 		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $DIC->rbac()->review()->assignedGlobalRoles($usr_id))) {

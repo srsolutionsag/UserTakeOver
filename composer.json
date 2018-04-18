@@ -1,0 +1,20 @@
+{
+  "autoload": {
+    "classmap": [
+      "./classes/",
+      "../../../../../../../Services/Component/classes/class.ilPluginConfigGUI.php",
+      "../../../../../../../Services/Exceptions/classes/class.ilException.php",
+      "../../../../../../../Services/Form/classes/class.ilMultiSelectInputGUI.php",
+      "../../../../../../../Services/Form/classes/class.ilPropertyFormGUI.php",
+      "../../../../../../../Services/UIComponent/classes/class.ilUIHookPluginGUI.php",
+      "../../../../../../../Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php",
+      "../../../../../../../Services/UICore/classes/class.ilTemplate.php",
+      "../../../../../../../Services/User/classes/class.ilObjUser.php"
+    ]
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "classmap-authoritative": true
+  }
+}

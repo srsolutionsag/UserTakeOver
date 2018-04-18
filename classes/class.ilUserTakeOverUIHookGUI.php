@@ -1,9 +1,6 @@
 <?php
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
-require_once('./Services/UIComponent/classes/class.ilUIHookPluginGUI.php');
-require_once('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.usrtoHelper.php');
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfigGUI.php");
+require_once __DIR__ . "/../vendor/autoload.php";
 
 /**
  * Class ilUserTakeOverUIHookGUI
@@ -56,6 +53,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	protected $rbacview;
 
+
 	public function __construct() {
 		global $DIC;
 		$this->usr = $DIC->user();
@@ -73,14 +71,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 */
 	public function getHTML($a_comp, $a_part, $a_par = array()) {
 		global $DIC;
-		if ($a_comp == 'Services/MainMenu' && $a_part=='main_menu_search') {
+		if ($a_comp == 'Services/MainMenu' && $a_part == 'main_menu_search') {
 			if (!self::isLoaded('user_take_over')) {
 				$html = '';
 				/** @var ilUserTakeOverConfig $config */
 				$config = ilUserTakeOverConfig::first();
 				/////////////////// FOR EXITING THE VIEW ///////////////////////
 				if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
-						$html .= $this->takeBackHtml();
+					$html .= $this->takeBackHtml();
 				}
 
 				/////////// For the Demo Group //////////////////
@@ -90,21 +88,22 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($this->rbacview  instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
+				if (($this->rbacview instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar($DIC->toolbar());
 
-					if(!in_array($this->usr->getId(), $config->getDemoGroup()))
-						//////////////TOP BAR /////////////
+					if (!in_array($this->usr->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
+					{
 						$html .= $this->getTopBarHtml();
+					}
 				}
 
 				self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
-				return array("mode" => ilUIHookPluginGUI::PREPEND, "html" => $html);
-			} else {
-				return array('mode' => ilUIHookPluginGUI::KEEP, "html" => '');
-			}
 
+				return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
+			} else {
+				return array( 'mode' => ilUIHookPluginGUI::KEEP, "html" => '' );
+			}
 		}
 	}
 
@@ -119,6 +118,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		}
 	}
 
+
 	/**
 	 * @return array
 	 * @internal param $a_comp
@@ -126,7 +126,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	protected function getTopBarHtml() {
 		$plugin = new ilUserTakeOverPlugin();
 		$template = $plugin->getTemplate("tpl.MMUserTakeOver.html", false, false);
-		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(ilUIPluginRouterGUI::class, ilUserTakeOverConfigGUI::class), ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
+		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(
+			ilUIPluginRouterGUI::class,
+			ilUserTakeOverConfigGUI::class
+		), ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
 		// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
 		if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 			$track = 1;
@@ -142,12 +145,13 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$html = '<li>' . $html . '</li>';
 
 		return $html;
-
 	}
+
 
 	/**
 	 * @param $config
 	 * @param $ilUser
+	 *
 	 * @return string
 	 */
 	protected function getDemoGroupHtml($config, $ilUser) {
@@ -155,8 +159,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		foreach ($config->getDemoGroup() as $userId) {
 			$user = new ilObjUser($userId);
 			$b = "";
-			if ($userId == $ilUser->getId())
+			if ($userId == $ilUser->getId()) {
 				$b = " style='font-weight: bold;'";
+			}
 			$inner_html .= "<li>
 								<a href=\"goto.php?track=0&target=usr_takeover_$userId\"$b>{$user->getPresentationTitle()}</a>
 							</li>";
@@ -169,28 +174,35 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 						</ul>";
 
 		$tmpHtml = '<li>' . $tmpHtml . '</li>';
+
 		return $tmpHtml;
 	}
 
+
 	/**
 	 * @param $ilToolbar
+	 *
 	 * @return mixed
 	 */
 	protected function initTakeOverToolbar($ilToolbar) {
-		if (strcasecmp($_GET['cmdClass'],ilObjUserGUI::class) == 0 AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
+		if (strcasecmp($_GET['cmdClass'], ilObjUserGUI::class) == 0 AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];
 				$button = ilLinkButton::getInstance();
-				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'),false);
+				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'), false);
 				$button->setUrl($link);
 				$ilToolbar->addButtonInstance($button);
+
 				return $ilToolbar;
 			}
+
 			return $ilToolbar;
 		}
+
 		return $ilToolbar;
 	}
+
 
 	private function takeBackHtml() {
 
@@ -208,8 +220,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				. '</a>';
 
 			$tmpHtml = '<li>' . $tmpHtml . '</li>';
+
 			return $tmpHtml;
 		}
+
 		return '';
 	}
 }

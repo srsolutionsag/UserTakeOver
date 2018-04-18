@@ -1,5 +1,6 @@
 <?php
-include_once('./Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php');
+
+require_once __DIR__ . "/../vendor/autoload.php";
 
 /**
  * ilUserTakeOverPlugin
@@ -53,9 +54,10 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
+	/**
+	 * @return bool
+	 */
 	protected function beforeUninstall() {
-		require_once './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php';
-
 		$this->db->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
 
 		return true;

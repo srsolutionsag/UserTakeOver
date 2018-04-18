@@ -1,23 +1,19 @@
 <?php
+require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
-
-require_once('./Services/Component/classes/class.ilPluginConfigGUI.php');
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/Form/class.ilusrtoMultiSelectSearchInput2GUI.php");
-require_once("./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/classes/class.ilUserTakeOverConfig.php");
-require_once("./Services/Exceptions/classes/class.ilException.php");
-require_once('./Services/Form/classes/class.ilPropertyFormGUI.php');
 
 /**
  * ilUserDefaultsConfigGUI
  *
- * @author  Fabian Schmid <fs@studer-raimann.ch>
+ * @author            Fabian Schmid <fs@studer-raimann.ch>
  *
- * @version 1.0.00
+ * @version           1.0.00
  *
  * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
+
 	const CMD_CONFIGURE = 'configure';
 	const CMD_SAVE = 'save';
 	const CMD_SEARCH_USERS = 'searchUsers';
@@ -40,6 +36,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected $rbacview;
 
+
 	public function __construct() {
 		global $DIC;
 
@@ -51,6 +48,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$this->usr = $DIC->user();
 		$this->rbacview = $DIC->rbac()->review();
 	}
+
 
 	public function executeCommand() {
 
@@ -79,11 +77,13 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		}
 	}
 
+
 	public function configure() {
 		$form = $this->getForm();
 		$this->fillForm($form);
 		$this->tpl->setContent($form->getHTML());
 	}
+
 
 	/**
 	 * @return ilPropertyFormGUI
@@ -102,14 +102,14 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SAVE));
 
 		return $form;
-
 	}
+
 
 	protected function save() {
 		$form = $this->getForm();
 		$form->setValuesByPost();
-		if($form->checkInput()) {
-			$demo_group = explode(",",$form->getInput("demo_group")[0]);
+		if ($form->checkInput()) {
+			$demo_group = explode(",", $form->getInput("demo_group")[0]);
 			$config = ilUserTakeOverConfig::first();
 			$config->setDemoGroup($demo_group);
 			$config->save();
@@ -121,6 +121,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		}
 	}
 
+
 	/**
 	 * @param $form ilPropertyFormGUI
 	 */
@@ -129,17 +130,19 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$demo_group = $config->getDemoGroup();
 
 		$values = [
-			"demo_group" => implode(',',$demo_group)
+			"demo_group" => implode(',', $demo_group)
 		];
 
 		$form->setValuesByArray($values);
 	}
 
+
 	protected function searchUsers() {
 		global $DIC;
 		// Only Administrators
 		if (!in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
-			echo json_encode([]);exit;
+			echo json_encode([]);
+			exit;
 		}
 
 		$term = $_GET['term'];
@@ -150,7 +153,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		foreach ($users as $user) {
 			$result[] = [
 				"id" => $user['usr_id'],
-				"text" => $user['firstname']." ".$user['lastname']." (".$user['login'].")"
+				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
 			];
 		}
 
