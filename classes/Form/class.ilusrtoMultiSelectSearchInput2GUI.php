@@ -157,7 +157,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		global $DIC;
 		$ilDB = $DIC->database();
 
-		$query = "SELECT firstname, lastname, login, usr_id FROM " . \usrdefUser::TABLE_NAME . " WHERE "
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE "
 			. $ilDB->in("usr_id", $this->getValue(), false, "integer");
 		$res = $ilDB->query($query);
 		while ($user = $ilDB->fetchAssoc($res)) {
