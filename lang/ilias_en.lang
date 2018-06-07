@@ -1,5 +1,5 @@
-take_over_user_view#:#Take over User View
-leave_user_view#:#Leave User View
+take_over_user_view#:#Take over user view
+leave_user_view#:#Leave User view
 user_taker_over_success#:#You have taken successfully the user view of user %s.
 user_taker_back_success#:#You are now logged in again as:  %s
 user_taker_over_failure#:#Take over User View: An error has occured.
@@ -12,4 +12,4 @@ success#:#Saved successfully.
 something_went_wrong#:#Something went wrong.
 loading#:#Loading...
 no_results#:#No results.
-
+take_over_user#:#Take over user:

@@ -52,6 +52,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @var ilRbacReview
 	 */
 	protected $rbacview;
+	/**
+	 * @var ilUserTakeOverPlugin
+	 */
+	protected $pl;
 
 
 	public function __construct() {
@@ -59,6 +63,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$this->usr = $DIC->user();
 		$this->ctrl = $DIC->ctrl();
 		$this->rbacview = $DIC->rbac()->review();
+		$this->pl=  ilUserTakeOverPlugin::getInstance();
 	}
 
 
@@ -124,8 +129,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @internal param $a_comp
 	 */
 	protected function getTopBarHtml() {
-		$plugin = new ilUserTakeOverPlugin();
-		$template = $plugin->getTemplate("tpl.MMUserTakeOver.html", false, false);
+		$template = $this->pl->getTemplate("tpl.MMUserTakeOver.html", false, false);
+		$template->setVariable("TXT_TAKE_OVER_USER", $this->pl->txt("take_over_user"));
 		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(
 			ilUIPluginRouterGUI::class,
 			ilUserTakeOverConfigGUI::class
@@ -137,8 +142,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			$track = 0;
 		}
 		$template->setVariable("TAKEOVERPREFIX", "goto.php?track=$track&target=usr_takeover_");
-		$template->setVariable("LOADING_TEXT", $plugin->txt("loading"));
-		$template->setVariable("NO_RESULTS", $plugin->txt("no_results"));
+		$template->setVariable("LOADING_TEXT", $this->pl->txt("loading"));
+		$template->setVariable("NO_RESULTS", $this->pl->txt("no_results"));
 		self::setLoaded('user_take_over');
 		$html = $template->get();
 
