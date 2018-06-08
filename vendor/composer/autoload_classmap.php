@@ -6,6 +6,7 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
+    'ActiveRecord' => $baseDir . '/../../../../../../../Services/ActiveRecord/class.ActiveRecord.php',
     'ilException' => $baseDir . '/../../../../../../../Services/Exceptions/classes/class.ilException.php',
     'ilMultiSelectInputGUI' => $baseDir . '/../../../../../../../Services/Form/classes/class.ilMultiSelectInputGUI.php',
     'ilObjUser' => $baseDir . '/../../../../../../../Services/User/classes/class.ilObjUser.php',
