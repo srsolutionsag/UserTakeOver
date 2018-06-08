@@ -6,7 +6,27 @@
  * @author Oskar Truffer <ot@studer-raimann.ch>
  */
 class ilUserTakeOverConfig extends ActiveRecord {
+
 	const TABLE_NAME = 'ui_uihk_usrto_config';
+
+
+	/**
+	 * @return string
+	 */
+	public function getConnectorContainerName() {
+		return self::TABLE_NAME;
+	}
+
+
+	/**
+	 * @return string
+	 * @deprecated
+	 */
+	public static function returnDbTableName() {
+		return self::TABLE_NAME;
+	}
+
+
 	/**
 	 * @var int
 	 *
@@ -18,7 +38,6 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	 * @con_length     8
 	 */
 	protected $id = 0;
-
 	/**
 	 * @var int[]
 	 *
@@ -28,14 +47,6 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	 */
 	protected $demo_group = array();
 
-	/**
-	 * @return string
-	 * @description Return the Name of your Database Table
-	 * @deprecated
-	 */
-	static function returnDbTableName() {
-		return self::TABLE_NAME;
-	}
 
 	/**
 	 * @param $field_name
@@ -46,12 +57,13 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	public function wakeUp($field_name, $field_value) {
 		switch ($field_name) {
 			case 'demo_group':
-				return (array) json_decode($field_value);
+				return (array)json_decode($field_value);
 				break;
 		}
 
-		return null;
+		return NULL;
 	}
+
 
 	/**
 	 * @param $field_name
@@ -65,8 +77,9 @@ class ilUserTakeOverConfig extends ActiveRecord {
 				break;
 		}
 
-		return null;
+		return NULL;
 	}
+
 
 	/**
 	 * @return int[]
@@ -74,6 +87,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	public function getDemoGroup() {
 		return $this->demo_group;
 	}
+
 
 	/**
 	 * @param int[] $demo_group
