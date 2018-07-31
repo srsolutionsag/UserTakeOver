@@ -81,7 +81,7 @@ class usrtoHelper {
 
 
 	/**
-	 * @param $usr_id
+	 * @param int $usr_id
 	 */
 	public function takeOver($usr_id, $track = true) {
 		global $DIC;
@@ -122,8 +122,8 @@ class usrtoHelper {
 
 
 	/**
-	 * @param $usr_id
-	 * @param $take_over_id
+	 * @param int $usr_id
+	 * @param int $take_over_id
 	 *
 	 * @return bool
 	 */

@@ -19,7 +19,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 *
 	 * @return bool
 	 */
@@ -29,7 +29,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param $key
+	 * @param string $key
 	 */
 	protected static function setLoaded($key) {
 		self::$loaded[$key] = 1;
@@ -63,14 +63,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$this->usr = $DIC->user();
 		$this->ctrl = $DIC->ctrl();
 		$this->rbacview = $DIC->rbac()->review();
-		$this->pl=  ilUserTakeOverPlugin::getInstance();
+		$this->pl = ilUserTakeOverPlugin::getInstance();
 	}
 
 
 	/**
-	 * @param       $a_comp
-	 * @param       $a_part
-	 * @param array $a_par
+	 * @param string $a_comp
+	 * @param string $a_part
+	 * @param array  $a_par
 	 *
 	 * @return array
 	 */
@@ -154,8 +154,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param $config
-	 * @param $ilUser
+	 * @param ilUserTakeOverConfig $config
+	 * @param ilObjUser            $ilUser
 	 *
 	 * @return string
 	 */
@@ -185,7 +185,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param $ilToolbar
+	 * @param ilToolbarGUI $ilToolbar
 	 *
 	 * @return mixed
 	 */
@@ -214,7 +214,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$ilToolbar = new ilToolbarGUI();
 
 		/**
-		 * @var $ilPluginAdmin ilPluginAdmin
+		 * @var ilPluginAdmin $ilPluginAdmin
 		 */
 		if ($ilToolbar instanceof ilToolbarGUI) {
 

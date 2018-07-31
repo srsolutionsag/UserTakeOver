@@ -2,6 +2,10 @@
 
 namespace srag\plugins\UserTakeOver;
 
+use ilTemplate;
+use ilUserTakeOverPlugin;
+use ilUtil;
+
 /**
  * Class ilMultiSelectSearchInput2GUI
  *
@@ -30,11 +34,11 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 */
 	protected $ajax_link;
 	/**
-	 * @var \ilTemplate
+	 * @var ilTemplate
 	 */
 	protected $input_template;
 	/**
-	 * @var \ilUserTakeOverPlugin
+	 * @var ilUserTakeOverPlugin
 	 */
 	protected $pl;
 
@@ -51,7 +55,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		parent::__construct($title, $post_var);
 
 		$this->lng = $DIC->language();
-		$this->pl = \ilUserTakeOverPlugin::getInstance();
+		$this->pl = ilUserTakeOverPlugin::getInstance();
 		$tpl = $DIC->ui()->mainTemplate();
 		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2.min.js');
 		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2_locale_' . $DIC->user()->getCurrentLanguage() . '.js');
@@ -140,7 +144,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 					$tpl->setVariable('SELECTED', 'selected');
 				}
 
-				$tpl->setVariable('VAL', \ilUtil::prepareFormOutput($option_value));
+				$tpl->setVariable('VAL', ilUtil::prepareFormOutput($option_value));
 				$tpl->setVariable('TEXT', $option_text);
 				$tpl->parseCurrentBlock();
 			}
@@ -157,8 +161,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		global $DIC;
 		$ilDB = $DIC->database();
 
-		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE "
-			. $ilDB->in("usr_id", $this->getValue(), false, "integer");
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . $ilDB->in("usr_id", $this->getValue(), false, "integer");
 		$res = $ilDB->query($query);
 		while ($user = $ilDB->fetchAssoc($res)) {
 			$result[] = [
@@ -256,7 +259,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 
 	/**
-	 * @param \srDefaultAccessChecker $access_checker
+	 * @param srDefaultAccessChecker $access_checker
 	 */
 	public function setAccessChecker($access_checker) {
 		$this->access_checker = $access_checker;
@@ -264,7 +267,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 
 	/**
-	 * @return \srDefaultAccessChecker
+	 * @return srDefaultAccessChecker
 	 */
 	public function getAccessChecker() {
 		return $this->access_checker;
@@ -272,7 +275,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 
 	/**
-	 * @param \ilTemplate $input_template
+	 * @param ilTemplate $input_template
 	 */
 	public function setInputTemplate($input_template) {
 		$this->input_template = $input_template;
@@ -280,7 +283,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 
 	/**
-	 * @return \ilTemplate
+	 * @return ilTemplate
 	 */
 	public function getInputTemplate() {
 		return $this->input_template;
@@ -328,8 +331,8 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 
 	/**
-	 * @param $text   string
-	 * @param $string string
+	 * @param string $text
+	 * @param string $string
 	 *
 	 * @return string
 	 */

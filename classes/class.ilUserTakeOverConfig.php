@@ -49,8 +49,8 @@ class ilUserTakeOverConfig extends ActiveRecord {
 
 
 	/**
-	 * @param $field_name
-	 * @param $field_value
+	 * @param string $field_name
+	 * @param string $field_value
 	 *
 	 * @return mixed|null
 	 */
@@ -66,7 +66,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 
 
 	/**
-	 * @param $field_name
+	 * @param string $field_name
 	 *
 	 * @return mixed|null|string
 	 */

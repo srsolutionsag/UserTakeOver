@@ -21,7 +21,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	protected $ctrl;
 	/** @var ilTabsGUI */
 	protected $tabs;
-	/** @var  ilTemplate */
+	/** @var ilTemplate */
 	protected $tpl;
 	/** @var ilLanguage */
 	protected $lng;
@@ -123,7 +123,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 
 	/**
-	 * @param $form ilPropertyFormGUI
+	 * @param ilPropertyFormGUI $form
 	 */
 	protected function fillForm(&$form) {
 		$config = ilUserTakeOverConfig::first();
