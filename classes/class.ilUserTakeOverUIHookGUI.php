@@ -221,8 +221,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 			$link = 'goto.php?target=usr_takeback';
 
-			$tmpHtml = '<a class="MMInactive" id="leave_user_view" target="" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
-				. '</a>';
+			/**
+			 * @author Jean-Luc Braun <braun@qualitus.de>
+			 */
+			$tmpHtml = '<a class="dropdown-toggle" id="leave_user_view" target="" href="' . $link . '"><span class="glyphicon glyphicon-eye-close"></span></a>';
 
 			$tmpHtml = '<li>' . $tmpHtml . '</li>';
 

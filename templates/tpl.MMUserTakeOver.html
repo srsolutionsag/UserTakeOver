@@ -22,7 +22,25 @@
                 }, 2000);
         });
 
-
+	    /**
+         * @author Jean-Luc Braun <braun@qualitus.de>
+	     */
+	    $("#srag-toggle").click(function(){
+		    $("#srag_container").slideToggle(300);
+		    $(this).toggleClass('active').promise().done(function(){
+			    if ($(this).hasClass("active")) {
+				    $(document).bind('mouseup', function(e) {
+					    if (!$("#srag-usrto-search input").is(e.target) && !$("#srag-toggle").is(e.target) && $("#srag-toggle").has(e.target).length === 0) {
+						    $("#srag_container").hide();
+						    $("#srag-toggle").removeClass('active');
+						    $(document).unbind('mouseup');
+					    }
+				    });
+			    } else {
+				    $(document).unbind('mouseup');
+			    }
+		    });
+	    });
 
         var previousRequest = null;
 
@@ -77,13 +95,18 @@
         });
     })
 
-
 </script>
 
+<!--
+  @author Jean-Luc Braun <braun@qualitus.de>
+-->
+<a id="srag-toggle" class="dropdown-toggle"><span class="glyphicon glyphicon-eye-open"><span class="caret"></span></span></a>
+<ul class="dropdown-menu pull-right" id="srag_container" style="display: none;">
+    <li>
+        <a href='{SEARCHUSERLINK}' id='srag-usrto-search' class='dropdown-toggle'>{TXT_TAKE_OVER_USER} <input class="srag-seach-input" style='color: black;' type='text'/></a>
+    </li>
+</ul>
 
-<a href='{SEARCHUSERLINK}' id='srag-usrto-search' class='dropdown-toggle'>
-    {TXT_TAKE_OVER_USER} <input class="srag-seach-input" style='color: black;' type='text'/>
-</a>
 <ul srag-usrto-takeover-prefix="{TAKEOVERPREFIX}" srag-no-results="{NO_RESULTS}" srag-loading-text="{LOADING_TEXT}"
     id="srag-usrto-search-results" class="dropdown-menu pull-right" role="menu">
 </ul>
