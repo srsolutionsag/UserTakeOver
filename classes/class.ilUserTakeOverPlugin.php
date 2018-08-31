@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
  * ilUserTakeOverPlugin
  *
@@ -11,8 +13,12 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
+	use DICTrait;
+
 	const PLUGIN_ID = 'usrto';
 	const PLUGIN_NAME = 'UserTakeOver';
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
 	/**
 	 * @var ilUserTakeOverPlugin
 	 */
@@ -40,9 +46,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	public function __construct() {
 		parent::__construct();
 
-		global $DIC;
-
-		$this->db = $DIC->database();
+		$this->db = self::dic()->database();
 	}
 
 

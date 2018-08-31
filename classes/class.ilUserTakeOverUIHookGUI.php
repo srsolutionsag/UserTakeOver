@@ -2,6 +2,8 @@
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\DICTrait;
+
 /**
  * Class ilUserTakeOverUIHookGUI
  *
@@ -12,10 +14,14 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
+	use DICTrait;
+
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
 	/**
 	 * @var array
 	 */
-	protected static $loaded = array();
+	protected static $loaded = [];
 
 
 	/**
@@ -59,7 +65,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	public function __construct() {
-		global $DIC;
+		$DIC = self::dic();
 		$this->usr = $DIC->user();
 		$this->ctrl = $DIC->ctrl();
 		$this->rbacview = $DIC->rbac()->review();
@@ -74,8 +80,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 *
 	 * @return array
 	 */
-	public function getHTML($a_comp, $a_part, $a_par = array()) {
-		global $DIC;
+	public function getHTML($a_comp, $a_part, $a_par = []) {
 		if ($a_comp == 'Services/MainMenu' && $a_part == 'main_menu_search') {
 			if (!self::isLoaded('user_take_over')) {
 				$html = '';
@@ -95,7 +100,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
 				if (($this->rbacview instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
-					$this->initTakeOverToolbar($DIC->toolbar());
+					$this->initTakeOverToolbar(self::dic()->toolbar());
 
 					if (!in_array($this->usr->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
 					{
@@ -105,9 +110,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 				self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
 
-				return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
+				return [ "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html ];
 			} else {
-				return array( 'mode' => ilUIHookPluginGUI::KEEP, "html" => '' );
+				return [ 'mode' => ilUIHookPluginGUI::KEEP, "html" => '' ];
 			}
 		}
 	}
@@ -131,10 +136,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	protected function getTopBarHtml() {
 		$template = $this->pl->getTemplate("tpl.MMUserTakeOver.html", false, false);
 		$template->setVariable("TXT_TAKE_OVER_USER", $this->pl->txt("take_over_user"));
-		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(
+		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass([
 			ilUIPluginRouterGUI::class,
 			ilUserTakeOverConfigGUI::class
-		), ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
+		], ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
 		// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
 		if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 			$track = 1;

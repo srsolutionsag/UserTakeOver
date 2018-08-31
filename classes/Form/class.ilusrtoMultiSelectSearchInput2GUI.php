@@ -2,9 +2,12 @@
 
 namespace srag\plugins\UserTakeOver;
 
+require_once __DIR__ . "/../../vendor/autoload.php";
+
 use ilTemplate;
 use ilUserTakeOverPlugin;
 use ilUtil;
+use srag\DIC\DICTrait;
 
 /**
  * Class ilMultiSelectSearchInput2GUI
@@ -12,6 +15,9 @@ use ilUtil;
  * @author Oskar Truffer <ot@studer-raimann.ch>
  */
 class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
+
+	use DICTrait;
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 
 	/**
 	 * @var string
@@ -48,7 +54,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @param string $post_var
 	 */
 	public function __construct($title, $post_var) {
-		global $DIC;
+		$DIC = self::dic();
 		if (substr($post_var, - 2) != '[]') {
 			$post_var = $post_var . '[]';
 		}
@@ -56,7 +62,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 		$this->lng = $DIC->language();
 		$this->pl = ilUserTakeOverPlugin::getInstance();
-		$tpl = $DIC->ui()->mainTemplate();
+		$tpl = $DIC->template();
 		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2.min.js');
 		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2_locale_' . $DIC->user()->getCurrentLanguage() . '.js');
 		$tpl->addCss($this->pl->getDirectory() . '/lib/select2/select2.css');
@@ -87,7 +93,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		if (is_array($val)) {
 			return $val;
 		} elseif (!$val) {
-			return array();
+			return [];
 		} else {
 			return explode(',', $val);
 		}
@@ -98,7 +104,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return array
 	 */
 	public function getSubItems() {
-		return array();
+		return [];
 	}
 
 
@@ -158,8 +164,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return string
 	 */
 	protected function getValueAsJson() {
-		global $DIC;
-		$ilDB = $DIC->database();
+		$ilDB = self::dic()->database();
 
 		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . $ilDB->in("usr_id", $this->getValue(), false, "integer");
 		$res = $ilDB->query($query);
@@ -313,7 +318,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 		if (is_array($val)) {
 			$val;
 		} elseif (!$val) {
-			$val = array();
+			$val = [];
 		} else {
 			$val = explode(',', $val);
 		}

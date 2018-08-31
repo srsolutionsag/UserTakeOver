@@ -45,7 +45,7 @@ class ilUserTakeOverConfig extends ActiveRecord {
 	 * @con_fieldtype  text
 	 * @con_length     4000
 	 */
-	protected $demo_group = array();
+	protected $demo_group = [];
 
 
 	/**
