@@ -3,6 +3,8 @@ require_once __DIR__ . "/../vendor/autoload.php";
 
 use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
+use srag\DIC\DICTrait;
+
 /**
  * ilUserDefaultsConfigGUI
  *
@@ -14,9 +16,12 @@ use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
+	use DICTrait;
+
 	const CMD_CONFIGURE = 'configure';
 	const CMD_SAVE = 'save';
 	const CMD_SEARCH_USERS = 'searchUsers';
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 	/** @var ilCtrl */
 	protected $ctrl;
 	/** @var ilTabsGUI */
@@ -38,7 +43,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 
 	public function __construct() {
-		global $DIC;
+		$DIC = self::dic();
 
 		$this->ctrl = $DIC->ctrl();
 		$this->tabs = $DIC->tabs();
@@ -46,7 +51,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$this->lng = $DIC->language();
 		$this->pl = ilUserTakeOverPlugin::getInstance();
 		$this->usr = $DIC->user();
-		$this->rbacview = $DIC->rbac()->review();
+		$this->rbacview = $DIC->rbacreview();
 	}
 
 
@@ -138,7 +143,6 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 
 	protected function searchUsers() {
-		global $DIC;
 		// Only Administrators
 		if (!in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
 			echo json_encode([]);

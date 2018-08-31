@@ -1,5 +1,9 @@
 <?php
 
+require_once __DIR__ . "/../vendor/autoload.php";
+
+use srag\DIC\DICTrait;
+
 /**
  * Class usrtoHelper
  *
@@ -8,10 +12,14 @@
  */
 class usrtoHelper {
 
+	use DICTrait;
+
 	const USR_ID_GLOBAL = 'AccountId';
 	const USR_ID_AUTHSESSION = '_authsession_user_id';
 	const USR_ID_BACKUP = 'usrtoOriginalAccountId';
 	const USR_ID = 'usr_id';
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
 	/**
 	 * @var usrtoHelper
 	 */
@@ -84,7 +92,7 @@ class usrtoHelper {
 	 * @param int $usr_id
 	 */
 	public function takeOver($usr_id, $track = true) {
-		global $DIC;
+		$DIC = self::dic();
 		$ilUser = $DIC->user();
 		$this->checkAccess($ilUser->getId(), $usr_id);
 		$this->setTemporaryUsrId($usr_id);
@@ -98,7 +106,7 @@ class usrtoHelper {
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
 
-		$DIC["ilLog"]->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
+		$DIC->log()->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
@@ -128,7 +136,6 @@ class usrtoHelper {
 	 * @return bool
 	 */
 	protected function checkAccess($usr_id, $take_over_id) {
-		global $DIC;
 		$pl = ilUserTakeOverPlugin::getInstance();
 
 		// If they are both in the Demo Group then it's fine.
@@ -140,7 +147,7 @@ class usrtoHelper {
 		}
 
 		// If the user taking over is of id 13? or is not in the admin role he does not have permission.
-		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, $DIC->rbac()->review()->assignedGlobalRoles($usr_id))) {
+		if (!isset($usr_id) || $usr_id == 13 || !in_array(2, self::dic()->rbacreview()->assignedGlobalRoles($usr_id))) {
 			ilUtil::sendFailure($pl->txt('no_permission'), true);
 			ilUtil::redirect('login.php');
 

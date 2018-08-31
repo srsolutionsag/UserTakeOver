@@ -17,5 +17,8 @@
     "optimize-autoloader": true,
     "sort-packages": true,
     "classmap-authoritative": true
+  },
+  "require": {
+    "srag/dic": "^0.5.1"
   }
 }
