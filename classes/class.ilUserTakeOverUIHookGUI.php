@@ -68,7 +68,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$DIC = self::dic();
 		$this->usr = $DIC->user();
 		$this->ctrl = $DIC->ctrl();
-		$this->rbacview = $DIC->rbac()->review();
+		$this->rbacview = $DIC->rbacreview();
 		$this->pl = ilUserTakeOverPlugin::getInstance();
 	}
 
