@@ -106,7 +106,7 @@ class usrtoHelper {
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
 
-		$DIC["ilLog"]->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
+		$DIC->log()->write('Plugin usrto: ' . $ilUser->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
 		ilUtil::sendSuccess(sprintf($pl->txt('user_taker_over_success'), $ilObjUser->getLogin()), true);
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
