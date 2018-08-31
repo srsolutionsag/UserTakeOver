@@ -51,7 +51,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 		$this->lng = $DIC->language();
 		$this->pl = ilUserTakeOverPlugin::getInstance();
 		$this->usr = $DIC->user();
-		$this->rbacview = $DIC->rbac()->review();
+		$this->rbacview = $DIC->rbacreview();
 	}
 
 
