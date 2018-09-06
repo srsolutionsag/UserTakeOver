@@ -2,21 +2,76 @@
 
 namespace srag\DIC;
 
+use ilLogLevel;
+use ilPlugin;
+use League\Flysystem\PluginInterface;
+use srag\DIC\DIC\DICInterface;
+use srag\DIC\DIC\LegacyDIC;
+use srag\DIC\DIC\NewDIC;
+use srag\DIC\Exception\DICException;
+use srag\DIC\Plugin\Plugin;
+
 /**
  * Class DICStatic
  *
  * @package srag\DIC
  */
-final class DICStatic {
+final class DICStatic implements DICStaticInterface {
 
 	/**
-	 * Get DIC interface
-	 *
-	 * @return DICInterface DIC interface
-	 * @ throws DICException Your class needs to implement the PLUGIN_CLASS_NAME constant!
+	 * @var DICInterface|null
 	 */
-	public static function dic() {
-		return DICCache::dic();
+	private static $dic = NULL;
+	/**
+	 * @var PluginInterface[]
+	 */
+	private static $plugins = [];
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public static function dic()/*: DICInterface*/ {
+		if (self::$dic === NULL) {
+			if (ILIAS_VERSION_NUMERIC >= "5.2") {
+				global $DIC;
+				self::$dic = new NewDIC($DIC);
+			} else {
+				global $GLOBALS;
+				self::$dic = new LegacyDIC($GLOBALS);
+			}
+		}
+
+		return self::$dic;
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public static function plugin(/*string*/
+		$plugin_class_name)/*: PluginInterface*/ {
+		if (!isset(self::$plugins[$plugin_class_name])) {
+			if (!class_exists($plugin_class_name)) {
+				throw new DICException("Class $plugin_class_name not exists!");
+			}
+
+			if (method_exists($plugin_class_name, "getInstance")) {
+				$plugin_object = $plugin_class_name::getInstance();
+			} else {
+				$plugin_object = new $plugin_class_name();
+
+				self::dic()->log()->write("DICLog: Please implement $plugin_class_name::getInstance()!", ilLogLevel::DEBUG);
+			}
+
+			if (!$plugin_object instanceof ilPlugin) {
+				throw new DICException("Class $plugin_class_name not extends ilPlugin!");
+			}
+
+			self::$plugins[$plugin_class_name] = new Plugin($plugin_object);
+		}
+
+		return self::$plugins[$plugin_class_name];
 	}
 
 

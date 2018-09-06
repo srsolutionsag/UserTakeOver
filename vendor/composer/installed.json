@@ -1,23 +1,23 @@
 [
     {
         "name": "srag/dic",
-        "version": "0.5.1",
-        "version_normalized": "0.5.1.0",
+        "version": "0.8.7",
+        "version_normalized": "0.8.7.0",
         "source": {
             "type": "git",
             "url": "https://github.com/studer-raimann/DIC.git",
-            "reference": "424e38538cc054ecb0fe1927d53b8e6ff92b1841"
+            "reference": "fdc616a118044e1f47dce496ddf744622cc17cbe"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/424e38538cc054ecb0fe1927d53b8e6ff92b1841",
-            "reference": "424e38538cc054ecb0fe1927d53b8e6ff92b1841",
+            "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/fdc616a118044e1f47dce496ddf744622cc17cbe",
+            "reference": "fdc616a118044e1f47dce496ddf744622cc17cbe",
             "shasum": ""
         },
         "require": {
-            "php": "^5.6 || ^7.0"
+            "php": ">=5.6"
         },
-        "time": "2018-08-30T11:47:45+00:00",
+        "time": "2018-09-06T09:56:58+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

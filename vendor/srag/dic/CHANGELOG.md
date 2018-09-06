@@ -1,5 +1,65 @@
 # Changelog
 
+## [0.8.7]
+- Fix output
+
+## [0.8.6]
+- PHP7 comments
+
+## [0.8.5]
+- PHP7 comments
+
+## [0.8.4]
+- Update `translate` hints
+
+## [0.8.3]
+- Hint 'Because `translate` use `vsprintf`, you need to escape `%` with `%%` in your language strings if it is no placeholder!'
+
+## [0.8.2]
+- Hint 'Because `translate` use `vsprintf`, you need to escape `%` with `%%` if it is no placeholder!'
+
+## [0.8.1]
+- Update PHPDoc
+
+## [0.8.0]
+- Supports output JSON
+- Exception: Class {get_class($value)} is not supported for output!
+
+## [0.7.3]
+- Update PHPDoc and visibility
+
+## [0.7.2]
+- Update readme and PHPDoc
+- Exception: Class $plugin_class_name not extends ilPlugin!
+
+## [0.7.1]
+- Fix wrong DICInterface
+
+## [0.7.0]
+- PluginInterface
+- Some sub namespaces
+
+## [0.6.0]
+- Supports output ilTable2GUI
+- Better DICException throws declare
+- Remove `DICCache` and merge it with `DICStatic`
+- Logs if `$plugin_class_name::getInstance` not exists
+
+## [0.5.6]
+- Exception: Please use the placeholders feature and not direct `sprintf` or `vsprintf` in your code!
+
+## [0.5.5]
+- Update readme
+
+## [0.5.4]
+- Update readme
+
+## [0.5.3]
+- Mark some methods as `final`
+
+## [0.5.2]
+- Use always latest version of DIC
+
 ## [0.5.1]
 - Supports output ilConfirmationGUI
 
