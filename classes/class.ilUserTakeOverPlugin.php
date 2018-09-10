@@ -38,19 +38,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 
 	/**
-	 * @var ilDB
-	 */
-	protected $db;
-
-
-	public function __construct() {
-		parent::__construct();
-
-		$this->db = self::dic()->database();
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getPluginName() {
@@ -62,7 +49,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	 * @return bool
 	 */
 	protected function beforeUninstall() {
-		$this->db->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
 
 		return true;
 	}

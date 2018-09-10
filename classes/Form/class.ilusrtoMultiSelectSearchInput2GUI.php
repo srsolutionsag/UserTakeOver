@@ -17,6 +17,7 @@ use srag\DIC\DICTrait;
 class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 
 	use DICTrait;
+
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 
 	/**
@@ -43,10 +44,6 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @var ilTemplate
 	 */
 	protected $input_template;
-	/**
-	 * @var ilUserTakeOverPlugin
-	 */
-	protected $pl;
 
 
 	/**
@@ -54,19 +51,15 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @param string $post_var
 	 */
 	public function __construct($title, $post_var) {
-		$DIC = self::dic();
 		if (substr($post_var, - 2) != '[]') {
 			$post_var = $post_var . '[]';
 		}
 		parent::__construct($title, $post_var);
 
-		$this->lng = $DIC->language();
-		$this->pl = ilUserTakeOverPlugin::getInstance();
-		$tpl = $DIC->template();
-		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2.min.js');
-		$tpl->addJavaScript($this->pl->getDirectory() . '/lib/select2/select2_locale_' . $DIC->user()->getCurrentLanguage() . '.js');
-		$tpl->addCss($this->pl->getDirectory() . '/lib/select2/select2.css');
-		$this->setInputTemplate($this->pl->getTemplate('tpl.multiple_select.html'));
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . '/lib/select2/select2.min.js');
+		self::dic()->template()->addJavaScript(self::plugin()->directory() . '/lib/select2/select2_locale_' . self::dic()->user()->getCurrentLanguage() . '.js');
+		self::dic()->template()->addCss(self::plugin()->directory() . '/lib/select2/select2.css');
+		$this->setInputTemplate(self::plugin()->template('tpl.multiple_select.html'));
 		$this->setWidth('300px');
 	}
 
@@ -164,11 +157,9 @@ class ilusrtoMultiSelectSearchInput2GUI extends \ilMultiSelectInputGUI {
 	 * @return string
 	 */
 	protected function getValueAsJson() {
-		$ilDB = self::dic()->database();
-
-		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . $ilDB->in("usr_id", $this->getValue(), false, "integer");
-		$res = $ilDB->query($query);
-		while ($user = $ilDB->fetchAssoc($res)) {
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()->in("usr_id", $this->getValue(), false, "integer");
+		$res = self::dic()->database()->query($query);
+		while ($user = self::dic()->database()->fetchAssoc($res)) {
 			$result[] = [
 				"id" => $user['usr_id'],
 				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"

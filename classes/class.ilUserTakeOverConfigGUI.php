@@ -22,54 +22,22 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	const CMD_SAVE = 'save';
 	const CMD_SEARCH_USERS = 'searchUsers';
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-	/** @var ilCtrl */
-	protected $ctrl;
-	/** @var ilTabsGUI */
-	protected $tabs;
-	/** @var ilTemplate */
-	protected $tpl;
-	/** @var ilLanguage */
-	protected $lng;
-	/** @var ilUserTakeOverPlugin */
-	protected $pl;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-	/**
-	 * @var ilRbacReview
-	 */
-	protected $rbacview;
-
-
-	public function __construct() {
-		$DIC = self::dic();
-
-		$this->ctrl = $DIC->ctrl();
-		$this->tabs = $DIC->tabs();
-		$this->tpl = $DIC->ui()->mainTemplate();
-		$this->lng = $DIC->language();
-		$this->pl = ilUserTakeOverPlugin::getInstance();
-		$this->usr = $DIC->user();
-		$this->rbacview = $DIC->rbacreview();
-	}
-
 
 	public function executeCommand() {
 
-		$this->tabs->clearTargets();
-		$nextClass = $this->ctrl->getNextClass();
+		self::dic()->tabs()->clearTargets();
+		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
 
 			default;
-				$this->performCommand($this->ctrl->getCmdClass());
+				$this->performCommand(self::dic()->ctrl()->getCmdClass());
 				break;
 		}
 	}
 
 
 	public function performCommand($cmd) {
-		$cmd = $this->ctrl->getCmd();
+		$cmd = self::dic()->ctrl()->getCmd();
 		switch ($cmd) {
 			case self::CMD_CONFIGURE:
 			case self::CMD_SEARCH_USERS:
@@ -86,7 +54,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	public function configure() {
 		$form = $this->getForm();
 		$this->fillForm($form);
-		$this->tpl->setContent($form->getHTML());
+		self::dic()->ui()->mainTemplate()->setContent($form->getHTML());
 	}
 
 
@@ -95,16 +63,16 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 	 */
 	protected function getForm() {
 		$form = new ilPropertyFormGUI();
-		$form->setTitle($this->pl->txt("configuration"));
+		$form->setTitle(self::plugin()->translate("configuration"));
 
-		$input = new ilusrtoMultiSelectSearchInput2GUI($this->pl->txt("demo_group"), "demo_group");
-		$input->setInfo($this->pl->txt("demo_group_info"));
-		$input->setAjaxLink($this->ctrl->getLinkTarget($this, self::CMD_SEARCH_USERS));
+		$input = new ilusrtoMultiSelectSearchInput2GUI(self::plugin()->translate("demo_group"), "demo_group");
+		$input->setInfo(self::plugin()->translate("demo_group_info"));
+		$input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
 		$form->addItem($input);
 
-		$form->addCommandButton(self::CMD_SAVE, $this->pl->txt("save"));
+		$form->addCommandButton(self::CMD_SAVE, self::plugin()->translate("save"));
 
-		$form->setFormAction($this->ctrl->getFormAction($this, self::CMD_SAVE));
+		$form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
 
 		return $form;
 	}
@@ -118,11 +86,11 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 			$config = ilUserTakeOverConfig::first();
 			$config->setDemoGroup($demo_group);
 			$config->save();
-			ilUtil::sendSuccess($this->pl->txt("success"), true);
-			$this->ctrl->redirect($this, self::CMD_CONFIGURE);
+			ilUtil::sendSuccess(self::plugin()->translate("success"), true);
+			self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
 		} else {
-			ilUtil::sendFailure($this->pl->txt("something_went_wrong"), true);
-			$this->tpl->setContent($form->getHTML());
+			ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
+			self::dic()->ui()->mainTemplate()->setContent($form->getHTML());
 		}
 	}
 
@@ -144,7 +112,7 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 	protected function searchUsers() {
 		// Only Administrators
-		if (!in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
+		if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 			echo json_encode([]);
 			exit;
 		}

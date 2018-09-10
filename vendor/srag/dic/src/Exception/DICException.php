@@ -8,6 +8,8 @@ use ilException;
  * Class DICException
  *
  * @package srag\DIC\Exception
+ *
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 final class DICException extends ilException {
 
@@ -19,7 +21,9 @@ final class DICException extends ilException {
 	 *
 	 * @access namespace
 	 */
-	public function __construct($message, $code = 0) {
+	public function __construct(/*string*/
+		$message, /*int*/
+		$code = 0) {
 		parent::__construct($message, $code);
 	}
 }

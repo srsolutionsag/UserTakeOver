@@ -6,7 +6,7 @@ Use all ILIAS globals in your class
 First add the follow to your `composer.json` file:
 ```json
 "require": {
-  "srag/dic": "^0.5.1"
+  "srag/dic": ">=0.1.0"
 },
 ```
 And run a `composer install`.
@@ -39,7 +39,7 @@ You can now access the DIC interface, in instance and in static places:
  * 
  * @return DICInterface DIC interface
  */
-self::dic();
+self::dic()/*: DICInterface*/;
 ```
 
 For instance you can access the ilCtrl global like:
@@ -47,18 +47,22 @@ For instance you can access the ilCtrl global like:
 /**
  * @return ilCtrl
  */
-self::dic()->ctrl();
+self::dic()->ctrl()/*: ilCtrl*/;
 ```
 
-You can access the plugin class:
+You can now access the plugin interface, in instance and in static places:
 ```php
 /**
- * Get ilPlugin instance
+ * Get plugin interface
  * 
- * @return ilPlugin ilPlugin instance of your plugin
+ * @return PluginInterface Plugin interface
+ *
+ * @throws DICException
  */
-self::pl();
+self::plugin()/*: PluginInterface*/;
 ```
+
+The plugin interface has the follow methods:
 
 For plugin dir use:
 ```php
@@ -67,18 +71,20 @@ For plugin dir use:
  * 
  * @return string Plugin directory
  */
-self::directory();
+self::plugin()->directory()/*: string*/;
 ```
 
-For Output html use:
+For output html, gui or json use:
 ```php
 /**
- * Output html
+ * Output HTML, GUI or JSON
  * 
- * @param string|ilTemplate|ilConfirmationGUI|ilPropertyFormGUI $html HTML code or ilTemplate instance
- * @param bool                                                  $main Display main skin?
+ * @param string|ilTemplate|ilConfirmationGUI|ilPropertyFormGUI|ilTable2GUI|int|double|bool|array|stdClass|JsonSerializable $html HTML code or some gui instance
+ * @param bool                                                                                                                   $main Display main skin?
+ *
+ * @throws DICException
  */
-self::output($html, $main = true);
+self::plugin()->output($value, $main = true)/*: void*/;
 ```
 
 For get a template use:
@@ -92,8 +98,10 @@ For get a template use:
  * @param bool   $plugin                   Plugin template or ILIAS core template?
  *
  * @return ilTemplate ilTemplate instance
+ *
+ * @throws DICException
  */
-self::template($template, $remove_unknown_variables = true, $remove_empty_blocks = true, $plugin = true);
+self::plugin()->template(/*string*/$template, /*bool*/$remove_unknown_variables = true, /*bool*/$remove_empty_blocks = true, /*bool*/$plugin = true)/*: ilTemplate*/;
 ```
 
 For translate use:
@@ -109,16 +117,30 @@ For translate use:
  * @param string $default      Default text, if language key not exists
  *
  * @return string Translated text
+ *
+ * @throws DICException
  */
-self::translate($key, $module = "", $placeholders = [], $plugin = true, $lang = "", $default = "MISSING %s");
+self::plugin()->translate(/*string*/$key, /*string*/$module = "", array $placeholders = [], /*bool*/$plugin = true, /*string*/$lang = "", /*string*/$default = "MISSING %s")/*: string*/;
+```
+Hints:
+- Please use not more manually `sprintf` or `vsprintf`, use the `$placeholders` parameter. Otherwise you will get an appropriate DICException thrown. This because `translate` use always `vsprintf` and if you pass to few palceholders, `vsprintf` will throw an Exception.
+- Because `translate` use `vsprintf`, you need to escape `%` with `%%` in your language strings if it is no placeholder!
+
+If you really need the ILIAS plugin object use but avoid this:
+```php
+/**
+ * Get ILIAS plugin object instance
+ *
+ * @return ilPlugin ILIAS plugin object instance
+ */
+self::plugin()->getPluginObject()/*: ilPlugin*/;
 ```
 
-Should you get an exception like `Warning: sprintf(): Too few arguments`, please use the placeholders feature and not direct `sprintf` in your code.
-
-If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()`
+If you really need DICTrait outside a class (For instance in `dbupdate.php`), use `DICStatic::dic()` or `DICStatic::plugin(ilXPlugin::class)`.
 
 #### Clean up
 You can now remove all usages of ILIAS globals in your class and replace it with this library.
+Please avoid to store in variables or class variables.
 
 #### Other tips
 - Use `__DIR__`
@@ -127,8 +149,10 @@ You can now remove all usages of ILIAS globals in your class and replace it with
 - Use also `__DIR__` for `Customizing/..` and use relative paths from your class perspective (Except in `dbupdate.php`)
 - Try to avoid use `$pl`
 
-#### Requirements
-This library should works with every ILIAS version provided the features are supported.
+### Dependencies
+* None
+
+Please use it for further development!
 
 ### Adjustment suggestions
 * Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/DIC/tree/develop

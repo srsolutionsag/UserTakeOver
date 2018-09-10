@@ -46,31 +46,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @var int
 	 */
 	protected static $num = 0;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
-	 * @var ilRbacReview
-	 */
-	protected $rbacview;
-	/**
-	 * @var ilUserTakeOverPlugin
-	 */
-	protected $pl;
-
-
-	public function __construct() {
-		$DIC = self::dic();
-		$this->usr = $DIC->user();
-		$this->ctrl = $DIC->ctrl();
-		$this->rbacview = $DIC->rbacreview();
-		$this->pl = ilUserTakeOverPlugin::getInstance();
-	}
 
 
 	/**
@@ -92,17 +67,17 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 				}
 
 				/////////// For the Demo Group //////////////////
-				if (in_array($this->usr->getId(), $config->getDemoGroup())) {
-					$html .= $this->getDemoGroupHtml($config, $this->usr);
+				if (in_array(self::dic()->user()->getId(), $config->getDemoGroup())) {
+					$html .= $this->getDemoGroupHtml($config, self::dic()->user());
 				}
 
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($this->rbacview instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
+				if ((self::dic()->rbacreview() instanceof ilRbacReview) && in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar(self::dic()->toolbar());
 
-					if (!in_array($this->usr->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
+					if (!in_array(self::dic()->user()->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
 					{
 						$html .= $this->getTopBarHtml();
 					}
@@ -134,9 +109,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @internal param $a_comp
 	 */
 	protected function getTopBarHtml() {
-		$template = $this->pl->getTemplate("tpl.MMUserTakeOver.html", false, false);
-		$template->setVariable("TXT_TAKE_OVER_USER", $this->pl->txt("take_over_user"));
-		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass([
+		$template = self::plugin()->getPluginObject()->getTemplate("tpl.MMUserTakeOver.html", false, false);
+		$template->setVariable("TXT_TAKE_OVER_USER", self::plugin()->translate("take_over_user"));
+		$template->setVariable("SEARCHUSERLINK", self::dic()->ctrl()->getLinkTargetByClass([
 			ilUIPluginRouterGUI::class,
 			ilUserTakeOverConfigGUI::class
 		], ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
@@ -147,8 +122,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			$track = 0;
 		}
 		$template->setVariable("TAKEOVERPREFIX", "goto.php?track=$track&target=usr_takeover_");
-		$template->setVariable("LOADING_TEXT", $this->pl->txt("loading"));
-		$template->setVariable("NO_RESULTS", $this->pl->txt("no_results"));
+		$template->setVariable("LOADING_TEXT", self::plugin()->translate("loading"));
+		$template->setVariable("NO_RESULTS", self::plugin()->translate("no_results"));
 		self::setLoaded('user_take_over');
 		$html = $template->get();
 

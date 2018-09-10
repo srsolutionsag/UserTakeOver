@@ -19,6 +19,6 @@
     "classmap-authoritative": true
   },
   "require": {
-    "srag/dic": "^0.5.1"
+    "srag/dic": ">=0.1.0"
   }
 }

@@ -9,6 +9,8 @@ use srag\DIC\Exception\DICException;
  * Class NewDIC
  *
  * @package srag\DIC\DIC
+ *
+ * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
  */
 final class NewDIC extends AbstractDIC {
 
@@ -35,7 +37,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function access() {
+	public function access()/*: ilAccess*/ {
 		return $this->dic->access();
 	}
 
@@ -43,7 +45,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function appEventHandler() {
+	public function appEventHandler()/*: ilAppEventHandler*/ {
 		return $this->dic->event();
 	}
 
@@ -51,7 +53,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function authSession() {
+	public function authSession()/*: ilAuthSession*/ {
 		return $this->dic["ilAuthSession"];
 	}
 
@@ -59,7 +61,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function backgroundTasks() {
+	public function backgroundTasks()/*: BackgroundTaskServices*/ {
 		if ($this->is53()) {
 			return $this->dic->backgroundTasks();
 		} else {
@@ -71,7 +73,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function benchmark() {
+	public function benchmark()/*: ilBenchmark*/ {
 		return $this->dic["ilBench"];
 	}
 
@@ -79,7 +81,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function browser() {
+	public function browser()/*: ilBrowser*/ {
 		return $this->dic["ilBrowser"];
 	}
 
@@ -87,7 +89,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function clientIni() {
+	public function clientIni()/*: ilIniFile*/ {
 		if ($this->is54()) {
 			return $this->dic->clientIni();
 		} else {
@@ -99,7 +101,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function collator() {
+	public function collator()/*: Collator*/ {
 		return $this->dic["ilCollator"];
 	}
 
@@ -107,7 +109,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ctrl() {
+	public function ctrl()/*: ilCtrl*/ {
 		return $this->dic->ctrl();
 	}
 
@@ -115,7 +117,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ctrlStructureReader() {
+	public function ctrlStructureReader()/*: ilCtrlStructureReader*/ {
 		return $this->dic["ilCtrlStructureReader"];
 	}
 
@@ -123,7 +125,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function database() {
+	public function database()/*: ilDBInterface*/ {
 		return $this->dic->database();
 	}
 
@@ -131,7 +133,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function error() {
+	public function error()/*: ilErrorHandling*/ {
 		return $this->dic["ilErr"];
 	}
 
@@ -139,7 +141,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function filesystem() {
+	public function filesystem()/*: Filesystems*/ {
 		if ($this->is53()) {
 			return $this->dic->filesystem();
 		} else {
@@ -151,7 +153,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function help() {
+	public function help()/*: ilHelpGUI*/ {
 		if ($this->is54()) {
 			return $this->dic->help();
 		} else {
@@ -163,7 +165,15 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function http() {
+	public function history()/*: ilNavigationHistory*/ {
+		return $this->dic["ilNavigationHistory"];
+	}
+
+
+	/**
+	 * @inheritdoc
+	 */
+	public function http()/*: HTTPServices*/ {
 		if ($this->is53()) {
 			return $this->dic->http();
 		} else {
@@ -175,15 +185,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function history() {
-		return $this->dic["ilNavigationHistory"];
-	}
-
-
-	/**
-	 * @inheritdoc
-	 */
-	public function ilias() {
+	public function ilias()/*: ILIAS*/ {
 		return $this->dic["ilias"];
 	}
 
@@ -191,7 +193,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function iliasIni() {
+	public function iliasIni()/*: ilIniFile*/ {
 		if ($this->is54()) {
 			return $this->dic->iliasIni();
 		} else {
@@ -203,7 +205,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function language() {
+	public function language()/*: ilLanguage*/ {
 		return $this->dic->language();
 	}
 
@@ -211,7 +213,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function locator() {
+	public function locator()/*: ilLocatorGUI*/ {
 		return $this->dic["ilLocator"];
 	}
 
@@ -219,7 +221,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function log() {
+	public function log()/*: ilLog*/ {
 		return $this->dic["ilLog"];
 	}
 
@@ -227,7 +229,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function logger() {
+	public function logger()/*: LoggingServices*/ {
 		return $this->dic->logger();
 	}
 
@@ -235,7 +237,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function loggerFactory() {
+	public function loggerFactory()/*: ilLoggerFactory*/ {
 		return $this->dic["ilLoggerFactory"];
 	}
 
@@ -243,7 +245,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mailMimeSenderFactory() {
+	public function mailMimeSenderFactory()/*: ilMailMimeSenderFactory*/ {
 		if ($this->is53()) {
 			return $this->dic["mail.mime.sender.factory"];
 		} else {
@@ -255,7 +257,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function mainMenu() {
+	public function mainMenu()/*: ilMainMenuGUI*/ {
 		return $this->dic["ilMainMenu"];
 	}
 
@@ -263,7 +265,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function objDataCache() {
+	public function objDataCache()/*: ilObjectDataCache*/ {
 		return $this->dic["ilObjDataCache"];
 	}
 
@@ -271,7 +273,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function objDefinition() {
+	public function objDefinition()/*: ilObjectDefinition*/ {
 		return $this->dic["objDefinition"];
 	}
 
@@ -279,7 +281,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function pluginAdmin() {
+	public function pluginAdmin()/*: ilPluginAdmin*/ {
 		return $this->dic["ilPluginAdmin"];
 	}
 
@@ -287,7 +289,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacadmin() {
+	public function rbacadmin()/*: ilRbacAdmin*/ {
 		return $this->dic->rbac()->admin();
 	}
 
@@ -295,7 +297,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacreview() {
+	public function rbacreview()/*: ilRbacReview*/ {
 		return $this->dic->rbac()->review();
 	}
 
@@ -303,7 +305,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function rbacsystem() {
+	public function rbacsystem()/*: ilRbacSystem*/ {
 		return $this->dic->rbac()->system();
 	}
 
@@ -311,7 +313,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function session() {
+	public function session()/*: Session*/ {
 		return $this->dic["sess"];
 	}
 
@@ -319,7 +321,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function settings() {
+	public function settings()/*: ilSetting*/ {
 		return $this->dic->settings();
 	}
 
@@ -327,7 +329,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function systemStyle() {
+	public function systemStyle()/*: ilStyleDefinition*/ {
 		if ($this->is54()) {
 			return $this->dic->systemStyle();
 		} else {
@@ -339,7 +341,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function tabs() {
+	public function tabs()/*: ilTabsGUI*/ {
 		return $this->dic->tabs();
 	}
 
@@ -347,7 +349,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function template() {
+	public function template()/*: ilTemplate*/ {
 		return $this->dic->ui()->mainTemplate();
 	}
 
@@ -355,7 +357,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function toolbar() {
+	public function toolbar()/*: ilToolbarGUI*/ {
 		return $this->dic->toolbar();
 	}
 
@@ -363,7 +365,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function tree() {
+	public function tree()/*: ilTree*/ {
 		return $this->dic->repositoryTree();
 	}
 
@@ -371,7 +373,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function ui() {
+	public function ui()/*: UIServices*/ {
 		return $this->dic->ui();
 	}
 
@@ -379,7 +381,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function upload() {
+	public function upload()/*: FileUpload*/ {
 		if ($this->is53()) {
 			return $this->dic->upload();
 		} else {
@@ -391,7 +393,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @inheritdoc
 	 */
-	public function user() {
+	public function user()/*: ilObjUser*/ {
 		return $this->dic->user();
 	}
 
@@ -399,7 +401,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @return Container
 	 */
-	public function dic() {
+	public function dic()/*: Container*/ {
 		return $this->dic;
 	}
 
@@ -407,7 +409,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @return bool
 	 */
-	private function is53() {
+	private function is53()/*: bool*/ {
 		return (ILIAS_VERSION_NUMERIC >= "5.3");
 	}
 
@@ -415,7 +417,7 @@ final class NewDIC extends AbstractDIC {
 	/**
 	 * @return bool
 	 */
-	private function is54() {
+	private function is54()/*: bool*/ {
 		return (ILIAS_VERSION_NUMERIC >= "5.4");
 	}
 }
