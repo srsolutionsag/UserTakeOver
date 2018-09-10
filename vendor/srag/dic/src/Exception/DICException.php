@@ -10,7 +10,6 @@ use ilException;
  * @package srag\DIC\Exception
  *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
-
  */
 final class DICException extends ilException {
 

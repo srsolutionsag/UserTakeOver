@@ -12,7 +12,6 @@ use srag\DIC\Plugin\PluginInterface;
  * @package srag\DIC
  *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
- *
  */
 interface DICStaticInterface {
 

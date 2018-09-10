@@ -47,6 +47,7 @@ final class DICStatic implements DICStaticInterface {
 		return self::$dic;
 	}
 
+
 	/**
 	 * @inheritdoc
 	 */

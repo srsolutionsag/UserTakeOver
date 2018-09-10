@@ -1,14 +1,13 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
     "content-hash": "b49935aeba12c83ddba3a833c70113ad",
     "packages": [
         {
             "name": "srag/dic",
-<<<<<<< HEAD
             "version": "0.8.9",
             "source": {
                 "type": "git",
@@ -19,18 +18,6 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/ce959fbe5aaa350489bdd7a01dfcddfe61fe1e84",
                 "reference": "ce959fbe5aaa350489bdd7a01dfcddfe61fe1e84",
-=======
-            "version": "0.8.7",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/studer-raimann/DIC.git",
-                "reference": "fdc616a118044e1f47dce496ddf744622cc17cbe"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/studer-raimann/DIC/zipball/fdc616a118044e1f47dce496ddf744622cc17cbe",
-                "reference": "fdc616a118044e1f47dce496ddf744622cc17cbe",
->>>>>>> 78014e95e84323d9a77d961b0f10c7f4e212718a
                 "shasum": ""
             },
             "require": {
@@ -62,11 +49,7 @@
                 "globals",
                 "trait"
             ],
-<<<<<<< HEAD
             "time": "2018-09-10T06:42:03+00:00"
-=======
-            "time": "2018-09-06T09:56:58+00:00"
->>>>>>> 78014e95e84323d9a77d961b0f10c7f4e212718a
         }
     ],
     "packages-dev": [],

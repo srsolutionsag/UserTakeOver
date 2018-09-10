@@ -18,9 +18,8 @@ use stdClass;
  * Class Plugin
  *
  * @package srag\DIC\Plugin
-
+ *
  * @author  studer + raimann ag <support-custom1@studer-raimann.ch>
-
  */
 final class Plugin implements PluginInterface {
 
