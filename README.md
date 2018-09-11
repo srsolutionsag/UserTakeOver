@@ -7,6 +7,22 @@ The UserTakeOver-Plugin gives you the possibility to take the view of another us
 
 Please read the Documentation on [Documentation.docx](/doc/Documentation.pdf?raw=true)
 
+##Requirements
+
+In order to leave a user view the user you took over has to be member of a global role which has the administration permission “Search: User can use the global search in ILIAS”.  
+
+If the user you took over isn’t in a global role who has the mentioned privilege you have to log out and log in again with a user who is allowed to use global search in order to reuse the UserTakeOver Plugin.
+
+Therefore, we recommend giving the global user role the administration permission “Search: User can use the global search in ILIAS”. 
+
+Go to Administration>Roles and click on User Title.
+
+Afterwards you have to switch to the subtab “Administration Permissions”.
+
+Under this subtab enable the checkbox “Search: User can use the global search in ILIAS”.
+
+Finally click on the save button.
+
 ##Installation
 
 Start at your ILIAS root directory
