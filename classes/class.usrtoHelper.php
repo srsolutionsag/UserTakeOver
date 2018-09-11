@@ -118,7 +118,7 @@ class usrtoHelper {
 			$_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
 			$_SESSION[self::USR_ID_AUTHSESSION] = $_SESSION[self::USR_ID_BACKUP];
 
-			ilUtil::sendSuccess(sprintf(self::plugin()->translate('user_taker_back_success'), ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])), true);
+			ilUtil::sendSuccess(self::plugin()->translate('user_taker_back_success',"",[ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
 			unset($_SESSION[self::USR_ID_BACKUP]);
 		}
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
