@@ -1,4 +1,16 @@
 {
+  "license": "GPL-3.0-only",
+  "authors": [
+    {
+      "name": "srag",
+      "email": "support-core1@studer-raimann.ch",
+      "homepage": "https://studer-raimann.ch",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "email": "support-core1@studer-raimann.ch"
+  },
   "autoload": {
     "classmap": [
       "./classes/",
