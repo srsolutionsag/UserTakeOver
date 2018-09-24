@@ -1,13 +1,15 @@
 {
-  "name": "studer-raimann.ch/user-take-over",
+  "name": "srag/plugins/usertakeover",
   "description": "ILIAS UserTakeOver plugin",
   "type": "project",
   "license": "GPL-3.0+",
   "keywords": [
+    "ILIAS",
+    "Plugin",
     "user",
     "role"
   ],
-  "homepage": "https://studer-raimann.ch",
+  "homepage": "https://github.com/studer-raimann/UserTakeOver",
   "authors": [
     {
       "name": "studer + raimann ag - Team Core 1",
