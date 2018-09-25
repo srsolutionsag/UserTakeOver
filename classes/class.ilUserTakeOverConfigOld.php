@@ -7,7 +7,7 @@
  * @deprecated
  */
 class ilUserTakeOverConfigOld extends ActiveRecord {
-	/*
+	/**
 	 * @deprecated
 	 */
 	const TABLE_NAME = 'ui_uihk_usrto_config';
