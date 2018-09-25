@@ -29,6 +29,8 @@ return array(
     'srag\\ActiveRecordConfig\\ActiveRecordConfigFormGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
     'srag\\ActiveRecordConfig\\ActiveRecordConfigGUI' => $vendorDir . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',
     'srag\\ActiveRecordConfig\\Exception\\ActiveRecordConfigException' => $vendorDir . '/srag/activerecordconfig/src/Exception/ActiveRecordConfigException.php',
+    'srag\\CustomInputGUIs\\MultiSelectSearchInput2GUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInput2GUI.php',
+    'srag\\CustomInputGUIs\\MultiSelectSearchInputGUI' => $vendorDir . '/srag/custominputguis/src/MultiSelectSearchInputGUI.php',
     'srag\\DIC\\DICStatic' => $vendorDir . '/srag/dic/src/DICStatic.php',
     'srag\\DIC\\DICStaticInterface' => $vendorDir . '/srag/dic/src/DICStaticInterface.php',
     'srag\\DIC\\DICTrait' => $vendorDir . '/srag/dic/src/DICTrait.php',

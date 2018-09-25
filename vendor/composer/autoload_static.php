@@ -11,6 +11,7 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         array (
             'srag\\RemovePluginDataConfirm\\' => 29,
             'srag\\DIC\\' => 9,
+            'srag\\CustomInputGUIs\\' => 21,
             'srag\\ActiveRecordConfig\\' => 24,
         ),
     );
@@ -23,6 +24,10 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
+        ),
+        'srag\\CustomInputGUIs\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
         'srag\\ActiveRecordConfig\\' => 
         array (
@@ -54,6 +59,8 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         'srag\\ActiveRecordConfig\\ActiveRecordConfigFormGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigFormGUI.php',
         'srag\\ActiveRecordConfig\\ActiveRecordConfigGUI' => __DIR__ . '/..' . '/srag/activerecordconfig/src/ActiveRecordConfigGUI.php',
         'srag\\ActiveRecordConfig\\Exception\\ActiveRecordConfigException' => __DIR__ . '/..' . '/srag/activerecordconfig/src/Exception/ActiveRecordConfigException.php',
+        'srag\\CustomInputGUIs\\MultiSelectSearchInput2GUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInput2GUI.php',
+        'srag\\CustomInputGUIs\\MultiSelectSearchInputGUI' => __DIR__ . '/..' . '/srag/custominputguis/src/MultiSelectSearchInputGUI.php',
         'srag\\DIC\\DICStatic' => __DIR__ . '/..' . '/srag/dic/src/DICStatic.php',
         'srag\\DIC\\DICStaticInterface' => __DIR__ . '/..' . '/srag/dic/src/DICStaticInterface.php',
         'srag\\DIC\\DICTrait' => __DIR__ . '/..' . '/srag/dic/src/DICTrait.php',
