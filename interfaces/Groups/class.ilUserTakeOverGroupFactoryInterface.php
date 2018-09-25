@@ -7,4 +7,9 @@
 
 interface ilUserTakeOverGroupFactoryInterface {
 
+	/**
+	 * @return array
+	 */
+	public function getAllGroups();
+
 }

@@ -7,4 +7,11 @@
 
 interface ilUserTakeOverMemberFactoryInterface {
 
+	/**
+	 * @param integer $grp_id
+	 *
+	 * @return array
+	 */
+	public function getMembersByGroupId($grp_id);
+
 }
