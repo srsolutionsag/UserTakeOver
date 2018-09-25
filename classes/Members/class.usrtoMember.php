@@ -3,14 +3,14 @@
 require_once __DIR__ . "/../../vendor/autoload.php";
 
 /**
- * Class usrtoGroup
+ * Class usrtoMember
  *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
 
-class usrtoGroup extends ActiveRecord {
+class usrtoMember extends ActiveRecord {
 
-	const TABLE_NAME = "rep_robj_usrto_grp";
+	const TABLE_NAME = "ui_uihk_usrto_member";
 
 	/**
 	 * @return string
@@ -31,14 +31,24 @@ class usrtoGroup extends ActiveRecord {
 	protected $id;
 
 	/**
-	 * @var string
+	 * @var int
 	 *
-	 * @db_has_field        true
-	 * @db_fieldtype        text
-	 * @db_length           256
+	 * @con_has_field  true
+	 * @con_fieldtype  integer
+	 * @con_length     8
+	 * @con_is_notnull
 	 */
-	protected $title = '';
+	protected $group_id;
 
+	/**
+	 * @var int
+	 *
+	 * @con_has_field  true
+	 * @con_fieldtype  integer
+	 * @con_length     8
+	 * @con_is_notnull
+	 */
+	protected $user_id;
 
 	/**
 	 * @return string
@@ -57,18 +67,34 @@ class usrtoGroup extends ActiveRecord {
 
 
 	/**
-	 * @return string
+	 * @return int
 	 */
-	public function getTitle() {
-		return $this->title;
+	public function getGroupId() {
+		return $this->group_id;
 	}
 
 
 	/**
-	 * @param string $title
+	 * @param int $group_id
 	 */
-	public function setTitle($title) {
-		$this->title = $title;
+	public function setGroupId($group_id) {
+		$this->group_id = $group_id;
+	}
+
+
+	/**
+	 * @return int
+	 */
+	public function getUserId() {
+		return $this->user_id;
+	}
+
+
+	/**
+	 * @param int $user_id
+	 */
+	public function setUserId($user_id) {
+		$this->user_id = $user_id;
 	}
 
 

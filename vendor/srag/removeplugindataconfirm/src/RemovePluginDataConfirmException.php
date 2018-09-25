@@ -1,20 +1,20 @@
 <?php
 
-namespace srag\DIC\Exception;
+namespace srag\RemovePluginDataConfirm;
 
 use ilException;
 
 /**
- * Class DICException
+ * Class RemovePluginDataConfirmException
  *
- * @package srag\DIC\Exception
+ * @package srag\RemovePluginDataConfirm
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class DICException extends ilException {
+class RemovePluginDataConfirmException extends ilException {
 
 	/**
-	 * DICException constructor
+	 * RemovePluginDataConfirmException constructor
 	 *
 	 * @param string $message
 	 * @param int    $code

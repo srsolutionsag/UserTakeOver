@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 
 /**
  * ilUserTakeOverPlugin
@@ -13,11 +13,12 @@ use srag\DIC\DICTrait;
  */
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
-	use DICTrait;
+	use PluginUninstallTrait;
 
 	const PLUGIN_ID = 'usrto';
 	const PLUGIN_NAME = 'UserTakeOver';
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
 
 	/**
 	 * @var ilUserTakeOverPlugin
@@ -45,12 +46,10 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 	}
 
 
-	/**
-	 * @return bool
-	 */
-	protected function beforeUninstall() {
+	protected function deleteData()/*: void*/ {
 		self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
-
-		return true;
+		self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
+		self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
 	}
+
 }

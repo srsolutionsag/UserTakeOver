@@ -150,7 +150,7 @@ Please avoid to store in variables or class variables.
 - Try to avoid use `$pl`
 
 ### Dependencies
-* None
+* [composer](https://getcomposer.org)
 
 Please use it for further development!
 
@@ -158,14 +158,14 @@ Please use it for further development!
 * Adjustment suggestions by pull requests on https://git.studer-raimann.ch/ILIAS/Plugins/DIC/tree/develop
 * Adjustment suggestions which are not yet worked out in detail by Jira tasks under https://jira.studer-raimann.ch/projects/LDIC
 * Bug reports under https://jira.studer-raimann.ch/projects/LDIC
-* For external developers please send an email to support-custom1@studer-raimann.ch
+* For external users please send an email to support-custom1@studer-raimann.ch
 
 ### Development
 If you want development in this library you should install this library like follow:
 
-Start at your ILIAS root directory 
+Start at your ILIAS root directory
 ```bash
-mkdir -p Customizing/global/plugins/Libraries/  
-cd Customizing/global/plugins/Libraries/  
+mkdir -p Customizing/global/plugins/Libraries
+cd Customizing/global/plugins/Libraries
 git clone git@git.studer-raimann.ch:ILIAS/Plugins/DIC.git DIC
 ```

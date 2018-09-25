@@ -1,20 +1,20 @@
 <?php
 
-namespace srag\DIC\Exception;
+namespace srag\ActiveRecordConfig\Exception;
 
 use ilException;
 
 /**
- * Class DICException
+ * Class ActiveRecordConfigException
  *
- * @package srag\DIC\Exception
+ * @package srag\ActiveRecordConfig\Exception
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-final class DICException extends ilException {
+final class ActiveRecordConfigException extends ilException {
 
 	/**
-	 * DICException constructor
+	 * ActiveRecordConfigException constructor
 	 *
 	 * @param string $message
 	 * @param int    $code
