@@ -38,6 +38,7 @@ class ilUserTakeOverConfigOld extends ActiveRecord {
 	 * @con_has_field  true
 	 * @con_fieldtype  integer
 	 * @con_length     8
+	 * @deprecated
 	 */
 	protected $id = 0;
 	/**
@@ -46,6 +47,7 @@ class ilUserTakeOverConfigOld extends ActiveRecord {
 	 * @con_has_field  true
 	 * @con_fieldtype  text
 	 * @con_length     4000
+	 * @deprecated
 	 */
 	protected $demo_group = array();
 
