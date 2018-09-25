@@ -27,7 +27,7 @@ if (\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld:
 
 	while ($data_rec = \srag\DIC\DICStatic::dic()->database()->fetchAssoc($config_data_set)) {
 		$usrtoGroup = new usrtoGroup();
-		$usrtoGroup->setTitle('demo_group');
+		$usrtoGroup->setTitle(\srag\DIC\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
 		$usrtoGroup->setDescription(\srag\DIC\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
 		$usrtoGroup->create();
 		$usr_ids = (array)json_decode($data_rec['demo_group']);
