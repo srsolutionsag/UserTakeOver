@@ -28,6 +28,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @param string $key
 	 *
 	 * @return bool
+	 *
 	 */
 	protected static function isLoaded($key) {
 		return self::$loaded[$key] == 1;
@@ -59,28 +60,28 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		if ($a_comp == 'Services/MainMenu' && $a_part == 'main_menu_search') {
 			if (!self::isLoaded('user_take_over')) {
 				$html = '';
-				/** @var ilUserTakeOverConfig $config */
-				$config = ilUserTakeOverConfig::first();
 				/////////////////// FOR EXITING THE VIEW ///////////////////////
 				if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 					$html .= $this->takeBackHtml();
 				}
 
 				/////////// For the Demo Group //////////////////
-				if (in_array(self::dic()->user()->getId(), $config->getDemoGroup())) {
-					$html .= $this->getDemoGroupHtml($config, self::dic()->user());
-				}
+				/// // TODO use group code
+				/*				if (in_array(self::dic()->user()->getId(), $config->getDemoGroup())) {
+									$html .= $this->getDemoGroupHtml($config, self::dic()->user());
+								}*/
 
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if ((self::dic()->rbacreview() instanceof ilRbacReview) && in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
+				if ((self::dic()->rbacreview() instanceof ilRbacReview)
+					&& in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
 					$this->initTakeOverToolbar(self::dic()->toolbar());
 
-					if (!in_array(self::dic()->user()->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
-					{
-						$html .= $this->getTopBarHtml();
-					}
+					/*if (!in_array(self::dic()->user()->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
+					{*/
+					$html .= $this->getTopBarHtml();
+					//}
 				}
 
 				self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
@@ -94,11 +95,11 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	public function gotoHook() {
-		if (preg_match("/usr_takeover_(.*)/uim", $_GET['target'], $matches)) {
-			$track = (int)$_GET['track'];
+		if (preg_match("/usr_takeover_(.*)/uim", filter_input(INPUT_GET, 'target'), $matches)) {
+			$track = (int)filter_input(INPUT_GET, 'track');
 			usrtoHelper::getInstance()->takeOver((int)$matches[1], $track === 1);
 		}
-		if (preg_match("/usr_takeback/uim", $_GET['target'], $matches)) {
+		if (preg_match("/usr_takeback/uim", filter_input(INPUT_GET, 'target'), $matches)) {
 			usrtoHelper::getInstance()->switchBack();
 		}
 	}
@@ -113,8 +114,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		$template->setVariable("TXT_TAKE_OVER_USER", self::plugin()->translate("take_over_user"));
 		$template->setVariable("SEARCHUSERLINK", self::dic()->ctrl()->getLinkTargetByClass([
 			ilUIPluginRouterGUI::class,
-			ilUserTakeOverConfigGUI::class
-		], ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
+			//ilUserTakeOverConfigGUI::class,
+			ilUserTakeOverMembersGUI::class
+		], ilUserTakeOverMembersGUI::CMD_SEARCH_USERS));
 		// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
 		if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 			$track = 1;
@@ -170,10 +172,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @return mixed
 	 */
 	protected function initTakeOverToolbar($ilToolbar) {
-		if (strcasecmp($_GET['cmdClass'], ilObjUserGUI::class) == 0 AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
+		if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view' OR filter_input(INPUT_GET, 'cmd') == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];
+				$link = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
 				$button = ilLinkButton::getInstance();
 				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'), false);
 				$button->setUrl($link);
@@ -198,7 +200,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 */
 		if ($ilToolbar instanceof ilToolbarGUI) {
 
-			$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 			$link = 'goto.php?target=usr_takeback';
 
 			/**

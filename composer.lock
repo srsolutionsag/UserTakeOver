@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "967edd1ecaf695984c7bda21f5b9e0b6",
+    "content-hash": "8408269bc2eb719f0882f77c85dadc15",
     "packages": [
         {
             "name": "srag/activerecordconfig",

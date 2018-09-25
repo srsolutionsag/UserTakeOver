@@ -17,7 +17,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 	const PLUGIN_ID = 'usrto';
 	const PLUGIN_NAME = 'UserTakeOver';
-	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+	const PLUGIN_CLASS_NAME = self::class;
 	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
 
 	/**
@@ -45,9 +45,12 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 		return self::PLUGIN_NAME;
 	}
 
-
+	/**
+	 * @inheritdoc
+	 */
 	protected function deleteData()/*: void*/ {
 		self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME, false);
 		self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
 		self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
 	}
