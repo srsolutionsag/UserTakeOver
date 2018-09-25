@@ -23,7 +23,7 @@ if(!\srag\DIC\DICStatic::dic()->database()->tableExists(usrtoMember::TABLE_NAME)
 */
 if (\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld::TABLE_NAME)) {
 
-	$config_data_set = \srag\DIC\DICStatic::dic()->database()->query('SELECT * FROM ui_uihk_usrto_config');
+	$config_data_set = \srag\DIC\DICStatic::dic()->database()->query('SELECT * FROM ' . \ilUserTakeOverConfigOld::TABLE_NAME);
 
 	while ($data_rec = \srag\DIC\DICStatic::dic()->database()->fetchAssoc($config_data_set)) {
 		$usrtoGroup = new usrtoGroup();
