@@ -147,14 +147,13 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			$user = new ilObjUser($userId);
 			$b = "";
 			if ($userId == $ilUser->getId()) {
-				$b = " style='font-weight: bold;'";
+				$b = " style='font-weight: bold; margin-left: -33px;'><span class=\"glyphicon glyphicon-hand-right\">&nbsp;</span";
 			}
-			$inner_html .= "<li>
+			$inner_html .= "<li style=\"padding-left: 38px;\">
 								<a href=\"goto.php?track=0&target=usr_takeover_$userId\"$b>{$user->getPresentationTitle()}</a>
 							</li>";
 		}
-		$tmpHtml = "<a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-								<b>{$ilUser->getPresentationTitle()}</b>
+		$tmpHtml = "<a href='#' class='dropdown-toggle' data-toggle='dropdown' title='{$ilUser->getPresentationTitle()}'><span class='glyphicon glyphicon-eye-open'><span class='caret'></span></span>
 							</a>
 							<ul class=\"dropdown-menu pull-right\" role=\"menu\">
 							$inner_html
@@ -207,7 +206,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			 */
 			$tmpHtml = '<a class="dropdown-toggle" id="leave_user_view" target="" href="' . $link . '"><span class="glyphicon glyphicon-eye-close"></span></a>';
 
-			$tmpHtml = '<li>' . $tmpHtml . '</li>';
+			//$tmpHtml = '<li>' . $tmpHtml . '</li>';
 
 			return $tmpHtml;
 		}
