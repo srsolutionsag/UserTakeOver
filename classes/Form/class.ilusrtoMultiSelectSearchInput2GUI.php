@@ -24,6 +24,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 	 */
 	public function __construct($title, $post_var) {
 		parent::__construct($title, $post_var);
+		$this->setInputTemplate(self::plugin()->template('tpl.multiple_select.html'));
 		$this->setWidth('300px');
 	}
 
