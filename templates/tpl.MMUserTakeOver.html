@@ -87,22 +87,6 @@
             }
             handleRequest();
         });
-		$("#srag-toggle").click(function(){
-			$("#srag_container").slideToggle(300);
-			$(this).toggleClass('active').promise().done(function(){
-				if ($(this).hasClass("active")) {
-					$(document).bind('mouseup', function(e) {
-						if (!$("#srag-usrto-search input").is(e.target) && !$("#srag-toggle").is(e.target) && $("#srag-toggle").has(e.target).length === 0) {
-							$("#srag_container").hide();
-							$("#srag-toggle").removeClass('active');
-							$(document).unbind('mouseup');
-						}
-					});
-				} else {
-					$(document).unbind('mouseup');
-				}
-			});
-		});
     })
 
 </script>
