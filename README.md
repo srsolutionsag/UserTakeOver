@@ -33,6 +33,15 @@ git clone https://github.com/studer-raimann/UserTakeOver.git
 ```
 As ILIAS administrator go to "Administration->Plugins" and install/activate the plugin.
 
+### Dependencies
+* [composer](https://getcomposer.org)
+* [srag/activerecordconfig](https://packagist.org/packages/srag/activerecordconfig)
+* [srag/dic](https://packagist.org/packages/srag/dic)
+* [srag/removeplugindataconfirm](https://packagist.org/packages/srag/removeplugindataconfirm)
+
+Please use it for further development!
+
+
 ### ILIAS Plugin SLA
 
 Wir lieben und leben die Philosophie von Open Source Software! Die meisten unserer Entwicklungen, welche wir im Kundenauftrag oder in Eigenleistung entwickeln, stellen wir öffentlich allen Interessierten kostenlos unter https://github.com/studer-raimann zur Verfügung.
