@@ -18,7 +18,6 @@ class ilUserTakeOverMembersGUI {
 	use DICTrait;
 
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
 	const CMD_CONFIGURE = 'configure';
 	const CMD_SAVE = 'save';
 	const CMD_SEARCH_USERS = 'searchUsers';
@@ -28,7 +27,6 @@ class ilUserTakeOverMembersGUI {
 		self::dic()->tabs()->clearTargets();
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
-
 			default;
 				$this->performCommand(self::dic()->ctrl()->getCmdClass());
 				break;

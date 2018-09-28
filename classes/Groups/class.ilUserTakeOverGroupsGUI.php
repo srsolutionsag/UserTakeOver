@@ -21,8 +21,7 @@ class ilUserTakeOverGroupsGUI {
 	const CMD_ADD = 'add';
 	const CMD_SAVE = 'save';
 	const CMD_CREATE = 'create';
-	const CMD_EDIT_GRP = 'editGroup';
-	const CMD_EDIT_MEMBERS = 'editMembers';
+	const CMD_EDIT = 'edit';
 	const CMD_UPDATE = 'update';
 	const CMD_CONFIRM = 'confirmDelete';
 	const CMD_DELETE = 'delete';
@@ -34,6 +33,10 @@ class ilUserTakeOverGroupsGUI {
 		$this->initTabs();
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
+			case ilUserTakeOverMembersGUI::class:
+				$ilUserTakeOverMembersGUI = new ilUserTakeOverMembersGUI();
+				self::dic()->ctrl()->forwardCommand($ilUserTakeOverMembersGUI);
+				break;
 			default:
 				$cmd = self::dic()->ctrl()->getCmd(self::CMD_STANDARD);
 				$this->{$cmd}();
@@ -81,7 +84,7 @@ class ilUserTakeOverGroupsGUI {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, new usrtoGroup());
 		$usrtoGroupFormGUI->setValuesByPost();
 		if ($usrtoGroupFormGUI->saveObject()) {
-			ilUtil::sendSuccess(self::plugin()->translate('system_account_msg_success'), true);
+			ilUtil::sendSuccess(self::plugin()->translate('create_grp_msg_success'), true);
 			self::dic()->ctrl()->redirect($this);
 		}
 		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
@@ -98,7 +101,7 @@ class ilUserTakeOverGroupsGUI {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER)));
 		$usrtoGroupFormGUI->setValuesByPost();
 		if ($usrtoGroupFormGUI->saveObject()) {
-			ilUtil::sendSuccess(self::plugin()->translate('system_account_msg_success'), true);
+			ilUtil::sendSuccess(self::plugin()->translate('update_grp_msg_success'), true);
 			self::dic()->ctrl()->redirect($this);
 		}
 		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
@@ -110,7 +113,7 @@ class ilUserTakeOverGroupsGUI {
 		 */
 		$usrToGroup = usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER));
 
-		ilUtil::sendQuestion(self::plugin()->translate('confirm_delete_question'), true);
+		ilUtil::sendQuestion(self::plugin()->translate('confirm_delete_grp'), true);
 		$confirm = new ilConfirmationGUI();
 		$confirm->addItem(self::IDENTIFIER, $usrToGroup->getId(), $usrToGroup->getTitle());
 		$confirm->setFormAction(self::dic()->ctrl()->getFormAction($this));
@@ -130,7 +133,7 @@ class ilUserTakeOverGroupsGUI {
 	}
 
 	protected function cancel() {
-		self::dic()->ctrl($this, self::CMD_STANDARD);
+		self::dic()->ctrl()->redirectByClass(self::class, self::CMD_STANDARD);
 	}
 
 	protected function applyFilter() {

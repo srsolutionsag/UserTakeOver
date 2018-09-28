@@ -83,9 +83,8 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 		$this->tpl->setVariable('TITLE', $usrtoGroup->getTitle());
 		//TODO replace static number of members
 		$this->tpl->setVariable('NUMBER_OF_MEMBERS', 8);
-		$this->tpl->setVariable('ACTIONS', $this->addActionMenu($usrtoGroup));
+		$this->addActionMenu($usrtoGroup);
 		$this->tpl->parseCurrentBlock();
-		//$this->addActionMenu($usrtoGroup);
 	}
 
 	protected function initColums() {
@@ -107,14 +106,14 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 
 		self::dic()->ctrl()->setParameter($this->parent_obj, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
 		if ($access->hasWriteAccess()) {
-			$current_selection_list->addItem(self::plugin()->translate('edit_members'), ilUserTakeOverGroupsGUI::CMD_EDIT_MEMBERS, self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT_MEMBERS));
-			$current_selection_list->addItem(self::plugin()->translate('edit_grp'), ilUserTakeOverGroupsGUI::CMD_EDIT_GRP, self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT_GRP));
+			$current_selection_list->addItem(self::plugin()->translate('edit_members'), ilUserTakeOverMembersGUI::CMD_CONFIGURE, self::dic()->ctrl()->getLinkTargetByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverMembersGUI::CMD_CONFIGURE));
+			$current_selection_list->addItem(self::plugin()->translate('edit_grp'), ilUserTakeOverGroupsGUI::CMD_EDIT, self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT));
 		}
 		if ($access->hasDeleteAccess()) {
 			$current_selection_list->addItem(self::plugin()->translate('delete'), ilUserTakeOverGroupsGUI::CMD_DELETE, self::dic()->ctrl()->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_CONFIRM));
 		}
 		$current_selection_list->getHTML();
-		//self::dic()->ui()->mainTemplate()->setVariable('ACTIONS', $current_selection_list->getHTML());
+		$this->tpl->setVariable('ACTIONS', $current_selection_list->getHTML());
 	}
 
 	protected function parseData() {
