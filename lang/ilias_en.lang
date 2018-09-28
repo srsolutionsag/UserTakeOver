@@ -32,3 +32,7 @@ removeplugindataconfirm_keep_data#:#Keep %1$s data
 removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept!
 removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed!
 removeplugindataconfirm_remove_data#:#Remove %1$s data
+create_grp_msg_success#:#The group was created.
+update_grp_msg_success#:#The group was updated.
+delete#:#Delete
+confirm_delete_grp#:#Do you really want to delete the group?
