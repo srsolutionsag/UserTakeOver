@@ -1,7 +1,6 @@
 {
   "name": "srag/custominputguis",
   "description": "Custom Input-GUI's",
-  "version": "0.2.1",
   "type": "library",
   "keywords": [
     "ILIAS",
@@ -30,5 +29,10 @@
     "psr-4": {
       "srag\\CustomInputGUIs\\": "src/"
     }
+  },
+  "config": {
+    "classmap-authoritative": true,
+    "optimize-autoloader": true,
+    "sort-packages": true
   }
 }
