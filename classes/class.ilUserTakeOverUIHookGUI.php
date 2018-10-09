@@ -173,10 +173,9 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	protected function initTakeOverToolbar($ilToolbar) {
 		if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view' OR filter_input(INPUT_GET, 'cmd') == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
-				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 				$link = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
 				$button = ilLinkButton::getInstance();
-				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'), false);
+				$button->setCaption(self::plugin()->translate('take_over_user_view'), false);
 				$button->setUrl($link);
 				$ilToolbar->addButtonInstance($button);
 
