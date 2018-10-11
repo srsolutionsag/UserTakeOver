@@ -21,6 +21,7 @@ class ilUserTakeOverMembersGUI {
 	const CMD_CONFIGURE = 'configure';
 	const CMD_SAVE = 'save';
 	const CMD_SEARCH_USERS = 'searchUsers';
+	const CMD_CANCEL = 'cancel';
 
 	public function executeCommand() {
 
@@ -40,6 +41,7 @@ class ilUserTakeOverMembersGUI {
 			case self::CMD_CONFIGURE:
 			case self::CMD_SEARCH_USERS:
 			case self::CMD_SAVE:
+			case self::CMD_CANCEL:
 				$this->$cmd();
 				break;
 			default:
@@ -63,12 +65,22 @@ class ilUserTakeOverMembersGUI {
 		$form = new ilPropertyFormGUI();
 		$form->setTitle(self::plugin()->translate("configuration"));
 
-		$input = new ilusrtoMultiSelectSearchInput2GUI(self::plugin()->translate("demo_group"), "demo_group");
-		$input->setInfo(self::plugin()->translate("demo_group_info"));
+		/**
+		 * @var usrtoGroup $group
+		 */
+		$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
+		if(is_object($group)) {
+			$title = $group->getTitle();
+		} else {
+			$title = self::plugin()->translate("group");
+		}
+		$input = new ilusrtoMultiSelectSearchInput2GUI($title, $group->getTitle());
+		$input->setInfo(self::plugin()->translate("group_info"));
 		$input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
 		$form->addItem($input);
 
-		$form->addCommandButton(self::CMD_SAVE, self::plugin()->translate("save"));
+		//$form->addCommandButton(self::CMD_SAVE, sel   f::plugin()->translate("save"));
+		$this->initButtons($form);
 
 		$form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
 
@@ -76,13 +88,26 @@ class ilUserTakeOverMembersGUI {
 	}
 
 
+	/**
+	 * @param ilPropertyFormGUI &$form
+	 */
+	protected function initButtons(&$form) {
+		$form->addCommandButton(self::CMD_SAVE, self::plugin()->translate("save"));
+		$form->addCommandButton(self::CMD_CANCEL, self::plugin()->translate("cancel"));
+	}
+
+	protected function cancel() {
+		self::dic()->ctrl()->redirectByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD);
+	}
+
+
 	protected function save() {
 		$form = $this->getForm();
 		$form->setValuesByPost();
 		if ($form->checkInput()) {
-			$demo_group = explode(",", $form->getInput("demo_group")[0]);
+			$group = explode(",", $form->getInput("group")[0]);
 			$config = ilUserTakeOverConfig::first();
-			$config->setDemoGroup($demo_group);
+			$config->setDemoGroup($group);
 			$config->save();
 			ilUtil::sendSuccess(self::plugin()->translate("success"), true);
 			self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
@@ -92,11 +117,8 @@ class ilUserTakeOverMembersGUI {
 		}
 	}
 
-
-	/**
-	 * @param ilPropertyFormGUI $form
-	 */
-	protected function fillForm(&$form) {
+	//TODO delete method
+	protected function fillFormOld(&$form) {
 		$config = ilUserTakeOverConfig::first();
 		$demo_group = $config->getDemoGroup();
 
@@ -108,7 +130,31 @@ class ilUserTakeOverMembersGUI {
 	}
 
 
+	/**
+	 * @param ilPropertyFormGUI $form
+	 */
+	protected function fillForm(&$form) {
+		//$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
+		//$values = usrtoGroup::getArray('id', filter_input(INPUT_GET, "usrtoGrp"));
+
+		//$values =(array) $group;
+		$userTakeOverMemberFactory = new srag\Plugins\UserTakeOver\Factories\Members\UserTakeOverMemberFactory();
+		$members = $userTakeOverMemberFactory->getMembersByGroupId(filter_input(INPUT_GET, "usrtoGrp"));
+		$users = $userTakeOverMemberFactory->getUsersForMembers($members);
+
+		/** @var usrtoGroup $group */
+		$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
+
+		$values = [
+			$group->getTitle() =>  $users
+		];
+
+		$form->setValuesByArray($values);
+	}
+
+
 	protected function searchUsers() {
+		//TODO here it should be possible to add all users to the group
 		// Only Administrators
 		if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 			echo json_encode([]);
@@ -117,15 +163,20 @@ class ilUserTakeOverMembersGUI {
 
 		$term = filter_input(INPUT_GET, "term");
 		/** @var ilObjUser[] $users */
-		$users = ilObjUser::searchUsers($term);
+		//$users = ilObjUser::searchUsers($term);
 		$result = [];
 
-		foreach ($users as $user) {
+/*		foreach ($users as $user) {
 			$result[] = [
 				"id" => $user['usr_id'],
 				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
 			];
-		}
+		}*/
+
+		$result[] = [
+			"id" => "6",
+			"text" => "root"
+		];
 
 		echo json_encode($result);
 		exit;

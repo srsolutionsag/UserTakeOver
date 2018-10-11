@@ -10,6 +10,7 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         's' => 
         array (
             'srag\\RemovePluginDataConfirm\\' => 29,
+            'srag\\Plugins\\UserTakeOver\\' => 26,
             'srag\\DIC\\' => 9,
             'srag\\CustomInputGUIs\\' => 21,
             'srag\\ActiveRecordConfig\\' => 24,
@@ -20,6 +21,10 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         'srag\\RemovePluginDataConfirm\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
+        ),
+        'srag\\Plugins\\UserTakeOver\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src',
         ),
         'srag\\DIC\\' => 
         array (
@@ -71,6 +76,10 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         'srag\\DIC\\Exception\\DICException' => __DIR__ . '/..' . '/srag/dic/src/Exception/DICException.php',
         'srag\\DIC\\Plugin\\Plugin' => __DIR__ . '/..' . '/srag/dic/src/Plugin/Plugin.php',
         'srag\\DIC\\Plugin\\PluginInterface' => __DIR__ . '/..' . '/srag/dic/src/Plugin/PluginInterface.php',
+        'srag\\Plugins\\UserTakeOver\\Factories\\Groups\\UserTakeOverGroupFactory' => __DIR__ . '/../..' . '/src/Factories/Groups/UserTakeOverGroupFactory.php',
+        'srag\\Plugins\\UserTakeOver\\Factories\\Members\\UserTakeOverMemberFactory' => __DIR__ . '/../..' . '/src/Factories/Members/UserTakeOverMemberFactory.php',
+        'srag\\Plugins\\UserTakeOver\\interfaces\\Groups\\UserTakeOverGroupFactoryInterface' => __DIR__ . '/../..' . '/src/interfaces/Groups/UserTakeOverGroupFactoryInterface.php',
+        'srag\\Plugins\\UserTakeOver\\interfaces\\Members\\UserTakeOverMemberFactoryInterface' => __DIR__ . '/../..' . '/src/interfaces/Members/UserTakeOverMemberFactoryInterface.php',
         'srag\\RemovePluginDataConfirm\\AbstractPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractPluginUninstallTrait.php',
         'srag\\RemovePluginDataConfirm\\AbstractRemovePluginDataConfirm' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/AbstractRemovePluginDataConfirm.php',
         'srag\\RemovePluginDataConfirm\\PluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',

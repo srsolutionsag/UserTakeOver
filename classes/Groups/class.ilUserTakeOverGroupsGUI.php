@@ -33,7 +33,7 @@ class ilUserTakeOverGroupsGUI {
 		$this->initTabs();
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
-			case ilUserTakeOverMembersGUI::class:
+			case strtolower(ilUserTakeOverMembersGUI::class):
 				$ilUserTakeOverMembersGUI = new ilUserTakeOverMembersGUI();
 				self::dic()->ctrl()->forwardCommand($ilUserTakeOverMembersGUI);
 				break;

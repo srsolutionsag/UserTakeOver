@@ -36,3 +36,6 @@ create_grp_msg_success#:#The group was created.
 update_grp_msg_success#:#The group was updated.
 delete#:#Delete
 confirm_delete_grp#:#Do you really want to delete the group?
+update#:#Update
+group_info#:#Users in the group can take over each others accounts. Take care: If you add an administrator to the group all the accounts in the group gain de facto administration privileges.
+group#:#Group

@@ -13,8 +13,15 @@ interface UserTakeOverMemberFactoryInterface {
 	/**
 	 * @param integer $grp_id
 	 *
-	 * @return array
+	 * @return array | null
 	 */
 	public function getMembersByGroupId($grp_id);
+
+	/**
+	 * @param array $members
+	 *
+	 * @return array | null
+	 */
+	public function getUsersForMembers($members);
 
 }

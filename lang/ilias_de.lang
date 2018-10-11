@@ -36,3 +36,6 @@ create_grp_msg_success#:#Die Gruppe wurde erstellt.
 update_grp_msg_success#:#Die Gruppe wurde aktualisiert.
 delete#:#Löschen
 confirm_delete_grp#:#Möchten Sie die Gruppe wirklich löschen?
+update#:#Aktualisieren
+group_info#:#Benutzer in der Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Gruppe sein, alle Gruppen Benutzer de facto Administrationsrechte haben.
+group#:#Gruppe

@@ -22,6 +22,10 @@
     "email": "support-core1@studer-raimann.ch"
   },
   "autoload": {
+    "psr-4": {
+      "srag\\Plugins\\UserTakeOver\\": "src/"
+    },
+
     "classmap": [
       "./classes/",
       "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",

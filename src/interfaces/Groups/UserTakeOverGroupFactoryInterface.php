@@ -15,4 +15,11 @@ interface UserTakeOverGroupFactoryInterface {
 	 */
 	public function getAllGroups();
 
+	/**
+	 * @param int $grp_id
+	 *
+	 * @return \usrtoGroup | null
+	 */
+	//public function getGroupById($grp_id);
+
 }
