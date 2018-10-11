@@ -3,7 +3,7 @@ Custom Input-GUI's
 ### Usage
 
 #### Composer
-First add the follow to your `composer.json` file:
+First add the following to your `composer.json` file:
 ```json
 "require": {
   "srag/custominputguis": ">=0.1.0"
@@ -41,7 +41,7 @@ Start at your ILIAS root directory
 ```bash
 mkdir -p Customizing/global/plugins/Libraries
 cd Customizing/global/plugins/Libraries
-git clone git@git.studer-raimann.ch:ILIAS/Plugins/CustomInputGUIs.git CustomInputGUIs
+git clone -b develop git@git.studer-raimann.ch:ILIAS/Plugins/CustomInputGUIs.git CustomInputGUIs
 ```
 
 ### Contact

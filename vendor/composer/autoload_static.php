@@ -22,11 +22,11 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
-        'srag\\Plugins\\UserTakeOver\\' => 
+        'srag\\Plugins\\UserTakeOver\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\' =>
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
