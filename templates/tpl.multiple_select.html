@@ -8,12 +8,10 @@
         sr_link_input = sr_link_input.replace(replacer, '');
         var settings = {placeholder: "{PLACEHOLDER}",
             minimumInputLength: "{MINIMUM_INPUT_LENGTH}",
-            multiple: true,
-	        tags: true
+            multiple: true
         };
         if(sr_link_input.length > 0){
         	debugger;
-	        settings["data"] = preload;
             settings["ajax"] = {
                 minimumInputLength: 3,
                 url: sr_link_input,
@@ -34,9 +32,8 @@
 
         }
         $("#"+sr_id_input).select2(settings);
-        //$("#"+sr_id_input).select2('data', preload);
-	    //debugger;
-	    //$("#"+sr_id_input).select2({data: preload})
+        $("#"+sr_id_input).select2('data', preload);
     });
 </script>
-<select style="width:{WIDTH}; height:{HEIGHT}" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple></select>
+<input type="hidden" style="width:{WIDTH}; height:{HEIGHT}" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
+

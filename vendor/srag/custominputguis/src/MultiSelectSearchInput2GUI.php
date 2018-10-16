@@ -58,13 +58,16 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI {
 	 */
 	public function render()/*: string*/ {
 		$tpl = $this->getInputTemplate();
-		$values = $this->getValue();
+		//old version returns something like [{"id":"281","text":"Test User1 (tuser1)"}]
+		$values = $this->getValueAsJson();
+		//old version return options null
 		$options = $this->getOptions();
 
 		$tpl->setVariable('POST_VAR', $this->getPostVar());
 		$tpl->setVariable('ID', $this->stripLastStringOccurrence($this->getPostVar(), "[]"));
 		$tpl->setVariable('ESCAPED_ID', $this->escapePostVar($this->getPostVar()));
 		$tpl->setVariable('WIDTH', $this->getWidth());
+		//old version filled with [{"id":"281","text":"Test User1 (tuser1)"}]
 		$tpl->setVariable('PRELOAD', $values);
 		$tpl->setVariable('HEIGHT', $this->getHeight());
 		$tpl->setVariable('PLACEHOLDER', $this->getPlaceholder());
@@ -80,6 +83,7 @@ class MultiSelectSearchInput2GUI extends MultiSelectSearchInputGUI {
 			$tpl->setVariable('ALL_DISABLED', 'disabled=\'disabled\'');
 		}
 
+		//old version null
 		if ($options) {
 			foreach ($options as $option_value => $option_text) {
 				$tpl->setCurrentBlock('item');

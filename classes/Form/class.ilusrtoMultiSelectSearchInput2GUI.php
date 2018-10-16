@@ -32,7 +32,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 	/**
 	 * @return string
 	 */
-	protected function getValueAsJson() {
+	protected function getValueAsJsonNew() {
 		/*//TODO: change hardcoded values for ids
 		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()->in("usr_id", [6, 13, 196, 200], false, "integer");
 		$res = self::dic()->database()->query($query);
@@ -45,6 +45,20 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 		return json_encode($result);*/
 		return json_encode(parent::getValue());
 
+	}
+
+	protected function getValueAsJson() {
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()->in("usr_id", $this->getValue(), false, "integer");
+		$res = self::dic()->database()->query($query);
+		while ($user = self::dic()->database()->fetchAssoc($res)) {
+			$result[] = [
+				"id" => $user['usr_id'],
+				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
+			];
+		}
+		//return something like $result[0][id] = 281
+		//return something like $result[0][text] = Test User 1 (tuser1)
+		return json_encode($result);
 	}
 
 }

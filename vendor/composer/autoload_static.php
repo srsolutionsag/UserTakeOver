@@ -22,11 +22,11 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
-        'srag\\Plugins\\UserTakeOver\\' =>
+        'srag\\Plugins\\UserTakeOver\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
-        'srag\\DIC\\' =>
+        'srag\\DIC\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
@@ -76,6 +76,8 @@ class ComposerStaticInit0f874db031bf8c4d1eb912744697b173
         'srag\\DIC\\Exception\\DICException' => __DIR__ . '/..' . '/srag/dic/src/Exception/DICException.php',
         'srag\\DIC\\Plugin\\Plugin' => __DIR__ . '/..' . '/srag/dic/src/Plugin/Plugin.php',
         'srag\\DIC\\Plugin\\PluginInterface' => __DIR__ . '/..' . '/srag/dic/src/Plugin/PluginInterface.php',
+        'srag\\DIC\\Version\\Version' => __DIR__ . '/..' . '/srag/dic/src/Version/Version.php',
+        'srag\\DIC\\Version\\VersionInterface' => __DIR__ . '/..' . '/srag/dic/src/Version/VersionInterface.php',
         'srag\\Plugins\\UserTakeOver\\Factories\\Groups\\UserTakeOverGroupFactory' => __DIR__ . '/../..' . '/src/Factories/Groups/UserTakeOverGroupFactory.php',
         'srag\\Plugins\\UserTakeOver\\Factories\\Members\\UserTakeOverMemberFactory' => __DIR__ . '/../..' . '/src/Factories/Members/UserTakeOverMemberFactory.php',
         'srag\\Plugins\\UserTakeOver\\interfaces\\Groups\\UserTakeOverGroupFactoryInterface' => __DIR__ . '/../..' . '/src/interfaces/Groups/UserTakeOverGroupFactoryInterface.php',

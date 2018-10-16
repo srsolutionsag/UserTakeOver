@@ -74,6 +74,7 @@ class ilUserTakeOverMembersGUI {
 		} else {
 			$title = self::plugin()->translate("group");
 		}
+		//TODO change post var to something like usrToGrp["grp_id"]
 		$input = new ilusrtoMultiSelectSearchInput2GUI($title, $group->getTitle());
 		$input->setInfo(self::plugin()->translate("group_info"));
 		$input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
@@ -119,13 +120,14 @@ class ilUserTakeOverMembersGUI {
 
 	//TODO delete method
 	protected function fillFormOld(&$form) {
+		//returns something like $config = {ilUserTakeOverConfig}.demo_group[0] = 281
 		$config = ilUserTakeOverConfig::first();
 		$demo_group = $config->getDemoGroup();
 
 		$values = [
 			"demo_group" => implode(',', $demo_group)
 		];
-
+		//something like $values['demo_group'] = 281
 		$form->setValuesByArray($values);
 	}
 
@@ -140,13 +142,14 @@ class ilUserTakeOverMembersGUI {
 		//$values =(array) $group;
 		$userTakeOverMemberFactory = new srag\Plugins\UserTakeOver\Factories\Members\UserTakeOverMemberFactory();
 		$members = $userTakeOverMemberFactory->getMembersByGroupId(filter_input(INPUT_GET, "usrtoGrp"));
-		$users = $userTakeOverMemberFactory->getUsersForMembers($members);
+		$user_ids = $userTakeOverMemberFactory->getUserIdsByMembersArray($members);
 
 		/** @var usrtoGroup $group */
 		$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
 
+		//bei mehreren Elementen demo_group = 281,322
 		$values = [
-			$group->getTitle() =>  $users
+			$group->getTitle() =>  implode(',', $user_ids)
 		];
 
 		$form->setValuesByArray($values);
@@ -154,29 +157,24 @@ class ilUserTakeOverMembersGUI {
 
 
 	protected function searchUsers() {
-		//TODO here it should be possible to add all users to the group
 		// Only Administrators
 		if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 			echo json_encode([]);
 			exit;
 		}
 
-		$term = filter_input(INPUT_GET, "term");
+		$term = isset(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"] )? filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"] : "";
+
 		/** @var ilObjUser[] $users */
-		//$users = ilObjUser::searchUsers($term);
+		$users = ilObjUser::searchUsers($term);
 		$result = [];
 
-/*		foreach ($users as $user) {
+		foreach ($users as $user) {
 			$result[] = [
 				"id" => $user['usr_id'],
 				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
 			];
-		}*/
-
-		$result[] = [
-			"id" => "6",
-			"text" => "root"
-		];
+		}
 
 		echo json_encode($result);
 		exit;
