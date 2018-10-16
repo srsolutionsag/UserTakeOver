@@ -32,7 +32,9 @@
 
         }
         $("#"+sr_id_input).select2(settings);
-        $("#"+sr_id_input).select2('data', preload);
+        $("#"+sr_id_input).select2({
+	        'data': preload
+        });
     });
 </script>
 <input type="hidden" style="width:{WIDTH}; height:{HEIGHT}" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
