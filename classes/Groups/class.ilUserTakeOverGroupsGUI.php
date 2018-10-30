@@ -59,6 +59,8 @@ class ilUserTakeOverGroupsGUI {
 			case self::CMD_EDIT:
 			case self::CMD_UPDATE:
 			case self::CMD_CONFIRM:
+			case self::CMD_CANCEL:
+			case self::CMD_DELETE:
 				self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
 				$this->{$cmd}();
 				break;
