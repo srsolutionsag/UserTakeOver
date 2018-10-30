@@ -69,7 +69,6 @@
                 }
             })
         }
-
         input.on('paste', function () {
             handleRequest();
         });
@@ -79,6 +78,10 @@
             if(key == 13) {
                 var link = $("a.user-takeover-link").first();
                 var takeoverLink = link.attr("href");
+                //do not redirect if no results where found
+                if(takeoverLink == null) {
+                	return;
+                }
                 link.fadeTo(100, 0.1).fadeTo(500, 1.0);
                 console.log($("a.user-takeover-link").first());
                 window.location.href = takeoverLink;
