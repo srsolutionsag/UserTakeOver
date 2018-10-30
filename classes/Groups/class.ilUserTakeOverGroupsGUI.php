@@ -26,6 +26,8 @@ class ilUserTakeOverGroupsGUI {
 	const CMD_CONFIRM = 'confirmDelete';
 	const CMD_DELETE = 'delete';
 	const CMD_CANCEL = 'cancel';
+	const CMD_APPLY_FILTER = 'applyFilter';
+	const CMD_RESET_FILTER = 'resetFilter';
 	const IDENTIFIER = 'usrtoGrp';
 
 	public function executeCommand() {
@@ -61,6 +63,8 @@ class ilUserTakeOverGroupsGUI {
 			case self::CMD_CONFIRM:
 			case self::CMD_CANCEL:
 			case self::CMD_DELETE:
+			case self::CMD_APPLY_FILTER:
+			case self::CMD_RESET_FILTER:
 				self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
 				$this->{$cmd}();
 				break;
