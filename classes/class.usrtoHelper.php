@@ -90,15 +90,24 @@ class usrtoHelper {
 
 	/**
 	 * @param int $usr_id
+	 * @param boolean $track
+	 * @param int $group_id
 	 */
-	public function takeOver($usr_id, $track = true) {
-		$this->checkAccess(self::dic()->user()->getId(), $usr_id);
+	public function takeOver($usr_id, $track = true, $group_id = 0) {
+		$this->checkAccess(self::dic()->user()->getId(), $usr_id, $group_id);
 		$this->setTemporaryUsrId($usr_id);
 		$this->setOriginalUsrId(self::dic()->user()->getId());
 		$_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
 		$_SESSION[self::USR_ID_AUTHSESSION] = $this->getTemporaryUsrId();
 		if ($track == true) {
-			$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
+			/*
+			This condition makes sure that if a user is in a group
+			 and he switches between multiple group members that he is logged in as originally
+			logged in user again if he leaves user view
+			*/
+			if (!isset($_SESSION[self::USR_ID_BACKUP])) {
+				$_SESSION[self::USR_ID_BACKUP] = $this->getOriginalUsrId();
+			}
 		}
 
 		$ilObjUser = new ilObjUser($this->getTemporaryUsrId());
@@ -128,15 +137,14 @@ class usrtoHelper {
 	/**
 	 * @param int $usr_id
 	 * @param int $take_over_id
+	 * @param int $group_id
 	 *
 	 * @return bool
 	 */
-	protected function checkAccess($usr_id, $take_over_id) {
-		// If they are both in the Demo Group then it's fine.
-		/** @var ilUserTakeOverConfig $config */
-		$config = ilUserTakeOverConfig::first();
-		$demo_group = $config->getDemoGroup();
-		if (in_array($usr_id, $demo_group) && in_array($take_over_id, $demo_group)) {
+	protected function checkAccess($usr_id, $take_over_id, $group_id) {
+		// If they are both in the same group then it's fine.
+		$user_ids = \usrtoMember::where(["group_id" => $group_id], "=")->getArray(null, "user_id");
+		if (in_array($usr_id, $user_ids) && in_array($take_over_id, $user_ids)) {
 			return true;
 		}
 
