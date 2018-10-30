@@ -58,7 +58,7 @@ class ilUserTakeOverMembersGUI {
 		self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
 		$form = $this->getForm();
 		$this->fillForm($form);
-		self::dic()->ui()->mainTemplate()->setContent($form->getHTML());
+		self::plugin()->output($form);
 	}
 
 
@@ -141,7 +141,7 @@ class ilUserTakeOverMembersGUI {
 			self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
 		} else {
 			ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
-			self::dic()->ui()->mainTemplate()->setContent($form->getHTML());
+			self::plugin()->output($form);
 		}
 	}
 
@@ -166,8 +166,8 @@ class ilUserTakeOverMembersGUI {
 	protected function searchUsers() {
 		// Only Administrators
 		if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
-			echo json_encode([]);
-			exit;
+			self::plugin()->output([]);
+			return;
 		}
 
 		//when the search was done via select2 input field the term will be send as array. In the search field it won't be send as array.
@@ -189,8 +189,7 @@ class ilUserTakeOverMembersGUI {
 			];
 		}
 
-		echo json_encode($result);
-		exit;
+		self::plugin()->output($result);
 	}
 
 }

@@ -83,13 +83,13 @@ class ilUserTakeOverGroupsGUI {
 		self::dic()->toolbar()->addComponent($f->button()->standard(self::plugin()->translate("add_grp"), self::dic()->ctrl()->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_ADD)));
 
 		$ilUserTakeOverGroupsTableGUI = new ilUserTakeOverGroupsTableGUI($this, self::CMD_STANDARD);
-		self::plugin()->output($ilUserTakeOverGroupsTableGUI->getHTML());
+		self::plugin()->output($ilUserTakeOverGroupsTableGUI);
 
 	}
 
 	protected function add() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, new usrtoGroup());
-		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
+		self::plugin()->output($usrtoGroupFormGUI);
 	}
 
 	protected function create() {
@@ -99,14 +99,14 @@ class ilUserTakeOverGroupsGUI {
 			ilUtil::sendSuccess(self::plugin()->translate('create_grp_msg_success'), true);
 			self::dic()->ctrl()->redirect($this);
 		}
-		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
+		self::plugin()->output($usrtoGroupFormGUI);
 
 	}
 
 	protected function edit() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER)));
 		$usrtoGroupFormGUI->fillForm();
-		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
+		self::plugin()->output($usrtoGroupFormGUI);
 	}
 
 	protected function update() {
@@ -116,7 +116,7 @@ class ilUserTakeOverGroupsGUI {
 			ilUtil::sendSuccess(self::plugin()->translate('update_grp_msg_success'), true);
 			self::dic()->ctrl()->redirect($this);
 		}
-		self::dic()->ui()->mainTemplate()->setContent($usrtoGroupFormGUI->getHTML());
+		self::plugin()->output($usrtoGroupFormGUI);
 	}
 
 	protected function confirmDelete() {
@@ -132,7 +132,7 @@ class ilUserTakeOverGroupsGUI {
 		$confirm->setCancel(self::plugin()->translate('cancel'), self::CMD_CANCEL);
 		$confirm->setConfirm(self::plugin()->translate('delete'), self::CMD_DELETE);
 
-		self::dic()->ui()->mainTemplate()->setContent($confirm->getHTML());
+		self::plugin()->output($confirm);
 	}
 
 	protected function delete() {
