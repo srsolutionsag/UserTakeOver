@@ -2,7 +2,6 @@
     $(document).ready(function(){
         var sr_id_input = "{ESCAPED_ID}";
         var sr_link_input = "{AJAX_LINK}";
-        debugger;
         var preload = {PRELOAD};
         var replacer = new RegExp('amp;', 'g');
         sr_link_input = sr_link_input.replace(replacer, '');
@@ -11,7 +10,6 @@
             multiple: true
         };
         if(sr_link_input.length > 0){
-        	debugger;
             settings["ajax"] = {
                 minimumInputLength: 3,
                 url: sr_link_input,
@@ -32,10 +30,10 @@
 
         }
         $("#"+sr_id_input).select2(settings);
-        $("#"+sr_id_input).select2({
-	        'data': preload
-        });
     });
 </script>
-<input type="hidden" style="width:{WIDTH}; height:{HEIGHT}" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
-
+<select style="width:{WIDTH}; display:none;" class="chosen {CSS_CLASS}" data-placeholder="{PLACEHOLDER}" class="sr_multi_select_input" id="{ID}" name="{POST_VAR}" {ALL_DISABLED} multiple>
+	<!-- BEGIN item -->
+	<option value="{VAL}" {SELECTED} {DISABLED}>{TEXT}</option>
+	<!-- END item -->
+</select>
