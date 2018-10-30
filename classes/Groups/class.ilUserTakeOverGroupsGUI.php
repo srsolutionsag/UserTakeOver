@@ -128,6 +128,14 @@ class ilUserTakeOverGroupsGUI {
 		 * @var usrtoGroup $usrtoGroup
 		 */
 		$usrtoGroup = usrtoGroup::find(filter_input(INPUT_POST, self::IDENTIFIER));
+		$members = usrtoMember::where(["group_id" => $usrtoGroup->getId()])->get();
+		/**
+		 * @var usrtoMember $member
+		 */
+		foreach($members as $member) {
+			$usrtoMember = usrtoMember::find($member->getId());
+			$usrtoMember->delete();
+		}
 		$usrtoGroup->delete();
 		$this->cancel();
 	}
