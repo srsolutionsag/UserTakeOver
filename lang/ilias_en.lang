@@ -15,6 +15,7 @@ no_results#:#No results.
 take_over_user#:#Take over user:
 title#:#Title
 number_of_members#:#Number of members
+minimum_number_of_members#:#Minimum number of members
 common_actions#:#Actions
 edit_members#:#Edit members
 edit_grp#:#Edit group
@@ -39,3 +40,5 @@ confirm_delete_grp#:#Do you really want to delete the group?
 update#:#Update
 group_info#:#Users in the group can take over each others accounts. Take care: If you add an administrator to the group all the accounts in the group gain de facto administration privileges.
 group#:#Group
+create_group#:#Create group
+edit_group#:#Edit group
