@@ -26,11 +26,9 @@ class ilUserTakeOverGroupsGUI {
 	const CMD_CONFIRM = 'confirmDelete';
 	const CMD_DELETE = 'delete';
 	const CMD_CANCEL = 'cancel';
-	const CMD_VIEW = 'view';
 	const IDENTIFIER = 'usrtoGrp';
 
 	public function executeCommand() {
-		$this->initTabs();
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
 			case strtolower(ilUserTakeOverMembersGUI::class):
@@ -39,31 +37,39 @@ class ilUserTakeOverGroupsGUI {
 				break;
 			default:
 				$cmd = self::dic()->ctrl()->getCmd(self::CMD_STANDARD);
-				$this->{$cmd}();
+				$this->performCommand($cmd);
 				break;
 		}
 	}
 
 	public function performCommand($cmd) {
-		$cmd = self::dic()->ctrl()->getCmd(self::CMD_STANDARD);
+
+		if(!ilObjUserTakeOverAccess::hasWriteAccess()) {
+			ilUtil::sendFailure(self::plugin()->translate('permission_denied'), true);
+			self::dic()->ctrl()->redirectByClass(ilObjComponentSettingsGUI::class, 'listPlugins');
+		}
 		switch ($cmd) {
 			case self::CMD_STANDARD:
-				if(ilObjUserTakeOverAccess::hasWriteAccess()) {
-					$this->{$cmd};
-					break;
-				} else {
-					ilUtil::sendFailure(self::plugin()->translate('permission_denied'), true);
-					self::dic()->ctrl()->redirectByClass(ilObjComponentSettingsGUI::class, 'listPlugins');
-					break;
-				}
+				self::dic()->tabs()->setBackTarget(self::dic()->language()->txt('cmps_plugins'), self::dic()->ctrl()->getLinkTargetByClass(ilObjComponentSettingsGUI::class, "listPlugins"));
+				$this->{$cmd}();
+				break;
+			case self::CMD_ADD:
+			case self::CMD_SAVE:
+			case self::CMD_CREATE:
+			case self::CMD_EDIT:
+			case self::CMD_UPDATE:
+			case self::CMD_CONFIRM:
+				self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
+				$this->{$cmd}();
+				break;
 			default:
 				throw new ilException("command not defined.");
 				break;
 		}
 	}
 
-	protected function initTabs() {
-		self::dic()->tabs()->addTab(self::CMD_STANDARD, self::dic()->language(''), self::dic()->ctrl()->getLinkTargetByClass(ilUserTakeOverGroupsTableGUI::class));
+	protected function initBackTarget() {
+		self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
 	}
 
 	protected function content() {

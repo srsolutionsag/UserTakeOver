@@ -39,8 +39,11 @@ class ilUserTakeOverMembersGUI {
 		$cmd = self::dic()->ctrl()->getCmd();
 		switch ($cmd) {
 			case self::CMD_CONFIGURE:
-			case self::CMD_SEARCH_USERS:
 			case self::CMD_SAVE:
+				self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
+				$this->$cmd();
+				break;
+			case self::CMD_SEARCH_USERS:
 			case self::CMD_CANCEL:
 				$this->$cmd();
 				break;
