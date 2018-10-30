@@ -23,6 +23,7 @@ class usrtoMember extends ActiveRecord {
 	 * @var string
 	 *
 	 * @db_has_field        true
+	 * @con_is_unique       true
 	 * @db_fieldtype        integer
 	 * @db_length           8
 	 * @db_is_primary       true
