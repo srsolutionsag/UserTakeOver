@@ -22,7 +22,6 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 	 * @var ilUserTakeOverGroupsGUI
 	 */
 	protected $parent_gui;
-	//TODO check if needed
 	/**
 	 * @var boolean
 	 */
@@ -55,11 +54,11 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 	}
 
 	public function fillForm() {
-			$array = array(
-				'title' => $this->object->getTitle(),
-				'desc' => $this->object->getDescription(),
-			);
-			$this->setValuesByArray($array);
+	$array = array(
+		'title' => $this->object->getTitle(),
+		'desc' => $this->object->getDescription(),
+	);
+	$this->setValuesByArray($array);
 	}
 
 	/**
@@ -96,10 +95,10 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 
 	protected function initButtons() {
 		if ($this->is_new) {
-			$this->setTitle(self::plugin()->translate('create'));
+			$this->setTitle(self::plugin()->translate('create_group'));
 			$this->addCommandButton(ilUserTakeOverGroupsGUI::CMD_CREATE, self::plugin()->translate(ilUserTakeOverGroupsGUI::CMD_CREATE));
 		} else {
-			$this->setTitle(self::plugin()->translate('edit'));
+			$this->setTitle(self::plugin()->translate('edit_group'));
 			$this->addCommandButton(ilUserTakeOverGroupsGUI::CMD_UPDATE, self::plugin()->translate(ilUserTakeOverGroupsGUI::CMD_UPDATE));
 		}
 
