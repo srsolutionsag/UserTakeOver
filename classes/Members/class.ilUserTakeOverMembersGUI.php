@@ -52,6 +52,7 @@ class ilUserTakeOverMembersGUI {
 
 
 	public function configure() {
+		self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
 		$form = $this->getForm();
 		$this->fillForm($form);
 		self::dic()->ui()->mainTemplate()->setContent($form->getHTML());
@@ -74,13 +75,19 @@ class ilUserTakeOverMembersGUI {
 		} else {
 			$title = self::plugin()->translate("group");
 		}
-		//TODO change post var to something like usrToGrp["grp_id"]
-		$input = new ilusrtoMultiSelectSearchInput2GUI($title, $group->getTitle());
+		$input = new ilusrtoMultiSelectSearchInput2GUI($title, 'grp[' . $group->getId() . ']');
 		$input->setInfo(self::plugin()->translate("group_info"));
 		$input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
+
+		$members_data = \usrtoMember::innerjoin('usr_data','user_id','usr_id')
+			->where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
+		$options = [];
+		foreach($members_data as $member_data) {
+			$options[$member_data['usr_id']] = $member_data['firstname'] . " " . $member_data['lastname'] . " (" . $member_data['login'] . ")";
+		}
+		$input->setOptions($options);
 		$form->addItem($input);
 
-		//$form->addCommandButton(self::CMD_SAVE, sel   f::plugin()->translate("save"));
 		$this->initButtons($form);
 
 		$form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
@@ -106,11 +113,28 @@ class ilUserTakeOverMembersGUI {
 		$form = $this->getForm();
 		$form->setValuesByPost();
 		if ($form->checkInput()) {
-			$group = explode(",", $form->getInput("group")[0]);
-			$config = ilUserTakeOverConfig::first();
-			$config->setDemoGroup($group);
-			$config->save();
+			$group_id = filter_input(INPUT_GET, "usrtoGrp");
+			$grp_user_array = filter_var(filter_input(INPUT_POST, "grp", FILTER_DEFAULT, FILTER_FORCE_ARRAY)[$group_id], FILTER_DEFAULT, FILTER_FORCE_ARRAY);
+			foreach($grp_user_array as $key => $user_id) {
+				$usrtoMember = usrtoMember::where([ 'group_id' => $group_id, 'user_id' => $user_id], '=' )->first();
+				if(!empty($usrtoMember)) {
+					continue;
+				} else {
+					$usrtoMember = new usrtoMember();
+					$usrtoMember->setGroupId($group_id);
+					$usrtoMember->setUserId($user_id);
+					$usrtoMember->store();
+				}
+			}
+			$user_ids = \usrtoMember::where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")->getArray(null, "user_id");
+			//get ids of users who are not longer in the group
+			$usr_ids_not_anymore_members = array_diff($user_ids, $grp_user_array);
+			foreach($usr_ids_not_anymore_members as $key => $usr_id) {
+				$usrtoMember = usrtoMember::where(["user_id"=>$usr_id])->first();
+				$usrtoMember->delete();
+			}
 			ilUtil::sendSuccess(self::plugin()->translate("success"), true);
+			self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
 			self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
 		} else {
 			ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
@@ -118,38 +142,18 @@ class ilUserTakeOverMembersGUI {
 		}
 	}
 
-	//TODO delete method
-	protected function fillFormOld(&$form) {
-		//returns something like $config = {ilUserTakeOverConfig}.demo_group[0] = 281
-		$config = ilUserTakeOverConfig::first();
-		$demo_group = $config->getDemoGroup();
-
-		$values = [
-			"demo_group" => implode(',', $demo_group)
-		];
-		//something like $values['demo_group'] = 281
-		$form->setValuesByArray($values);
-	}
-
 
 	/**
 	 * @param ilPropertyFormGUI $form
 	 */
 	protected function fillForm(&$form) {
-		//$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
-		//$values = usrtoGroup::getArray('id', filter_input(INPUT_GET, "usrtoGrp"));
-
-		//$values =(array) $group;
-		$userTakeOverMemberFactory = new srag\Plugins\UserTakeOver\Factories\Members\UserTakeOverMemberFactory();
-		$members = $userTakeOverMemberFactory->getMembersByGroupId(filter_input(INPUT_GET, "usrtoGrp"));
-		$user_ids = $userTakeOverMemberFactory->getUserIdsByMembersArray($members);
+		$user_ids = \usrtoMember::where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")->getArray(null, "user_id");
 
 		/** @var usrtoGroup $group */
 		$group = usrtoGroup::find(filter_input(INPUT_GET, "usrtoGrp"));
 
-		//bei mehreren Elementen demo_group = 281,322
 		$values = [
-			$group->getTitle() =>  implode(',', $user_ids)
+			'grp[' . $group->getId() . ']' =>  implode(',', $user_ids)
 		];
 
 		$form->setValuesByArray($values);
@@ -163,10 +167,16 @@ class ilUserTakeOverMembersGUI {
 			exit;
 		}
 
-		$term = isset(filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"] )? filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"] : "";
+		//when the search was done via select2 input field the term will be send as array. In the search field it won't be send as array.
+		if (is_array($_GET['term'])) {
+			$filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
+		} else {
+			$filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT);
+		}
+		$filtered_term = isset($filtered_term )? $filtered_term : "";
 
 		/** @var ilObjUser[] $users */
-		$users = ilObjUser::searchUsers($term);
+		$users = ilObjUser::searchUsers($filtered_term);
 		$result = [];
 
 		foreach ($users as $user) {
