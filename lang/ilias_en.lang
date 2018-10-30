@@ -13,3 +13,33 @@ something_went_wrong#:#Something went wrong.
 loading#:#Loading...
 no_results#:#No results.
 take_over_user#:#Take over user:
+title#:#Title
+number_of_members#:#Number of members
+minimum_number_of_members#:#Minimum number of members
+common_actions#:#Actions
+edit_members#:#Edit members
+edit_grp#:#Edit group
+add_grp#:#Add group
+description#:#Description
+create#:#Create
+edit#:#Edit
+cancel#:#Cancel
+name_grp#:#Name group
+removeplugindataconfirm_cancel#:#Cancel
+removeplugindataconfirm_confirm_remove_data#:#Do you want to remove the %1$s data as well? At most, you just want to disable the %1$s plugin?
+removeplugindataconfirm_deactivate#:#Just deactivate %1$s plugin
+removeplugindataconfirm_data#:#%1$s data
+removeplugindataconfirm_keep_data#:#Keep %1$s data
+removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept!
+removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed!
+removeplugindataconfirm_remove_data#:#Remove %1$s data
+create_grp_msg_success#:#The group was created.
+update_grp_msg_success#:#The group was updated.
+delete#:#Delete
+confirm_delete_grp#:#Do you really want to delete the group?
+update#:#Update
+group_info#:#Users in the group can take over each others accounts. Take care: If you add an administrator to the group all the accounts in the group gain de facto administration privileges.
+group#:#Group
+create_group#:#Create group
+edit_group#:#Edit group
+back#:#Back

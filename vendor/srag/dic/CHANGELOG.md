@@ -1,5 +1,35 @@
 # Changelog
 
+## [0.10.3]
+- Fix Pluginable interface
+
+## [0.10.2]
+- Fix Pluginable interface
+
+## [0.10.1]
+- Fix Pluginable interface
+
+## [0.10.0]
+- Pluginable interface
+
+## [0.9.2]
+- Fix readme
+
+## [0.9.1]
+- Fix
+
+## [0.9.0]
+- VersionInterface
+- `mailMimeTransportFactory`
+- Improve translate, so it correct handle missing language strings and autoload language modules
+- Rename`template` to `mainTemplate` in DICInterface
+
+## [0.8.11]
+- Add `@since`
+
+## [0.8.10]
+- Update readme
+
 ## [0.8.9]
 - Added dependencies to readme
 

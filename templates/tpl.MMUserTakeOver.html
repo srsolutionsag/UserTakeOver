@@ -7,9 +7,9 @@
         var href = a.attr("href");
         var input = a.children(".srag-seach-input");
         var results = $("#srag-usrto-search-results");
-        var takeoverprefix = results.attr("srag-usrto-takeover-prefix");
-        var loading_text = results.attr("srag-loading-text");
-        var no_results_text = results.attr("srag-no-results");
+        var takeoverprefix = results.attr("data-srag-usrto-takeover-prefix");
+        var loading_text = results.attr("data-srag-loading-text");
+        var no_results_text = results.attr("data-srag-no-results");
 
         input.focus(function () {
             results.slideDown();
@@ -60,17 +60,15 @@
                     response = JSON.parse(response);
                     results.empty();
                     for (var i = 0; i < response.length; i++) {
-                        results.append("<li><a class='user-takeover-link' href=" + takeoverprefix + response[i].id + ">" + response[i].text + "</a></li>");
+                        results.prepend("<li><a class='user-takeover-link' href=" + takeoverprefix + response[i].id + ">" + response[i].text + "</a></li>");
                     }
                     if (response.length == 0) {
-                        results.append("<li>" + no_results_text + "</li>")
+                        results.prepend("<li>" + no_results_text + "</li>")
                     }
-
                     previousRequest = null;
                 }
             })
         }
-
         input.on('paste', function () {
             handleRequest();
         });
@@ -80,6 +78,10 @@
             if(key == 13) {
                 var link = $("a.user-takeover-link").first();
                 var takeoverLink = link.attr("href");
+                //do not redirect if no results where found
+                if(takeoverLink == null) {
+                	return;
+                }
                 link.fadeTo(100, 0.1).fadeTo(500, 1.0);
                 console.log($("a.user-takeover-link").first());
                 window.location.href = takeoverLink;
@@ -94,14 +96,19 @@
 <!--
   @author Jean-Luc Braun <braun@qualitus.de>
 -->
-<a id="srag-toggle" class="dropdown-toggle"><span class="glyphicon glyphicon-eye-open"><span class="caret"></span></span></a>
-<ul class="dropdown-menu pull-right" id="srag_container" style="display: none;">
-    <li>
-        <a href='{SEARCHUSERLINK}' id='srag-usrto-search' class='dropdown-toggle'>{TXT_TAKE_OVER_USER}
-            <input class="srag-seach-input" style='color: black;' type='text'/>
-        </a>
-        <ul srag-usrto-takeover-prefix="{TAKEOVERPREFIX}" srag-no-results="{NO_RESULTS}" srag-loading-text="{LOADING_TEXT}"
-                id="srag-usrto-search-results" class="dropdown-menu pull-right" role="menu">
-        </ul>
-    </li>
+<!-- BEGIN DROPDOWN_TOGGLE -->
+{TOGGLE}
+<!-- END DROPDOWN_TOGGLE -->
+<ul class="dropdown-menu pull-right" id="srag_container" style="display: none; white-space: nowrap; padding: 0px 10px">
+	<li>
+		<!-- BEGIN search -->
+		<a href='{SEARCHUSERLINK}' id='srag-usrto-search' class='dropdown-toggle'>
+            {TXT_TAKE_OVER_USER}
+			{SEARCH_INPUT}
+		</a>
+		<!-- END search -->
+		<div data-srag-usrto-takeover-prefix="{TAKEOVERPREFIX}" data-srag-no-results="{NO_RESULTS}" data-srag-loading-text="{LOADING_TEXT}" id="srag-usrto-search-results">
+		</div>
+		{GROUPS}
+	</li>
 </ul>

@@ -13,3 +13,33 @@ something_went_wrong#:#Etwas ist schief gelaufen.
 loading#:#Lade...
 no_results#:#Keine Resultate
 take_over_user#:#Benutzerübernahme:
+title#:#Titel
+number_of_members#:#Anzahl Mitglieder
+minimum_number_of_members#:#Minimum Anzahl Mitglieder
+common_actions#:#Aktionen
+edit_members#:#Mitglieder bearbeiten
+edit_grp#:#Gruppe bearbeiten
+add_grp#:#Gruppe hinzufügen
+description#:#Beschreibung
+create#:#Erstellen
+edit#:#Bearbeiten
+cancel#:#Abbrechen
+name_grp#:#Name Gruppe
+removeplugindataconfirm_cancel#:#Abbrechen
+removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch entfernen? Allenfalls möchten Sie das %1$s-Plugin nur deaktivieren?
+removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren
+removeplugindataconfirm_data#:#%1$s-Daten
+removeplugindataconfirm_keep_data#:#%1$s-Daten behalten
+removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten!
+removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt!
+removeplugindataconfirm_remove_data#:#Entferne %1$s-Daten
+create_grp_msg_success#:#Die Gruppe wurde erstellt.
+update_grp_msg_success#:#Die Gruppe wurde aktualisiert.
+delete#:#Löschen
+confirm_delete_grp#:#Möchten Sie die Gruppe wirklich löschen?
+update#:#Aktualisieren
+group_info#:#Benutzer in der Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Gruppe sein, alle Gruppen Benutzer de facto Administrationsrechte haben.
+group#:#Gruppe
+create_group#:#Gruppe erstellen
+edit_group#:#Gruppe bearbeiten
+back#:#Zurück
