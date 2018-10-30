@@ -17,14 +17,31 @@ If you deliver your plugin, the plugin has it's own copy of this library and the
 Hint: Because of multiple autoloaders of plugins, it could be, that different versions of this library exists and suddenly your plugin use an old version of an other plugin! So you should keep up to date your plugin with `composer update`.
 
 ### Input-GUI's
-* [MultiSelectSearchInputGUI](./doc/MultiSelectSearchInputGUI.md)
-* [MultiSelectSearchInput2GUI](./doc/MultiSelectSearchInput2GUI.md)
+* [DateDurationInputGUI](./src/DateDurationInputGUI/doc/DateDurationInputGUI.md)
+* [GlyphGUI](./src/GlyphGUI/doc/GlyphGUI.md)
+* [MultiLineInputGUI](./src/MultiLineInputGUI/doc/MultiLineInputGUI.md)
+* [MultiSelectSearchInputGUI](./src/MultiSelectSearchInputGUI/doc/MultiSelectSearchInputGUI.md)
+* [MultiSelectSearchInput2GUI](./src/MultiSelectSearchInputGUI/doc/MultiSelectSearchInput2GUI.md)
+* [NumberInputGUI](./src/NumberInputGUI/doc/NumberInputGUI.md)
+* [ScreenshotsInputGUI](./src/ScreenshotsInputGUI/doc/ScreenshotsInputGUI.md)
+* [StaticHTMLPresentationInputGUI](./src/StaticHTMLPresentationInputGUI/doc/StaticHTMLPresentationInputGUI.md)
+* [TextAreaInputGUI](./src/TextAreaInputGUI/doc/TextAreaInputGUI.md)
+* [TextInputGUI](./src/TextInputGUI/doc/TextInputGUI.md)
+* [Waiter](./src/Waiter/doc/Waiter.md)
 
 ### Dependencies
+* ILIAS 5.2 or ILIAS 5.3
+* PHP >=5.6
 * [composer](https://getcomposer.org)
 * [npm](https://nodejs.org)
+* [canvas-toBlob](https://www.npmjs.com/package/canvas-toBlob)
+* [es6-promise](https://www.npmjs.com/package/es6-promise)
+* [html2canvas](https://www.npmjs.com/package/html2canvas)
 * [select2](https://www.npmjs.com/package/select2)
 * [srag/dic](https://packagist.org/packages/srag/dic)
+* [babel-minify -g](https://www.npmjs.com/package/babel-minify)
+* [clean-css-cli](https://www.npmjs.com/package/clean-css-cli)
+* [less -g](https://www.npmjs.com/package/less)
 
 Please use it for further development!
 
