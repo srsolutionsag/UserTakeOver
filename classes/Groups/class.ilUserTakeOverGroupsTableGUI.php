@@ -54,7 +54,7 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 		$title = new ilTextInputGUI(self::plugin()->translate('title'), 'title');
 		$this->addAndReadFilterItem($title);
 
-		$number_of_members = new ilTextInputGUI(self::plugin()->translate('number_of_members'), 'number_of_members');
+		$number_of_members = new ilTextInputGUI(self::plugin()->translate('minimum_number_of_members'), 'number_of_members');
 		$this->addAndReadFilterItem($number_of_members);
 	}
 
@@ -81,15 +81,14 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 		$usrtoGroup = usrtoGroup::find($a_set['id']);
 		$this->tpl->setCurrentBlock('tbl_content');
 		$this->tpl->setVariable('TITLE', $usrtoGroup->getTitle());
-		//TODO replace static number of members
-		$this->tpl->setVariable('NUMBER_OF_MEMBERS', 8);
+		$this->tpl->setVariable('NUMBER_OF_MEMBERS', $a_set['count']);
 		$this->addActionMenu($usrtoGroup);
 		$this->tpl->parseCurrentBlock();
 	}
 
 	protected function initColums() {
 		$this->addColumn(self::plugin()->translate('name_grp'), 'title');
-		$this->addColumn(self::plugin()->translate('number_of_members'), 'number_of_members');
+		$this->addColumn(self::plugin()->translate('number_of_members'), 'count');
 		$this->addColumn(self::plugin()->translate('common_actions'), '', '150px');
 	}
 
@@ -121,8 +120,7 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 		$this->determineOffsetAndOrder();
 		$this->determineLimit();
 
-		$collection = usrtoGroup::getCollection();
-		//$collection->where(array( 'my_geolocations_id' => $this->parent_obj->getMyGeolocationId() ));
+		$query_string = "SELECT g.id, count(m.id) AS count FROM ui_uihk_usrto_grp AS g LEFT JOIN ui_uihk_usrto_member AS m ON g.id = m.group_id";
 
 		$sorting_column = $this->getOrderField() ? $this->getOrderField() : 'title';
 		$offset = $this->getOffset() ? $this->getOffset() : 0;
@@ -130,24 +128,23 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI {
 		$sorting_direction = $this->getOrderDirection();
 		$num = $this->getLimit();
 
-		$collection->orderBy($sorting_column, $sorting_direction);
-		$collection->limit($offset, $num);
-
 		foreach ($this->filter as $filter_key => $filter_value) {
 			switch ($filter_key) {
 				case 'title':
-					$collection->where(array( $filter_key => '%' . $filter_value . '%' ), 'LIKE');
+					$query_string .= " WHERE " . self::dic()->database()->like('g.title', 'text', strtolower('%'.$filter_value.'%'), false);
 					break;
-					//TODO implement filter
-/*				case 'number_of_members':
-					$collection->
-					$collection->leftjoin(usrtoMember::TABLE_NAME,  usrToMember::TABLE_NAME . '.group_id')->;
-					break;*/
+				case 'number_of_members':
+					$query_string .= " GROUP BY (g.id) HAVING count >=" . self::dic()->database()->quote($filter_value, "integer");
+					break;
 			}
 		}
-
-		//$collection->debug();
-		$this->setData($collection->getArray());
+		$query_string .= " ORDER BY " . $sorting_column . " " .$sorting_direction . " LIMIT " . self::dic()->database()->quote($offset, "integer") . ", " . self::dic()->database()->quote($num, "integer");
+		$set = self::dic()->database()->query($query_string);
+		while($row = self::dic()->database()->fetchAssoc($set))
+		{
+			$res[] = $row;
+		}
+		$this->setData($res);
 	}
 
 }
