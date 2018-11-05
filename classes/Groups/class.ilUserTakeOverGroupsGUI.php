@@ -31,6 +31,8 @@ class ilUserTakeOverGroupsGUI {
 	const IDENTIFIER = 'usrtoGrp';
 
 	public function executeCommand() {
+		self::dic()->mainTemplate()->setTitle(self::dic()->language()->txt("cmps_plugin").": ".ilUserTakeOverPlugin::PLUGIN_CLASS_NAME);
+		self::dic()->mainTemplate()->setDescription("");
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
 			case strtolower(ilUserTakeOverMembersGUI::class):
