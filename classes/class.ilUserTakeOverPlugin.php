@@ -14,12 +14,10 @@ use srag\RemovePluginDataConfirm\PluginUninstallTrait;
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 	use PluginUninstallTrait;
-
 	const PLUGIN_ID = 'usrto';
 	const PLUGIN_NAME = 'UserTakeOver';
 	const PLUGIN_CLASS_NAME = self::class;
 	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
-
 	/**
 	 * @var ilUserTakeOverPlugin
 	 */
@@ -45,6 +43,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 		return self::PLUGIN_NAME;
 	}
 
+
 	/**
 	 * @inheritdoc
 	 */
@@ -54,5 +53,4 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 		self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
 		self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
 	}
-
 }

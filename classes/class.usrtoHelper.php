@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class usrtoHelper
@@ -13,13 +13,11 @@ use srag\DIC\DICTrait;
 class usrtoHelper {
 
 	use DICTrait;
-
 	const USR_ID_GLOBAL = 'AccountId';
 	const USR_ID_AUTHSESSION = '_authsession_user_id';
 	const USR_ID_BACKUP = 'usrtoOriginalAccountId';
 	const USR_ID = 'usr_id';
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
 	/**
 	 * @var usrtoHelper
 	 */
@@ -89,9 +87,9 @@ class usrtoHelper {
 
 
 	/**
-	 * @param int $usr_id
+	 * @param int     $usr_id
 	 * @param boolean $track
-	 * @param int $group_id
+	 * @param int     $group_id
 	 */
 	public function takeOver($usr_id, $track = true, $group_id = 0) {
 		$this->checkAccess(self::dic()->user()->getId(), $usr_id, $group_id);
@@ -114,7 +112,7 @@ class usrtoHelper {
 
 		self::dic()->log()->write('Plugin usrto: ' . self::dic()->user()->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
-		ilUtil::sendSuccess(self::plugin()->translate('user_taker_over_success',"", [$ilObjUser->getLogin()]), true);
+		ilUtil::sendSuccess(self::plugin()->translate('user_taker_over_success', "", [ $ilObjUser->getLogin() ]), true);
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
 	}
 
@@ -127,7 +125,8 @@ class usrtoHelper {
 			$_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
 			$_SESSION[self::USR_ID_AUTHSESSION] = $_SESSION[self::USR_ID_BACKUP];
 
-			ilUtil::sendSuccess(self::plugin()->translate('user_taker_back_success',"",[ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
+			ilUtil::sendSuccess(self::plugin()
+				->translate('user_taker_back_success', "", [ ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP]) ]), true);
 			unset($_SESSION[self::USR_ID_BACKUP]);
 		}
 		ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
@@ -143,7 +142,7 @@ class usrtoHelper {
 	 */
 	protected function checkAccess($usr_id, $take_over_id, $group_id) {
 		// If they are both in the same group then it's fine.
-		$user_ids = \usrtoMember::where(["group_id" => $group_id], "=")->getArray(null, "user_id");
+		$user_ids = \usrtoMember::where([ "group_id" => $group_id ], "=")->getArray(NULL, "user_id");
 		if (in_array($usr_id, $user_ids) && in_array($take_over_id, $user_ids)) {
 			return true;
 		}

@@ -1,18 +1,18 @@
 <#1>
 <?php
-if(!\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
+if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
 	\ilUserTakeOverConfig::updateDB();
 }
 ?>
 <#2>
 <?php
-if(!\srag\DIC\DICStatic::dic()->database()->tableExists(usrtoGroup::TABLE_NAME)) {
+if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(usrtoGroup::TABLE_NAME)) {
 	usrtoGroup::updateDB();
 }
 ?>
 <#3>
 <?php
-if(!\srag\DIC\DICStatic::dic()->database()->tableExists(usrtoMember::TABLE_NAME)) {
+if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(usrtoMember::TABLE_NAME)) {
 	usrtoMember::updateDB();
 }
 ?>
@@ -21,14 +21,14 @@ if(!\srag\DIC\DICStatic::dic()->database()->tableExists(usrtoMember::TABLE_NAME)
 /*
 	migrates demo_group from config table to group table
 */
-if (\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld::TABLE_NAME)) {
+if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld::TABLE_NAME)) {
 
-	$config_data_set = \srag\DIC\DICStatic::dic()->database()->query('SELECT * FROM ' . \ilUserTakeOverConfigOld::TABLE_NAME);
+	$config_data_set = \srag\DIC\UserTakeOver\DICStatic::dic()->database()->query('SELECT * FROM ' . \ilUserTakeOverConfigOld::TABLE_NAME);
 
-	while ($data_rec = \srag\DIC\DICStatic::dic()->database()->fetchAssoc($config_data_set)) {
+	while ($data_rec = \srag\DIC\UserTakeOver\DICStatic::dic()->database()->fetchAssoc($config_data_set)) {
 		$usrtoGroup = new usrtoGroup();
-		$usrtoGroup->setTitle(\srag\DIC\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
-		$usrtoGroup->setDescription(\srag\DIC\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
+		$usrtoGroup->setTitle(\srag\DIC\UserTakeOver\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
+		$usrtoGroup->setDescription(\srag\DIC\UserTakeOver\DICStatic::plugin(\ilUserTakeOverPlugin::class)->translate("demo_group"));
 		$usrtoGroup->create();
 		$usr_ids = (array)json_decode($data_rec['demo_group']);
 		foreach ($usr_ids as $usr_id) {
@@ -38,12 +38,12 @@ if (\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld:
 			$usrtoMember->create();
 		}
 	}
-	\srag\DIC\DICStatic::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME);
+	\srag\DIC\UserTakeOver\DICStatic::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME);
 }
 ?>
 <#5>
 <?php
-if(!\srag\DIC\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
+if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
 	\ilUserTakeOverConfig::updateDB();
 }
 ?>

@@ -1,18 +1,16 @@
 <?php
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class usrtoGroupFormGUI
  *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
-
 class usrtoGroupFormGUI extends ilPropertyFormGUI {
 
 	use DICTrait;
-
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 	/**
 	 * @var  usrtoGroup
@@ -27,9 +25,10 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 	 */
 	protected $is_new;
 
+
 	/**
 	 * @param ilUserTakeOverGroupsGUI $parent_gui
-	 * @param usrtoGroup $usrtoGroup
+	 * @param usrtoGroup              $usrtoGroup
 	 */
 	public function __construct(ilUserTakeOverGroupsGUI $parent_gui, ActiveRecord $usrtoGroup) {
 		parent::__construct();
@@ -39,6 +38,7 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 		$this->is_new = ($this->object->getId() == '');
 		$this->initForm();
 	}
+
 
 	protected function initForm() {
 		$this->setTarget('_top');
@@ -53,13 +53,15 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 		$this->addItem($ta);
 	}
 
+
 	public function fillForm() {
-	$array = array(
-		'title' => $this->object->getTitle(),
-		'desc' => $this->object->getDescription(),
-	);
-	$this->setValuesByArray($array);
+		$array = array(
+			'title' => $this->object->getTitle(),
+			'desc' => $this->object->getDescription(),
+		);
+		$this->setValuesByArray($array);
 	}
+
 
 	/**
 	 * returns whether checkinput was successful or not.
@@ -67,7 +69,7 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 	 * @return bool
 	 */
 	public function fillObject() {
-		if (! $this->checkInput()) {
+		if (!$this->checkInput()) {
 			return false;
 		}
 
@@ -77,14 +79,15 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 		return true;
 	}
 
+
 	/**
 	 * @return bool|string
 	 */
 	public function saveObject() {
-		if (! $this->fillObject()) {
+		if (!$this->fillObject()) {
 			return false;
 		}
-		if (! usrtoGroup::where(array( 'id' => $this->object->getId() ))->hasSets()) {
+		if (!usrtoGroup::where(array( 'id' => $this->object->getId() ))->hasSets()) {
 			$this->object->create();
 		} else {
 			$this->object->update();
@@ -92,6 +95,7 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI {
 
 		return true;
 	}
+
 
 	protected function initButtons() {
 		if ($this->is_new) {

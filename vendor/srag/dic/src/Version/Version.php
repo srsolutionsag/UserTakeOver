@@ -1,11 +1,11 @@
 <?php
 
-namespace srag\DIC\Version;
+namespace srag\DIC\UserTakeOver\Version;
 
 /**
  * Class Version
  *
- * @package srag\DIC\Version
+ * @package srag\DIC\UserTakeOver\Version
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

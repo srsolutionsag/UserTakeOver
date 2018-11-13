@@ -1,22 +1,19 @@
 <?php
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilUserTakeOverGroupsGUI
  *
- * @author: Benjamin Seglias   <bs@studer-raimann.ch>
+ * @author       : Benjamin Seglias   <bs@studer-raimann.ch>
  *
  * @ilCtrl_Calls ilUserTakeOverGroupsGUI: usrtoGroupFormGUI, ilUserTakeOverGroupsTableGUI, ilUserTakeOverMembersGUI
  */
-
 class ilUserTakeOverGroupsGUI {
 
 	use DICTrait;
-
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
 	const CMD_STANDARD = 'content';
 	const CMD_ADD = 'add';
 	const CMD_SAVE = 'save';
@@ -30,8 +27,9 @@ class ilUserTakeOverGroupsGUI {
 	const CMD_RESET_FILTER = 'resetFilter';
 	const IDENTIFIER = 'usrtoGrp';
 
+
 	public function executeCommand() {
-		self::dic()->mainTemplate()->setTitle(self::dic()->language()->txt("cmps_plugin").": ".ilUserTakeOverPlugin::PLUGIN_CLASS_NAME);
+		self::dic()->mainTemplate()->setTitle(self::dic()->language()->txt("cmps_plugin") . ": " . ilUserTakeOverPlugin::PLUGIN_CLASS_NAME);
 		self::dic()->mainTemplate()->setDescription("");
 		$nextClass = self::dic()->ctrl()->getNextClass();
 		switch ($nextClass) {
@@ -46,15 +44,17 @@ class ilUserTakeOverGroupsGUI {
 		}
 	}
 
+
 	public function performCommand($cmd) {
 
-		if(!ilObjUserTakeOverAccess::hasWriteAccess()) {
+		if (!ilObjUserTakeOverAccess::hasWriteAccess()) {
 			ilUtil::sendFailure(self::plugin()->translate('permission_denied'), true);
 			self::dic()->ctrl()->redirectByClass(ilObjComponentSettingsGUI::class, 'listPlugins');
 		}
 		switch ($cmd) {
 			case self::CMD_STANDARD:
-				self::dic()->tabs()->setBackTarget(self::dic()->language()->txt('cmps_plugins'), self::dic()->ctrl()->getLinkTargetByClass(ilObjComponentSettingsGUI::class, "listPlugins"));
+				self::dic()->tabs()->setBackTarget(self::dic()->language()->txt('cmps_plugins'), self::dic()->ctrl()
+					->getLinkTargetByClass(ilObjComponentSettingsGUI::class, "listPlugins"));
 				$this->{$cmd}();
 				break;
 			case self::CMD_ADD:
@@ -76,23 +76,27 @@ class ilUserTakeOverGroupsGUI {
 		}
 	}
 
+
 	protected function initBackTarget() {
 		self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
 	}
 
+
 	protected function content() {
 		$f = self::dic()->ui()->factory();
-		self::dic()->toolbar()->addComponent($f->button()->standard(self::plugin()->translate("add_grp"), self::dic()->ctrl()->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_ADD)));
+		self::dic()->toolbar()->addComponent($f->button()->standard(self::plugin()->translate("add_grp"), self::dic()->ctrl()
+			->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_ADD)));
 
 		$ilUserTakeOverGroupsTableGUI = new ilUserTakeOverGroupsTableGUI($this, self::CMD_STANDARD);
 		self::plugin()->output($ilUserTakeOverGroupsTableGUI);
-
 	}
+
 
 	protected function add() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, new usrtoGroup());
 		self::plugin()->output($usrtoGroupFormGUI);
 	}
+
 
 	protected function create() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, new usrtoGroup());
@@ -102,14 +106,15 @@ class ilUserTakeOverGroupsGUI {
 			self::dic()->ctrl()->redirect($this);
 		}
 		self::plugin()->output($usrtoGroupFormGUI);
-
 	}
+
 
 	protected function edit() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER)));
 		$usrtoGroupFormGUI->fillForm();
 		self::plugin()->output($usrtoGroupFormGUI);
 	}
+
 
 	protected function update() {
 		$usrtoGroupFormGUI = new usrtoGroupFormGUI($this, usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER)));
@@ -120,6 +125,7 @@ class ilUserTakeOverGroupsGUI {
 		}
 		self::plugin()->output($usrtoGroupFormGUI);
 	}
+
 
 	protected function confirmDelete() {
 		/**
@@ -137,16 +143,17 @@ class ilUserTakeOverGroupsGUI {
 		self::plugin()->output($confirm);
 	}
 
+
 	protected function delete() {
 		/**
 		 * @var usrtoGroup $usrtoGroup
 		 */
 		$usrtoGroup = usrtoGroup::find(filter_input(INPUT_POST, self::IDENTIFIER));
-		$members = usrtoMember::where(["group_id" => $usrtoGroup->getId()])->get();
+		$members = usrtoMember::where([ "group_id" => $usrtoGroup->getId() ])->get();
 		/**
 		 * @var usrtoMember $member
 		 */
-		foreach($members as $member) {
+		foreach ($members as $member) {
 			$usrtoMember = usrtoMember::find($member->getId());
 			$usrtoMember->delete();
 		}
@@ -154,9 +161,11 @@ class ilUserTakeOverGroupsGUI {
 		$this->cancel();
 	}
 
+
 	protected function cancel() {
 		self::dic()->ctrl()->redirectByClass(self::class, self::CMD_STANDARD);
 	}
+
 
 	protected function applyFilter() {
 		$ilUserTakeOverGroupsTableGUI = new ilUserTakeOverGroupsTableGUI($this, self::CMD_STANDARD);
@@ -171,5 +180,4 @@ class ilUserTakeOverGroupsGUI {
 		$ilUserTakeOverGroupsTableGUI->resetOffset();
 		self::dic()->ctrl()->redirect($this, self::CMD_STANDARD);
 	}
-
 }

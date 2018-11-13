@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\DIC;
+namespace srag\DIC\UserTakeOver;
 
-use srag\DIC\DIC\DICInterface;
-use srag\DIC\Exception\DICException;
-use srag\DIC\Plugin\PluginInterface;
-use srag\DIC\Version\VersionInterface;
+use srag\DIC\UserTakeOver\DIC\DICInterface;
+use srag\DIC\UserTakeOver\Exception\DICException;
+use srag\DIC\UserTakeOver\Plugin\PluginInterface;
+use srag\DIC\UserTakeOver\Version\VersionInterface;
 
 /**
  * Trait DICTrait
  *
- * @package srag\DIC
+ * @package srag\DIC\UserTakeOver
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

@@ -5,7 +5,7 @@ namespace srag\plugins\UserTakeOver;
 require_once __DIR__ . "/../../vendor/autoload.php";
 
 use ilUserTakeOverPlugin;
-use srag\CustomInputGUIs\MultiSelectSearchInputGUI\MultiSelectSearchInput2GUI;
+use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchInputGUI\MultiSelectSearchInput2GUI;
 
 /**
  * Class ilMultiSelectSearchInput2GUI
@@ -15,6 +15,7 @@ use srag\CustomInputGUIs\MultiSelectSearchInputGUI\MultiSelectSearchInput2GUI;
 class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
 
 	/**
 	 * @param string $title
@@ -28,7 +29,8 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 
 
 	protected function getValueAsJson() {
-		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()->in("usr_id", $this->getValue(), false, "integer");
+		$query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()
+				->in("usr_id", $this->getValue(), false, "integer");
 		$res = self::dic()->database()->query($query);
 		while ($user = self::dic()->database()->fetchAssoc($res)) {
 			$result[] = [
@@ -36,7 +38,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI {
 				"text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")"
 			];
 		}
+
 		return json_encode($result);
 	}
-
 }

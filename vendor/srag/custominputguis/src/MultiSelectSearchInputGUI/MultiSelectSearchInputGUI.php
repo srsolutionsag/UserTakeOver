@@ -1,16 +1,16 @@
 <?php
 
-namespace srag\CustomInputGUIs\MultiSelectSearchInputGUI;
+namespace srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchInputGUI;
 
 use ilMultiSelectInputGUI;
 use ilTemplate;
 use ilUtil;
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class MultiSelectSearchInputGUI
  *
- * @package srag\CustomInputGUIs\MultiSelectSearchInputGUI
+ * @package srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchInputGUI
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  * @author  Oskar Truffer <ot@studer-raimann.ch>

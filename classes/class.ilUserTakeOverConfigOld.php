@@ -7,6 +7,7 @@
  * @deprecated
  */
 class ilUserTakeOverConfigOld extends ActiveRecord {
+
 	/**
 	 * @deprecated
 	 */
@@ -100,6 +101,7 @@ class ilUserTakeOverConfigOld extends ActiveRecord {
 
 	/**
 	 * @param int[] $demo_group
+	 *
 	 * @deprecated
 	 */
 	public function setDemoGroup($demo_group) {

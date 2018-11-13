@@ -1,13 +1,13 @@
 <?php
 
-namespace srag\ActiveRecordConfig\Exception;
+namespace srag\ActiveRecordConfig\UserTakeOver\Exception;
 
 use ilException;
 
 /**
  * Class ActiveRecordConfigException
  *
- * @package srag\ActiveRecordConfig\Exception
+ * @package srag\ActiveRecordConfig\UserTakeOver\Exception
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

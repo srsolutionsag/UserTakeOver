@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * ilUserDefaultsConfigGUI
@@ -11,14 +11,14 @@ use srag\DIC\DICTrait;
  * @version           1.0.00
  *
  * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
- * @ilCtrl_Calls ilUserTakeOverConfigGUI: ilUserTakeOverGroupsGUI
+ * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupsGUI
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI {
 
 	use DICTrait;
-
 	const CMD_CONFIGURE = 'configure';
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
 
 	public function executeCommand() {
 
