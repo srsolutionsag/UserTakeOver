@@ -1,18 +1,16 @@
 <?php
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilObjUserTakeOverAccess
  *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
-
 class ilObjUserTakeOverAccess extends ilObjectPluginAccess {
 
 	use DICTrait;
-
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 
 
@@ -57,5 +55,4 @@ class ilObjUserTakeOverAccess extends ilObjectPluginAccess {
 
 		return self::dic()->access()->checkAccessOfUser($user_id, $permission, '', $ref_id);
 	}
-
 }

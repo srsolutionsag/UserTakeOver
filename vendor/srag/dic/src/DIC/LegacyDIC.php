@@ -1,14 +1,14 @@
 <?php
 
-namespace srag\DIC\DIC;
+namespace srag\DIC\UserTakeOver\DIC;
 
 use ilLoggerFactory;
-use srag\DIC\Exception\DICException;
+use srag\DIC\UserTakeOver\Exception\DICException;
 
 /**
  * Class LegacyDIC
  *
- * @package srag\DIC\DIC
+ * @package srag\DIC\UserTakeOver\DIC
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */

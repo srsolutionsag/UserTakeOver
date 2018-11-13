@@ -7,10 +7,10 @@ require_once __DIR__ . "/../../vendor/autoload.php";
  *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
-
 class usrtoGroup extends ActiveRecord {
 
 	const TABLE_NAME = "ui_uihk_usrto_grp";
+
 
 	/**
 	 * @return string
@@ -18,6 +18,7 @@ class usrtoGroup extends ActiveRecord {
 	public function getConnectorContainerName() {
 		return self::TABLE_NAME;
 	}
+
 
 	/**
 	 * @var string
@@ -30,7 +31,6 @@ class usrtoGroup extends ActiveRecord {
 	 * @con_sequence        true
 	 */
 	protected $id;
-
 	/**
 	 * @var string
 	 *
@@ -39,7 +39,6 @@ class usrtoGroup extends ActiveRecord {
 	 * @db_length           256
 	 */
 	protected $title = '';
-
 	/**
 	 * @var string
 	 *
@@ -95,6 +94,4 @@ class usrtoGroup extends ActiveRecord {
 	public function setDescription($description) {
 		$this->description = $description;
 	}
-
-
 }

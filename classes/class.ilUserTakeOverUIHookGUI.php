@@ -2,7 +2,7 @@
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\DICTrait;
+use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilUserTakeOverUIHookGUI
@@ -15,9 +15,7 @@ use srag\DIC\DICTrait;
 class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 	use DICTrait;
-
 	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
 	/**
 	 * @var array
 	 */
@@ -124,14 +122,14 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		}
 
 		/////////// For the Groups //////////////////
-		$group_ids = usrtoMember::where(["user_id" => self::dic()->user()->getId()], "=")->getArray(null, "group_id");
+		$group_ids = usrtoMember::where([ "user_id" => self::dic()->user()->getId() ], "=")->getArray(NULL, "group_id");
 
 		//if the current user is member of at least one group render the groups html
-		if(!empty($group_ids)) {
+		if (!empty($group_ids)) {
 			$groups_html = $this->getGroupsHtml($group_ids, self::dic()->user());
 		}
 		//only group members or user with admin role can use search
-		if(in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId())) || !empty($group_ids)) {
+		if (in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId())) || !empty($group_ids)) {
 			$template->setCurrentBlock("DROPDOWN_TOGGLE");
 			$template->setVariable("TOGGLE", "<a id=\"srag-toggle\" class=\"dropdown-toggle\"><span class=\"glyphicon glyphicon-eye-open\"><span class=\"caret\"></span></span></a>");
 			$template->parseCurrentBlock();
@@ -147,15 +145,15 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param array $group_ids
-	 * @param ilObjUser            $ilUser
+	 * @param array     $group_ids
+	 * @param ilObjUser $ilUser
 	 *
 	 * @return string
 	 */
 	protected function getGroupsHtml($group_ids, $ilUser) {
 		$inner_html = "";
 		foreach ($group_ids as $group_id) {
-			$user_ids = \usrtoMember::where(["group_id" => $group_id], "=")->getArray(null, "user_id");
+			$user_ids = \usrtoMember::where([ "group_id" => $group_id ], "=")->getArray(NULL, "user_id");
 			$group = usrtoGroup::find($group_id);
 			$inner_html .= "<li>
 								<span style=\"font-weight: bold; padding-left: 10px\">{$group->getTitle()}</span>
@@ -171,6 +169,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 							</li>";
 			}
 		}
+
 		return $inner_html;
 	}
 
@@ -181,7 +180,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @return mixed
 	 */
 	protected function initTakeOverToolbar($ilToolbar) {
-		if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view' OR filter_input(INPUT_GET, 'cmd') == 'edit')) {
+		if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view'
+				OR filter_input(INPUT_GET, 'cmd') == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
 				$link = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
 				$button = ilLinkButton::getInstance();
@@ -213,7 +213,8 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 			/**
 			 * @author Jean-Luc Braun <braun@qualitus.de>
 			 */
-			$tmpHtml = '<a class="dropdown-toggle" id="leave_user_view" target="" href="' . $link . '"><span class="glyphicon glyphicon-eye-close"></span></a>';
+			$tmpHtml = '<a class="dropdown-toggle" id="leave_user_view" target="" href="' . $link
+				. '"><span class="glyphicon glyphicon-eye-close"></span></a>';
 
 			$tmpHtml = '<li>' . $tmpHtml . '</li>';
 

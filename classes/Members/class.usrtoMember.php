@@ -7,10 +7,10 @@ require_once __DIR__ . "/../../vendor/autoload.php";
  *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
-
 class usrtoMember extends ActiveRecord {
 
 	const TABLE_NAME = "ui_uihk_usrto_member";
+
 
 	/**
 	 * @return string
@@ -18,6 +18,7 @@ class usrtoMember extends ActiveRecord {
 	public function getConnectorContainerName() {
 		return self::TABLE_NAME;
 	}
+
 
 	/**
 	 * @var string
@@ -30,7 +31,6 @@ class usrtoMember extends ActiveRecord {
 	 * @con_sequence        true
 	 */
 	protected $id;
-
 	/**
 	 * @var int
 	 *
@@ -40,7 +40,6 @@ class usrtoMember extends ActiveRecord {
 	 * @con_is_notnull
 	 */
 	protected $group_id;
-
 	/**
 	 * @var int
 	 *
@@ -50,6 +49,7 @@ class usrtoMember extends ActiveRecord {
 	 * @con_is_notnull
 	 */
 	protected $user_id;
+
 
 	/**
 	 * @return string
@@ -97,6 +97,4 @@ class usrtoMember extends ActiveRecord {
 	public function setUserId($user_id) {
 		$this->user_id = $user_id;
 	}
-
-
 }

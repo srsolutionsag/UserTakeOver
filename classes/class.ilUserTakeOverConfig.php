@@ -1,6 +1,6 @@
 <?php
 
-use srag\ActiveRecordConfig\ActiveRecordConfig;
+use srag\ActiveRecordConfig\UserTakeOver\ActiveRecordConfig;
 
 /**
  * Class ilUserTakeOverConfig
