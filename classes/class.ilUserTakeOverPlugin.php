@@ -2,7 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\RemovePluginDataConfirm\PluginUninstallTrait;
+use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
 
 /**
  * ilUserTakeOverPlugin
