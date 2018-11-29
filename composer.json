@@ -12,14 +12,14 @@
   "homepage": "https://github.com/studer-raimann/UserTakeOver",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Core 1",
-      "email": "support-core1@studer-raimann.ch",
+      "name": "studer + raimann ag - Team Core",
+      "email": "support-core@studer-raimann.ch",
       "homepage": "https://studer-raimann.ch",
       "role": "Developer"
     }
   ],
   "support": {
-    "email": "support-core1@studer-raimann.ch"
+    "email": "support-core@studer-raimann.ch"
   },
   "autoload": {
     "psr-4": {

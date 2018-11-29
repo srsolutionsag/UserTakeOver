@@ -52,7 +52,7 @@ Setzen Sie eines unserer Plugins professionell ein? Sichern Sie sich mittels SLA
 Bitte beachten Sie, dass wir nur Institutionen, welche ein SLA abschliessen Unterstützung und Release-Pflege garantieren.
 
 ### Contact
-support-core1@studer-raimann.ch
+support-core@studer-raimann.ch
 https://studer-raimann.ch  
 
 
