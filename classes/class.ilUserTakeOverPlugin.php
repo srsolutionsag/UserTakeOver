@@ -2,6 +2,8 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
+
 /**
  * ilUserTakeOverPlugin
  *
@@ -11,8 +13,11 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
+	use PluginUninstallTrait;
 	const PLUGIN_ID = 'usrto';
 	const PLUGIN_NAME = 'UserTakeOver';
+	const PLUGIN_CLASS_NAME = self::class;
+	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
 	/**
 	 * @var ilUserTakeOverPlugin
 	 */
@@ -32,21 +37,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 
 	/**
-	 * @var ilDB
-	 */
-	protected $db;
-
-
-	public function __construct() {
-		parent::__construct();
-
-		global $DIC;
-
-		$this->db = $DIC->database();
-	}
-
-
-	/**
 	 * @return string
 	 */
 	public function getPluginName() {
@@ -55,11 +45,12 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
 
 
 	/**
-	 * @return bool
+	 * @inheritdoc
 	 */
-	protected function beforeUninstall() {
-		$this->db->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
-
-		return true;
+	protected function deleteData()/*: void*/ {
+		self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+		self::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME, false);
+		self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
+		self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
 	}
 }

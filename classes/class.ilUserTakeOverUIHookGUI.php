@@ -2,6 +2,8 @@
 /* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use srag\DIC\UserTakeOver\DICTrait;
+
 /**
  * Class ilUserTakeOverUIHookGUI
  *
@@ -12,16 +14,19 @@ require_once __DIR__ . "/../vendor/autoload.php";
  */
 class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
+	use DICTrait;
+	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 	/**
 	 * @var array
 	 */
-	protected static $loaded = array();
+	protected static $loaded = [];
 
 
 	/**
 	 * @param string $key
 	 *
 	 * @return bool
+	 *
 	 */
 	protected static function isLoaded($key) {
 		return self::$loaded[$key] == 1;
@@ -40,31 +45,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @var int
 	 */
 	protected static $num = 0;
-	/**
-	 * @var ilObjUser
-	 */
-	protected $usr;
-	/**
-	 * @var ilCtrl
-	 */
-	protected $ctrl;
-	/**
-	 * @var ilRbacReview
-	 */
-	protected $rbacview;
-	/**
-	 * @var ilUserTakeOverPlugin
-	 */
-	protected $pl;
-
-
-	public function __construct() {
-		global $DIC;
-		$this->usr = $DIC->user();
-		$this->ctrl = $DIC->ctrl();
-		$this->rbacview = $DIC->rbac()->review();
-		$this->pl = ilUserTakeOverPlugin::getInstance();
-	}
 
 
 	/**
@@ -74,51 +54,41 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 *
 	 * @return array
 	 */
-	public function getHTML($a_comp, $a_part, $a_par = array()) {
-		global $DIC;
+	public function getHTML($a_comp, $a_part, $a_par = []) {
 		if ($a_comp == 'Services/MainMenu' && $a_part == 'main_menu_search') {
 			if (!self::isLoaded('user_take_over')) {
 				$html = '';
-				/** @var ilUserTakeOverConfig $config */
-				$config = ilUserTakeOverConfig::first();
 				/////////////////// FOR EXITING THE VIEW ///////////////////////
 				if ($_SESSION[usrtoHelper::USR_ID_BACKUP]) {
 					$html .= $this->takeBackHtml();
 				}
 
-				/////////// For the Demo Group //////////////////
-				if (in_array($this->usr->getId(), $config->getDemoGroup())) {
-					$html .= $this->getDemoGroupHtml($config, $this->usr);
-				}
-
 				// If we are admin
 				/** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-				if (($this->rbacview instanceof ilRbacReview) && in_array(2, $this->rbacview->assignedGlobalRoles($this->usr->getId()))) {
+				if ((self::dic()->rbacreview() instanceof ilRbacReview)
+					&& in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
 					///////////////// IN THE USER ADMINISTRATION /////////////////
-					$this->initTakeOverToolbar($DIC->toolbar());
-
-					if (!in_array($this->usr->getId(), $config->getDemoGroup())) //////////////TOP BAR /////////////
-					{
-						$html .= $this->getTopBarHtml();
-					}
+					$this->initTakeOverToolbar(self::dic()->toolbar());
 				}
+				$html .= $this->getTopBarHtml();
 
 				self::setLoaded('user_take_over'); // Main Menu gets called multiple times so we statically save that we already did all that is needed.
 
-				return array( "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html );
+				return [ "mode" => ilUIHookPluginGUI::PREPEND, "html" => $html ];
 			} else {
-				return array( 'mode' => ilUIHookPluginGUI::KEEP, "html" => '' );
+				return [ 'mode' => ilUIHookPluginGUI::KEEP, "html" => '' ];
 			}
 		}
 	}
 
 
 	public function gotoHook() {
-		if (preg_match("/usr_takeover_(.*)/uim", $_GET['target'], $matches)) {
-			$track = (int)$_GET['track'];
-			usrtoHelper::getInstance()->takeOver((int)$matches[1], $track === 1);
+		if (preg_match("/usr_takeover_(.*)/uim", filter_input(INPUT_GET, 'target'), $matches)) {
+			$track = (int)filter_input(INPUT_GET, 'track');
+			$group_id = (int)filter_input(INPUT_GET, 'group_id');
+			usrtoHelper::getInstance()->takeOver((int)$matches[1], $track === 1, $group_id);
 		}
-		if (preg_match("/usr_takeback/uim", $_GET['target'], $matches)) {
+		if (preg_match("/usr_takeback/uim", filter_input(INPUT_GET, 'target'), $matches)) {
 			usrtoHelper::getInstance()->switchBack();
 		}
 	}
@@ -129,21 +99,42 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @internal param $a_comp
 	 */
 	protected function getTopBarHtml() {
-		$template = $this->pl->getTemplate("tpl.MMUserTakeOver.html", false, false);
-		$template->setVariable("TXT_TAKE_OVER_USER", $this->pl->txt("take_over_user"));
-		$template->setVariable("SEARCHUSERLINK", $this->ctrl->getLinkTargetByClass(array(
-			ilUIPluginRouterGUI::class,
-			ilUserTakeOverConfigGUI::class
-		), ilUserTakeOverConfigGUI::CMD_SEARCH_USERS));
-		// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
-		if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
-			$track = 1;
-		} else {
-			$track = 0;
+		$template = self::plugin()->getPluginObject()->getTemplate("tpl.MMUserTakeOver.html", false, false);
+		if (in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
+			$template->setVariable("SEARCHUSERLINK", self::dic()->ctrl()->getLinkTargetByClass([
+				ilUIPluginRouterGUI::class,
+				//ilUserTakeOverConfigGUI::class,
+				ilUserTakeOverMembersGUI::class
+			], ilUserTakeOverMembersGUI::CMD_SEARCH_USERS));
+			// If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
+			if (!$_SESSION[usrtoHelper::USR_ID_BACKUP]) {
+				$track = 1;
+			} else {
+				$track = 0;
+			}
+			$template->setVariable("TAKEOVERPREFIX", "goto.php?track=$track&target=usr_takeover_");
+			$template->setVariable("LOADING_TEXT", self::plugin()->translate("loading"));
+			$template->setVariable("NO_RESULTS", self::plugin()->translate("no_results"));
+			$template->setCurrentBlock("search");
+			$template->setVariable("TXT_TAKE_OVER_USER", self::plugin()->translate("take_over_user"));
+			$template->setVariable("SEARCH_INPUT", "<input class=\"srag-seach-input\" style='color: black;' type='text'/>");
+			$template->parseCurrentBlock("search");
 		}
-		$template->setVariable("TAKEOVERPREFIX", "goto.php?track=$track&target=usr_takeover_");
-		$template->setVariable("LOADING_TEXT", $this->pl->txt("loading"));
-		$template->setVariable("NO_RESULTS", $this->pl->txt("no_results"));
+
+		/////////// For the Groups //////////////////
+		$group_ids = usrtoMember::where([ "user_id" => self::dic()->user()->getId() ], "=")->getArray(NULL, "group_id");
+
+		//if the current user is member of at least one group render the groups html
+		if (!empty($group_ids)) {
+			$groups_html = $this->getGroupsHtml($group_ids, self::dic()->user());
+		}
+		//only group members or user with admin role can use search
+		if (in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId())) || !empty($group_ids)) {
+			$template->setCurrentBlock("DROPDOWN_TOGGLE");
+			$template->setVariable("TOGGLE", "<a id=\"srag-toggle\" class=\"dropdown-toggle\"><span class=\"glyphicon glyphicon-eye-open\"><span class=\"caret\"></span></span></a>");
+			$template->parseCurrentBlock();
+		}
+		$template->setVariable("GROUPS", $groups_html);
 		self::setLoaded('user_take_over');
 		$html = $template->get();
 
@@ -154,33 +145,32 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 
 
 	/**
-	 * @param ilUserTakeOverConfig $config
-	 * @param ilObjUser            $ilUser
+	 * @param array     $group_ids
+	 * @param ilObjUser $ilUser
 	 *
 	 * @return string
 	 */
-	protected function getDemoGroupHtml($config, $ilUser) {
+	protected function getGroupsHtml($group_ids, $ilUser) {
 		$inner_html = "";
-		foreach ($config->getDemoGroup() as $userId) {
-			$user = new ilObjUser($userId);
-			$b = "";
-			if ($userId == $ilUser->getId()) {
-				$b = " style='font-weight: bold;'";
-			}
+		foreach ($group_ids as $group_id) {
+			$user_ids = \usrtoMember::where([ "group_id" => $group_id ], "=")->getArray(NULL, "user_id");
+			$group = usrtoGroup::find($group_id);
 			$inner_html .= "<li>
-								<a href=\"goto.php?track=0&target=usr_takeover_$userId\"$b>{$user->getPresentationTitle()}</a>
+								<span style=\"font-weight: bold; padding-left: 10px\">{$group->getTitle()}</span>
 							</li>";
+			$group_id = $group->getId();
+			foreach ($user_ids as $userId) {
+				$user = new ilObjUser($userId);
+				if ($userId == $ilUser->getId()) {
+					continue;
+				}
+				$inner_html .= "<li>
+								<a href=\"goto.php?track=1&target=usr_takeover_$userId&group_id=$group_id\">{$user->getPresentationTitle()}</a>
+							</li>";
+			}
 		}
-		$tmpHtml = "<a href='#' class='dropdown-toggle' data-toggle='dropdown'>
-								<b>{$ilUser->getPresentationTitle()}</b>
-							</a>
-							<ul class=\"dropdown-menu pull-right\" role=\"menu\">
-							$inner_html
-						</ul>";
 
-		$tmpHtml = '<li>' . $tmpHtml . '</li>';
-
-		return $tmpHtml;
+		return $inner_html;
 	}
 
 
@@ -190,12 +180,12 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 	 * @return mixed
 	 */
 	protected function initTakeOverToolbar($ilToolbar) {
-		if (strcasecmp($_GET['cmdClass'], ilObjUserGUI::class) == 0 AND ($_GET['cmd'] == 'view' OR $_GET['cmd'] == 'edit')) {
+		if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view'
+				OR filter_input(INPUT_GET, 'cmd') == 'edit')) {
 			if ($ilToolbar instanceof ilToolbarGUI) {
-				$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
-				$link = 'goto.php?track=1&target=usr_takeover_' . $_GET['obj_id'];
+				$link = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
 				$button = ilLinkButton::getInstance();
-				$button->setCaption($ilUserTakeOverPlugin->txt('take_over_user_view'), false);
+				$button->setCaption(self::plugin()->translate('take_over_user_view'), false);
 				$button->setUrl($link);
 				$ilToolbar->addButtonInstance($button);
 
@@ -218,11 +208,13 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI {
 		 */
 		if ($ilToolbar instanceof ilToolbarGUI) {
 
-			$ilUserTakeOverPlugin = ilUserTakeOverPlugin::getInstance();
 			$link = 'goto.php?target=usr_takeback';
 
-			$tmpHtml = '<a class="MMInactive" id="leave_user_view" target="" href="' . $link . '">' . $ilUserTakeOverPlugin->txt("leave_user_view")
-				. '</a>';
+			/**
+			 * @author Jean-Luc Braun <braun@qualitus.de>
+			 */
+			$tmpHtml = '<a class="dropdown-toggle" id="leave_user_view" target="" href="' . $link
+				. '"><span class="glyphicon glyphicon-eye-close"></span></a>';
 
 			$tmpHtml = '<li>' . $tmpHtml . '</li>';
 
