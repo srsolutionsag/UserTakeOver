@@ -11,46 +11,50 @@ use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
  * @version $Id$
  *
  */
-class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin {
+class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
+{
 
-	use PluginUninstallTrait;
-	const PLUGIN_ID = 'usrto';
-	const PLUGIN_NAME = 'UserTakeOver';
-	const PLUGIN_CLASS_NAME = self::class;
-	const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
-	/**
-	 * @var ilUserTakeOverPlugin
-	 */
-	protected static $instance;
-
-
-	/**
-	 * @return ilUserTakeOverPlugin
-	 */
-	public static function getInstance() {
-		if (!isset(self::$instance)) {
-			self::$instance = new self();
-		}
-
-		return self::$instance;
-	}
+    use PluginUninstallTrait;
+    const PLUGIN_ID = 'usrto';
+    const PLUGIN_NAME = 'UserTakeOver';
+    const PLUGIN_CLASS_NAME = self::class;
+    const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
+    /**
+     * @var ilUserTakeOverPlugin
+     */
+    protected static $instance;
 
 
-	/**
-	 * @return string
-	 */
-	public function getPluginName() {
-		return self::PLUGIN_NAME;
-	}
+    /**
+     * @return ilUserTakeOverPlugin
+     */
+    public static function getInstance()
+    {
+        if (!isset(self::$instance)) {
+            self::$instance = new self();
+        }
+
+        return self::$instance;
+    }
 
 
-	/**
-	 * @inheritdoc
-	 */
-	protected function deleteData()/*: void*/ {
-		self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
-		self::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME, false);
-		self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
-		self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
-	}
+    /**
+     * @return string
+     */
+    public function getPluginName()
+    {
+        return self::PLUGIN_NAME;
+    }
+
+
+    /**
+     * @inheritdoc
+     */
+    protected function deleteData()/*: void*/
+    {
+        self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+        self::dic()->database()->dropTable('ui_uihk_usrto_config', false);
+        self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
+        self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
+    }
 }

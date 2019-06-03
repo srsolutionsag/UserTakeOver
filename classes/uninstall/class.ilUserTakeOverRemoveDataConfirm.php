@@ -10,7 +10,8 @@ use srag\RemovePluginDataConfirm\UserTakeOver\AbstractRemovePluginDataConfirm;
  * @author            Benjamin Seglias   <bs@studer-raimann.ch>
  * @ilCtrl_isCalledBy ilUserTakeOverRemoveDataConfirm: ilUIPluginRouterGUI
  */
-class ilUserTakeOverRemoveDataConfirm extends AbstractRemovePluginDataConfirm {
+class ilUserTakeOverRemoveDataConfirm extends AbstractRemovePluginDataConfirm
+{
 
-	const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+    const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 }
