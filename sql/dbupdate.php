@@ -21,9 +21,9 @@ if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(usrtoMember
 /*
 	migrates demo_group from config table to group table
 */
-if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfigOld::TABLE_NAME)) {
+if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists('ui_uihk_usrto_config')) {
 
-	$config_data_set = \srag\DIC\UserTakeOver\DICStatic::dic()->database()->query('SELECT * FROM ' . \ilUserTakeOverConfigOld::TABLE_NAME);
+	$config_data_set = \srag\DIC\UserTakeOver\DICStatic::dic()->database()->query('SELECT * FROM ui_uihk_usrto_config');
 
 	while ($data_rec = \srag\DIC\UserTakeOver\DICStatic::dic()->database()->fetchAssoc($config_data_set)) {
 		$usrtoGroup = new usrtoGroup();
@@ -38,7 +38,7 @@ if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeO
 			$usrtoMember->create();
 		}
 	}
-	\srag\DIC\UserTakeOver\DICStatic::dic()->database()->dropTable(ilUserTakeOverConfigOld::TABLE_NAME);
+	\srag\DIC\UserTakeOver\DICStatic::dic()->database()->dropTable('ui_uihk_usrto_config');
 }
 ?>
 <#5>
