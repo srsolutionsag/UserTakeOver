@@ -124,7 +124,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
             $template->setVariable("NO_RESULTS", self::plugin()->translate("no_results"));
             $template->setCurrentBlock("search");
             $template->setVariable("TXT_TAKE_OVER_USER", self::plugin()->translate("take_over_user"));
-            $template->setVariable("SEARCH_INPUT", "<input class=\"srag-seach-input\" style='color: black;' type='text'/>");
+            $template->setVariable("SEARCH_INPUT", "<input class=\"srag-search-input\" style='color: black;' type='text'/>");
             $template->parseCurrentBlock("search");
         }
 
