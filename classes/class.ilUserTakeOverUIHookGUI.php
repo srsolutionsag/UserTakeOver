@@ -168,6 +168,13 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
 							</li>";
             $group_id = $group->getId();
             foreach ($user_ids as $userId) {
+                if (!ilObjUser::_exists($userId)) {
+                    // we delete this user from the group
+                    foreach (usrtoMember::where(['user_id' => $userId])->get() as $item) {
+                        $item->delete();
+                    }
+                    continue;
+                }
                 $user = new ilObjUser($userId);
                 if ($userId == $ilUser->getId()) {
                     continue;
