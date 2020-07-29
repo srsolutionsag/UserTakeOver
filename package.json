@@ -1,0 +1,23 @@
+{
+  "name": "usertakeover",
+  "version": "1.0.0",
+  "description": "The UserTakeOver-Plugin gives you the possibility to take the view of another user.",
+  "main": "js/src/index.js",
+  "directories": {
+    "doc": "doc"
+  },
+  "dependencies": {
+    "@varvet/tiny-autocomplete": "^1.1.1",
+    "rollup": "^2.23.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@git.studer-raimann.ch:ILIAS/Plugins/UserTakeOver.git"
+  },
+  "author": "",
+  "license": "ISC"
+}

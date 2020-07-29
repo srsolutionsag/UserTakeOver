@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . "/../../vendor/autoload.php";
 
+use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
 use srag\DIC\UserTakeOver\DICTrait;
 use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
@@ -8,6 +9,7 @@ use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
  * GUI class ilUserTakeOverMembersGUI
  * @author            : Benjamin Seglias   <bs@studer-raimann.ch>
  * @ilCtrl_IsCalledBy ilUserTakeOverMembersGUI: ilUIPluginRouterGUI
+ * @ilCtrl_isCalledBy srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl: ilUserTakeOverMembersGUI
  */
 class ilUserTakeOverMembersGUI
 {
@@ -26,15 +28,17 @@ class ilUserTakeOverMembersGUI
         self::dic()->tabs()->clearTargets();
         $nextClass = self::dic()->ctrl()->getNextClass();
         switch ($nextClass) {
+            case strtolower(UsersAjaxAutoCompleteCtrl::class):
+                self::dic()->ctrl()->forwardCommand(new UsersAjaxAutoCompleteCtrl());
+                break;
             default;
-                $this->performCommand(self::dic()->ctrl()->getCmdClass());
+                $this->performCommand(self::dic()->ctrl()->getCmd());
                 break;
         }
     }
 
     public function performCommand($cmd)
     {
-        $cmd = self::dic()->ctrl()->getCmd();
         switch ($cmd) {
             case self::CMD_CONFIGURE:
             case self::CMD_SAVE:
@@ -57,7 +61,7 @@ class ilUserTakeOverMembersGUI
         self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
         $form = $this->getForm();
         $this->fillForm($form);
-        self::plugin()->output($form);
+        self::output()->output($form);
     }
 
     /**
@@ -77,9 +81,9 @@ class ilUserTakeOverMembersGUI
         } else {
             $title = self::plugin()->translate("group");
         }
-        $input = new ilusrtoMultiSelectSearchInput2GUI($title, 'grp[' . $group->getId() . ']');
+        $input = new srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI($title, 'grp[' . $group->getId() . ']');
         $input->setInfo(self::plugin()->translate("group_info"));
-        $input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
+        $input->setAjaxAutoCompleteCtrl(new UsersAjaxAutoCompleteCtrl());
 
         $members_data = \usrtoMember::innerjoin('usr_data', 'user_id', 'usr_id')->where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")
                                     ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
@@ -141,7 +145,7 @@ class ilUserTakeOverMembersGUI
             self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
         } else {
             ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
-            self::plugin()->output($form);
+            self::output()->output($form);
         }
     }
 
@@ -160,38 +164,5 @@ class ilUserTakeOverMembersGUI
         ];
 
         $form->setValuesByArray($values);
-    }
-
-    protected function searchUsers()
-    {
-        // Only Administrators
-        if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
-            //self::plugin()->output([], false);
-            echo json_encode([]);
-            exit;
-        }
-
-        //when the search was done via select2 input field the term will be send as array. In the search field it won't be send as array.
-        if (is_array($_GET['term'])) {
-            $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
-        } else {
-            $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT);
-        }
-        $filtered_term = isset($filtered_term) ? $filtered_term : "";
-
-        /** @var ilObjUser[] $users */
-        $users  = ilObjUser::searchUsers($filtered_term);
-        $result = [];
-
-        foreach ($users as $user) {
-            $result[] = [
-                "id"   => $user['usr_id'],
-                "text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")",
-            ];
-        }
-
-        //self::plugin()->output($result, false);
-        echo json_encode($result);
-        exit;
     }
 }

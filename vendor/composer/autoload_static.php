@@ -9,17 +9,17 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
     public static $prefixLengthsPsr4 = array (
         's' => 
         array (
-            'srag\\RemovePluginDataConfirm\\' => 29,
+            'srag\\RemovePluginDataConfirm\\UserTakeOver\\' => 42,
             'srag\\Plugins\\UserTakeOver\\' => 26,
             'srag\\LibrariesNamespaceChanger\\' => 31,
-            'srag\\DIC\\' => 9,
-            'srag\\CustomInputGUIs\\' => 21,
-            'srag\\ActiveRecordConfig\\' => 24,
+            'srag\\DIC\\UserTakeOver\\' => 22,
+            'srag\\CustomInputGUIs\\UserTakeOver\\' => 34,
+            'srag\\ActiveRecordConfig\\UserTakeOver\\' => 37,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'srag\\RemovePluginDataConfirm\\' => 
+        'srag\\RemovePluginDataConfirm\\UserTakeOver\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src',
         ),
@@ -31,15 +31,15 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
         array (
             0 => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src',
         ),
-        'srag\\DIC\\' => 
+        'srag\\DIC\\UserTakeOver\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/dic/src',
         ),
-        'srag\\CustomInputGUIs\\' => 
+        'srag\\CustomInputGUIs\\UserTakeOver\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/custominputguis/src',
         ),
-        'srag\\ActiveRecordConfig\\' => 
+        'srag\\ActiveRecordConfig\\UserTakeOver\\' => 
         array (
             0 => __DIR__ . '/..' . '/srag/activerecordconfig/src',
         ),
@@ -47,6 +47,8 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
 
     public static $classMap = array (
         'ActiveRecord' => __DIR__ . '/../..' . '/../../../../../../../Services/ActiveRecord/class.ActiveRecord.php',
+        'ILIAS\\UI\\Implementation\\Component\\MainControls\\Slate\\LegacySubSlate\\LegacySubSlate' => __DIR__ . '/../..' . '/src/UI/Slate/LegacySubSlate/LegacySubSlate.php',
+        'ILIAS\\UI\\Implementation\\Component\\MainControls\\Slate\\LegacySubSlate\\Renderer' => __DIR__ . '/../..' . '/src/UI/Slate/LegacySubSlate/Renderer.php',
         'ilException' => __DIR__ . '/../..' . '/../../../../../../../Services/Exceptions/classes/class.ilException.php',
         'ilMultiSelectInputGUI' => __DIR__ . '/../..' . '/../../../../../../../Services/Form/classes/class.ilMultiSelectInputGUI.php',
         'ilObjUser' => __DIR__ . '/../..' . '/../../../../../../../Services/User/classes/class.ilObjUser.php',
@@ -58,6 +60,7 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
         'ilUserInterfaceHookPlugin' => __DIR__ . '/../..' . '/../../../../../../../Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php',
         'ilUserTakeOverConfig' => __DIR__ . '/../..' . '/classes/class.ilUserTakeOverConfig.php',
         'ilUserTakeOverConfigGUI' => __DIR__ . '/../..' . '/classes/class.ilUserTakeOverConfigGUI.php',
+        'ilUserTakeOverGUI' => __DIR__ . '/../..' . '/classes/class.ilUserTakeOverGUI.php',
         'ilUserTakeOverGroupsGUI' => __DIR__ . '/../..' . '/classes/Groups/class.ilUserTakeOverGroupsGUI.php',
         'ilUserTakeOverGroupsTableGUI' => __DIR__ . '/../..' . '/classes/Groups/class.ilUserTakeOverGroupsTableGUI.php',
         'ilUserTakeOverMembersGUI' => __DIR__ . '/../..' . '/classes/Members/class.ilUserTakeOverMembersGUI.php',
@@ -178,11 +181,19 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
         'srag\\LibrariesNamespaceChanger\\PHP72Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP72Backport.php',
         'srag\\LibrariesNamespaceChanger\\PHP7Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/PHP7Backport.php',
         'srag\\LibrariesNamespaceChanger\\RemovePHP72Backport' => __DIR__ . '/..' . '/srag/librariesnamespacechanger/src/RemovePHP72Backport.php',
+        'srag\\Plugins\\UserTakeOver\\Access' => __DIR__ . '/../..' . '/src/Access.php',
+        'srag\\Plugins\\UserTakeOver\\GlobalScreen\\LegacySubItem' => __DIR__ . '/../..' . '/src/GlobalScreen/LegacySubItem.php',
+        'srag\\Plugins\\UserTakeOver\\GlobalScreen\\MetaBarProvider' => __DIR__ . '/../..' . '/src/GlobalScreen/MetaBarProvider.php',
+        'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOSearchItem' => __DIR__ . '/../..' . '/src/GlobalScreen/UTOSearchItem.php',
+        'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOStatusItem' => __DIR__ . '/../..' . '/src/GlobalScreen/UTOStatusItem.php',
+        'srag\\Plugins\\UserTakeOver\\Handler' => __DIR__ . '/../..' . '/src/Handler.php',
+        'srag\\Plugins\\UserTakeOver\\Redirect' => __DIR__ . '/../..' . '/src/Redirect.php',
+        'srag\\Plugins\\UserTakeOver\\UI\\AbstractLoaderDetector' => __DIR__ . '/../..' . '/src/UI/AbstractLoaderDetector.php',
+        'srag\\Plugins\\UserTakeOver\\UI\\SlateLoaderDetector' => __DIR__ . '/../..' . '/src/UI/SlateLoaderDetector.php',
         'srag\\RemovePluginDataConfirm\\UserTakeOver\\BasePluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/BasePluginUninstallTrait.php',
         'srag\\RemovePluginDataConfirm\\UserTakeOver\\PluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/PluginUninstallTrait.php',
         'srag\\RemovePluginDataConfirm\\UserTakeOver\\RemovePluginDataConfirmCtrl' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/class.RemovePluginDataConfirmCtrl.php',
         'srag\\RemovePluginDataConfirm\\UserTakeOver\\RepositoryObjectPluginUninstallTrait' => __DIR__ . '/..' . '/srag/removeplugindataconfirm/src/RepositoryObjectPluginUninstallTrait.php',
-        'srag\\plugins\\UserTakeOver\\ilusrtoMultiSelectSearchInput2GUI' => __DIR__ . '/../..' . '/classes/Form/class.ilusrtoMultiSelectSearchInput2GUI.php',
         'usrtoGroup' => __DIR__ . '/../..' . '/classes/Groups/class.usrtoGroup.php',
         'usrtoGroupFormGUI' => __DIR__ . '/../..' . '/classes/Groups/class.usrtoGroupFormGUI.php',
         'usrtoHelper' => __DIR__ . '/../..' . '/classes/class.usrtoHelper.php',

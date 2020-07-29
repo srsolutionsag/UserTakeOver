@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   viewBox="0 0 32 32"
+   version="1.1"
+   id="svg1425"
+   sodipodi:docname="uto.svg"
+   inkscape:version="1.0 (4035a4f, 2020-05-01)">
+  <metadata
+     id="metadata1431">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1429" />
+  <sodipodi:namedview
+     inkscape:document-rotation="0"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1178"
+     id="namedview1427"
+     showgrid="false"
+     inkscape:zoom="31.5"
+     inkscape:cx="16"
+     inkscape:cy="16"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg1425" />
+  <title
+     id="title1414" />
+  <g
+     transform="matrix(0.6577381,0,0,0.67361111,5.2380953,6.6666666)"
+     data-name="6-User"
+     id="_6-User"
+     style="fill:#808080">
+    <path
+       d="m 2,29 c 0,-0.78 1.92,-1.7 3.24,-2 h 0.11 l 8,-3 A 1,1 0 0 0 14,23 V 20.31 A 1,1 0 0 0 13.43,19.41 6,6 0 0 1 10,14 1,1 0 0 0 9,13 v -2 a 1,1 0 0 0 1,-1 V 8 a 6,6 0 0 1 12,0 v 2 a 1,1 0 0 0 1,1 v 2 h 2 V 11 A 2,2 0 0 0 24,9.27 V 8 A 8,8 0 0 0 8,8 V 9.27 A 2,2 0 0 0 7,11 v 2 a 2,2 0 0 0 1,1.75 8.07,8.07 0 0 0 4,6.16 V 22.3 L 4.7,25 C 3.79,25.23 0,26.37 0,29 v 2 a 1,1 0 0 0 1,1 H 15 V 30 H 2 Z"
+       id="path1416"
+       style="fill:#808080" />
+    <path
+       d="m 24,16 a 8,8 0 1 0 8,8 8,8 0 0 0 -8,-8 z m 0,14 a 6,6 0 1 1 6,-6 6,6 0 0 1 -6,6 z"
+       id="path1418"
+       style="fill:#808080" />
+    <rect
+       height="4"
+       width="2"
+       x="23"
+       y="20"
+       id="rect1420"
+       style="fill:#808080" />
+    <rect
+       height="2"
+       width="2"
+       x="23"
+       y="26"
+       id="rect1422"
+       style="fill:#808080" />
+  </g>
+</svg>

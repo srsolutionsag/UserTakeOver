@@ -2,6 +2,10 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
+use ILIAS\GlobalScreen\Scope\Layout\Provider\AbstractModificationPluginProvider;
+use ILIAS\GlobalScreen\ScreenContext\Stack\ContextCollection;
+use srag\Plugins\UserTakeOver\GlobalScreen\MetaBarProvider;
+use srag\Plugins\UserTakeOver\UI\SlateLoaderDetector;
 use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
 
 /**
@@ -23,6 +27,26 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
      */
     protected static $instance;
 
+    public function __construct()
+    {
+        global $DIC;
+        parent::__construct();
+
+        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
+
+
+//        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/node_modules/autocomplete-js/dist/autocomplete.js', false, 3);
+        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/js/dist/main.js', false, 3);
+
+        $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
+        $this->provider_collection->setModificationProvider(new class($DIC, $this) extends AbstractModificationPluginProvider {
+            public function isInterestedInContexts() : ContextCollection
+            {
+                return $this->context_collection->main()->internal();
+            }
+        });
+    }
+
     /**
      * @return ilUserTakeOverPlugin
      */
@@ -41,6 +65,11 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     public function getPluginName()
     {
         return self::PLUGIN_NAME;
+    }
+
+    public function exchangeUIRendererAfterInitialization(\ILIAS\DI\Container $dic) : Closure
+    {
+        return SlateLoaderDetector::exchange();
     }
 
     /**
