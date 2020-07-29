@@ -12,6 +12,8 @@ use srag\DIC\UserTakeOver\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class TextInputGUI extends ilTextInputGUI {
-	use DICTrait;
+class TextInputGUI extends ilTextInputGUI
+{
+
+    use DICTrait;
 }

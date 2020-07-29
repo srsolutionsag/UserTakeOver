@@ -9,32 +9,67 @@ namespace srag\DIC\UserTakeOver\Version;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-interface VersionInterface {
+interface VersionInterface
+{
 
-	/**
-	 * @return string
-	 */
-	public function getILIASVersion()/*: string*/
-	;
+    const ILIAS_VERSION_5_4 = "5.4.0";
+    const ILIAS_VERSION_6 = "6.0";
 
 
-	/**
-	 * @return bool
-	 */
-	public function is52()/*: bool*/
-	;
+    /**
+     * @return string
+     */
+    public function getILIASVersion() : string;
 
 
-	/**
-	 * @return bool
-	 */
-	public function is53()/*: bool*/
-	;
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isEqual(string $version) : bool;
 
 
-	/**
-	 * @return bool
-	 */
-	public function is54()/*: bool*/
-	;
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isGreater(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isLower(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isMaxVersion(string $version) : bool;
+
+
+    /**
+     * @param string $version
+     *
+     * @return bool
+     */
+    public function isMinVersion(string $version) : bool;
+
+
+    /**
+     * @return bool
+     */
+    public function is54() : bool;
+
+
+    /**
+     * @return bool
+     */
+    public function is6() : bool;
 }

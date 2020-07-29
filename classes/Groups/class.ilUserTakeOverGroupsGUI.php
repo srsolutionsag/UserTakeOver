@@ -5,15 +5,14 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilUserTakeOverGroupsGUI
- *
  * @author       : Benjamin Seglias   <bs@studer-raimann.ch>
- *
  * @ilCtrl_Calls ilUserTakeOverGroupsGUI: usrtoGroupFormGUI, ilUserTakeOverGroupsTableGUI, ilUserTakeOverMembersGUI
  */
 class ilUserTakeOverGroupsGUI
 {
 
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     const CMD_STANDARD = 'content';
     const CMD_ADD = 'add';
@@ -27,7 +26,6 @@ class ilUserTakeOverGroupsGUI
     const CMD_APPLY_FILTER = 'applyFilter';
     const CMD_RESET_FILTER = 'resetFilter';
     const IDENTIFIER = 'usrtoGrp';
-
 
     public function executeCommand()
     {
@@ -51,7 +49,6 @@ class ilUserTakeOverGroupsGUI
         }
     }
 
-
     public function performCommand($cmd)
     {
 
@@ -62,7 +59,7 @@ class ilUserTakeOverGroupsGUI
         switch ($cmd) {
             case self::CMD_STANDARD:
                 self::dic()->tabs()->setBackTarget(self::dic()->language()->txt('cmps_plugins'), self::dic()->ctrl()
-                    ->getLinkTargetByClass(ilObjComponentSettingsGUI::class, "listPlugins"));
+                                                                                                     ->getLinkTargetByClass(ilObjComponentSettingsGUI::class, "listPlugins"));
                 $this->{$cmd}();
                 break;
             case self::CMD_ADD:
@@ -84,30 +81,26 @@ class ilUserTakeOverGroupsGUI
         }
     }
 
-
     protected function initBackTarget()
     {
         self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()->getLinkTarget($this, self::CMD_STANDARD));
     }
 
-
     protected function content()
     {
         $f = self::dic()->ui()->factory();
         self::dic()->toolbar()->addComponent($f->button()->standard(self::plugin()->translate("add_grp"), self::dic()->ctrl()
-            ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_ADD)));
+                                                                                                              ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_ADD)));
 
         $ilUserTakeOverGroupsTableGUI = new ilUserTakeOverGroupsTableGUI($this, self::CMD_STANDARD);
         self::plugin()->output($ilUserTakeOverGroupsTableGUI);
     }
-
 
     protected function add()
     {
         $usrtoGroupFormGUI = new usrtoGroupFormGUI($this, new usrtoGroup());
         self::plugin()->output($usrtoGroupFormGUI);
     }
-
 
     protected function create()
     {
@@ -120,14 +113,12 @@ class ilUserTakeOverGroupsGUI
         self::plugin()->output($usrtoGroupFormGUI);
     }
 
-
     protected function edit()
     {
         $usrtoGroupFormGUI = new usrtoGroupFormGUI($this, usrtoGroup::find(filter_input(INPUT_GET, self::IDENTIFIER)));
         $usrtoGroupFormGUI->fillForm();
         self::plugin()->output($usrtoGroupFormGUI);
     }
-
 
     protected function update()
     {
@@ -139,7 +130,6 @@ class ilUserTakeOverGroupsGUI
         }
         self::plugin()->output($usrtoGroupFormGUI);
     }
-
 
     protected function confirmDelete()
     {
@@ -158,14 +148,13 @@ class ilUserTakeOverGroupsGUI
         self::plugin()->output($confirm);
     }
 
-
     protected function delete()
     {
         /**
          * @var usrtoGroup $usrtoGroup
          */
         $usrtoGroup = usrtoGroup::find(filter_input(INPUT_POST, self::IDENTIFIER));
-        $members = usrtoMember::where(["group_id" => $usrtoGroup->getId()])->get();
+        $members    = usrtoMember::where(["group_id" => $usrtoGroup->getId()])->get();
         /**
          * @var usrtoMember $member
          */
@@ -177,12 +166,10 @@ class ilUserTakeOverGroupsGUI
         $this->cancel();
     }
 
-
     protected function cancel()
     {
         self::dic()->ctrl()->redirectByClass(self::class, self::CMD_STANDARD);
     }
-
 
     protected function applyFilter()
     {
@@ -190,7 +177,6 @@ class ilUserTakeOverGroupsGUI
         $ilUserTakeOverGroupsTableGUI->writeFilterToSession();
         self::dic()->ctrl()->redirect($this, self::CMD_STANDARD);
     }
-
 
     protected function resetFilter()
     {

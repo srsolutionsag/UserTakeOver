@@ -6,21 +6,19 @@ use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
 /**
  * GUI class ilUserTakeOverMembersGUI
- *
  * @author            : Benjamin Seglias   <bs@studer-raimann.ch>
- *
  * @ilCtrl_IsCalledBy ilUserTakeOverMembersGUI: ilUIPluginRouterGUI
  */
 class ilUserTakeOverMembersGUI
 {
 
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     const CMD_CONFIGURE = 'configure';
     const CMD_SAVE = 'save';
     const CMD_SEARCH_USERS = 'searchUsers';
     const CMD_CANCEL = 'cancel';
-
 
     public function executeCommand()
     {
@@ -34,7 +32,6 @@ class ilUserTakeOverMembersGUI
         }
     }
 
-
     public function performCommand($cmd)
     {
         $cmd = self::dic()->ctrl()->getCmd();
@@ -42,7 +39,7 @@ class ilUserTakeOverMembersGUI
             case self::CMD_CONFIGURE:
             case self::CMD_SAVE:
                 self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()
-                    ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
+                                                                                          ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
                 $this->$cmd();
                 break;
             case self::CMD_SEARCH_USERS:
@@ -55,7 +52,6 @@ class ilUserTakeOverMembersGUI
         }
     }
 
-
     public function configure()
     {
         self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
@@ -63,7 +59,6 @@ class ilUserTakeOverMembersGUI
         $this->fillForm($form);
         self::plugin()->output($form);
     }
-
 
     /**
      * @return ilPropertyFormGUI
@@ -87,8 +82,8 @@ class ilUserTakeOverMembersGUI
         $input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
 
         $members_data = \usrtoMember::innerjoin('usr_data', 'user_id', 'usr_id')->where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")
-            ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
-        $options = [];
+                                    ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
+        $options      = [];
         foreach ($members_data as $member_data) {
             $options[$member_data['usr_id']] = $member_data['firstname'] . " " . $member_data['lastname'] . " (" . $member_data['login'] . ")";
         }
@@ -102,7 +97,6 @@ class ilUserTakeOverMembersGUI
         return $form;
     }
 
-
     /**
      * @param ilPropertyFormGUI &$form
      */
@@ -112,19 +106,17 @@ class ilUserTakeOverMembersGUI
         $form->addCommandButton(self::CMD_CANCEL, self::plugin()->translate("cancel"));
     }
 
-
     protected function cancel()
     {
         self::dic()->ctrl()->redirectByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD);
     }
-
 
     protected function save()
     {
         $form = $this->getForm();
         $form->setValuesByPost();
         if ($form->checkInput()) {
-            $group_id = filter_input(INPUT_GET, "usrtoGrp");
+            $group_id       = filter_input(INPUT_GET, "usrtoGrp");
             $grp_user_array = filter_var(filter_input(INPUT_POST, "grp", FILTER_DEFAULT, FILTER_FORCE_ARRAY)[$group_id], FILTER_DEFAULT, FILTER_FORCE_ARRAY);
             foreach ($grp_user_array as $key => $user_id) {
                 $usrtoMember = usrtoMember::where(['group_id' => $group_id, 'user_id' => $user_id], '=')->first();
@@ -153,7 +145,6 @@ class ilUserTakeOverMembersGUI
         }
     }
 
-
     /**
      * @param ilPropertyFormGUI $form
      */
@@ -170,7 +161,6 @@ class ilUserTakeOverMembersGUI
 
         $form->setValuesByArray($values);
     }
-
 
     protected function searchUsers()
     {
@@ -190,7 +180,7 @@ class ilUserTakeOverMembersGUI
         $filtered_term = isset($filtered_term) ? $filtered_term : "";
 
         /** @var ilObjUser[] $users */
-        $users = ilObjUser::searchUsers($filtered_term);
+        $users  = ilObjUser::searchUsers($filtered_term);
         $result = [];
 
         foreach ($users as $user) {

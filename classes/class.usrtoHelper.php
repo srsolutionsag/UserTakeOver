@@ -6,7 +6,6 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class usrtoHelper
- *
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @version 1.0.0
  */
@@ -14,6 +13,7 @@ class usrtoHelper
 {
 
     use DICTrait;
+
     const USR_ID_GLOBAL = 'AccountId';
     const USR_ID_AUTHSESSION = '_authsession_user_id';
     const USR_ID_BACKUP = 'usrtoOriginalAccountId';
@@ -23,7 +23,6 @@ class usrtoHelper
      * @var usrtoHelper
      */
     protected static $instance;
-
 
     /**
      * @return usrtoHelper
@@ -37,7 +36,6 @@ class usrtoHelper
         return self::$instance;
     }
 
-
     /**
      * @var int
      */
@@ -47,7 +45,6 @@ class usrtoHelper
      */
     protected $temporary_usr_id = 0;
 
-
     /**
      * @return int
      */
@@ -55,7 +52,6 @@ class usrtoHelper
     {
         return $this->original_usr_id;
     }
-
 
     /**
      * @param int $original_usr_id
@@ -65,7 +61,6 @@ class usrtoHelper
         $this->original_usr_id = $original_usr_id;
     }
 
-
     /**
      * @return int
      */
@@ -73,7 +68,6 @@ class usrtoHelper
     {
         return $this->temporary_usr_id;
     }
-
 
     /**
      * @param int $temporary_usr_id
@@ -83,7 +77,6 @@ class usrtoHelper
         $this->temporary_usr_id = $temporary_usr_id;
     }
 
-
     /**
      * @return bool
      */
@@ -91,7 +84,6 @@ class usrtoHelper
     {
         return (isset($_SESSION[self::USR_ID_BACKUP]));
     }
-
 
     /**
      * @param int     $usr_id
@@ -103,7 +95,7 @@ class usrtoHelper
         $this->checkAccess(self::dic()->user()->getId(), $usr_id, $group_id);
         $this->setTemporaryUsrId($usr_id);
         $this->setOriginalUsrId(self::dic()->user()->getId());
-        $_SESSION[self::USR_ID_GLOBAL] = $this->getTemporaryUsrId();
+        $_SESSION[self::USR_ID_GLOBAL]      = $this->getTemporaryUsrId();
         $_SESSION[self::USR_ID_AUTHSESSION] = $this->getTemporaryUsrId();
         if ($track == true) {
             /*
@@ -124,29 +116,26 @@ class usrtoHelper
         ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
     }
 
-
     /**
      * swiches the user-session back
      */
     public function switchBack()
     {
         if ($_SESSION[self::USR_ID_BACKUP]) {
-            $_SESSION[self::USR_ID_GLOBAL] = $_SESSION[self::USR_ID_BACKUP];
+            $_SESSION[self::USR_ID_GLOBAL]      = $_SESSION[self::USR_ID_BACKUP];
             $_SESSION[self::USR_ID_AUTHSESSION] = $_SESSION[self::USR_ID_BACKUP];
 
             ilUtil::sendSuccess(self::plugin()
-                ->translate('user_taker_back_success', "", [ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
+                                    ->translate('user_taker_back_success', "", [ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
             unset($_SESSION[self::USR_ID_BACKUP]);
         }
         ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
     }
 
-
     /**
      * @param int $usr_id
      * @param int $take_over_id
      * @param int $group_id
-     *
      * @return bool
      */
     protected function checkAccess($usr_id, $take_over_id, $group_id)

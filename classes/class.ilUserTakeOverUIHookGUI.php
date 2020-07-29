@@ -6,7 +6,6 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilUserTakeOverUIHookGUI
- *
  * @author  Fabian Schmid <fs@studer-raimann.ch>
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @version $Id$
@@ -16,24 +15,21 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
 {
 
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     /**
      * @var array
      */
     protected static $loaded = [];
 
-
     /**
      * @param string $key
-     *
      * @return bool
-     *
      */
     protected static function isLoaded($key)
     {
         return self::$loaded[$key] == 1;
     }
-
 
     /**
      * @param string $key
@@ -43,18 +39,15 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         self::$loaded[$key] = 1;
     }
 
-
     /**
      * @var int
      */
     protected static $num = 0;
 
-
     /**
      * @param string $a_comp
      * @param string $a_part
      * @param array  $a_par
-     *
      * @return array
      */
     public function getHTML($a_comp, $a_part, $a_par = [])
@@ -86,11 +79,10 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         }
     }
 
-
     public function gotoHook()
     {
         if (preg_match("/usr_takeover_(.*)/uim", filter_input(INPUT_GET, 'target'), $matches)) {
-            $track = (int) filter_input(INPUT_GET, 'track');
+            $track    = (int) filter_input(INPUT_GET, 'track');
             $group_id = (int) filter_input(INPUT_GET, 'group_id');
             usrtoHelper::getInstance()->takeOver((int) $matches[1], $track === 1, $group_id);
         }
@@ -98,7 +90,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
             usrtoHelper::getInstance()->switchBack();
         }
     }
-
 
     /**
      * @return array
@@ -150,31 +141,22 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         return $html;
     }
 
-
     /**
      * @param array     $group_ids
      * @param ilObjUser $ilUser
-     *
      * @return string
      */
     protected function getGroupsHtml($group_ids, $ilUser)
     {
         $inner_html = "";
         foreach ($group_ids as $group_id) {
-            $user_ids = \usrtoMember::where(["group_id" => $group_id], "=")->getArray(null, "user_id");
-            $group = usrtoGroup::find($group_id);
+            $user_ids   = \usrtoMember::where(["group_id" => $group_id], "=")->getArray(null, "user_id");
+            $group      = usrtoGroup::find($group_id);
             $inner_html .= "<li>
 								<span style=\"font-weight: bold; padding-left: 10px\">{$group->getTitle()}</span>
 							</li>";
-            $group_id = $group->getId();
+            $group_id   = $group->getId();
             foreach ($user_ids as $userId) {
-                if (!ilObjUser::_exists($userId)) {
-                    // we delete this user from the group
-                    foreach (usrtoMember::where(['user_id' => $userId])->get() as $item) {
-                        $item->delete();
-                    }
-                    continue;
-                }
                 $user = new ilObjUser($userId);
                 if ($userId == $ilUser->getId()) {
                     continue;
@@ -188,19 +170,17 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         return $inner_html;
     }
 
-
     /**
      * @param ilToolbarGUI $ilToolbar
-     *
      * @return mixed
      */
     protected function initTakeOverToolbar($ilToolbar)
     {
-        if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 AND (filter_input(INPUT_GET, 'cmd') == 'view'
-                OR filter_input(INPUT_GET, 'cmd') == 'edit')
+        if (strcasecmp(filter_input(INPUT_GET, 'cmdClass'), ilObjUserGUI::class) == 0 and (filter_input(INPUT_GET, 'cmd') == 'view'
+                or filter_input(INPUT_GET, 'cmd') == 'edit')
         ) {
             if ($ilToolbar instanceof ilToolbarGUI) {
-                $link = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
+                $link   = 'goto.php?track=1&target=usr_takeover_' . filter_input(INPUT_GET, 'obj_id');
                 $button = ilLinkButton::getInstance();
                 $button->setCaption(self::plugin()->translate('take_over_user_view'), false);
                 $button->setUrl($link);
@@ -214,7 +194,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
 
         return $ilToolbar;
     }
-
 
     private function takeBackHtml()
     {

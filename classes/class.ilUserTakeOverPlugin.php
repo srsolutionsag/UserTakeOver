@@ -6,15 +6,14 @@ use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
 
 /**
  * ilUserTakeOverPlugin
- *
  * @author  Martin Studer <ms@studer-raimann.ch>
  * @version $Id$
- *
  */
 class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
 {
 
     use PluginUninstallTrait;
+
     const PLUGIN_ID = 'usrto';
     const PLUGIN_NAME = 'UserTakeOver';
     const PLUGIN_CLASS_NAME = self::class;
@@ -23,7 +22,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
      * @var ilUserTakeOverPlugin
      */
     protected static $instance;
-
 
     /**
      * @return ilUserTakeOverPlugin
@@ -37,7 +35,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
         return self::$instance;
     }
 
-
     /**
      * @return string
      */
@@ -45,7 +42,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     {
         return self::PLUGIN_NAME;
     }
-
 
     /**
      * @inheritdoc
