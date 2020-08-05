@@ -4,6 +4,7 @@ namespace srag\CustomInputGUIs\UserTakeOver\NumberInputGUI;
 
 use ilNumberInputGUI;
 use ilTableFilterItem;
+use ilToolbarItem;
 use srag\DIC\UserTakeOver\DICTrait;
 
 /**
@@ -13,17 +14,25 @@ use srag\DIC\UserTakeOver\DICTrait;
  *
  * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
  */
-class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem {
+class NumberInputGUI extends ilNumberInputGUI implements ilTableFilterItem, ilToolbarItem
+{
 
-	use DICTrait;
+    use DICTrait;
+
+    /**
+     * @inheritDoc
+     */
+    public function getTableFilterHTML()/*: string*/
+    {
+        return $this->render();
+    }
 
 
-	/**
-	 * Get input item HTML to be inserted into table filters
-	 *
-	 * @return string
-	 */
-	public function getTableFilterHTML()/*: string*/ {
-		return $this->render();
-	}
+    /**
+     * @inheritDoc
+     */
+    public function getToolbarHTML()/*: string*/
+    {
+        return $this->render();
+    }
 }

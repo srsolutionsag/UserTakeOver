@@ -1,0 +1,26 @@
+<style>
+	div.uto-search .il-avatar-size-small {
+		transform: scale(0.5);
+		transform-origin: 0 0;
+	}
+
+	div.uto-searc ul.autocomplete-list {
+
+	}
+
+	div.uto-search-field input {
+		margin: 12px
+	}
+
+	div.uto-search-field ul {
+		padding: 0;
+		margin: 0;
+		list-style: none;
+		display: block;
+	}
+</style>
+
+<div class="uto-search">
+	<input data-action="{SEARCH_URL}" data-role="uto-search-input-field" type="text" placeholder="{PLACEHOLDER}">
+</div>
+<script type="text/javascript">il.Plugins.UserTakeOver.init('.uto-search')</script>

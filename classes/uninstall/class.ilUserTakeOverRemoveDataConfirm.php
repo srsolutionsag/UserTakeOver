@@ -6,7 +6,6 @@ use srag\RemovePluginDataConfirm\UserTakeOver\AbstractRemovePluginDataConfirm;
 
 /**
  * Class ilUserTakeOverRemoveDataConfirm
- *
  * @author            Benjamin Seglias   <bs@studer-raimann.ch>
  * @ilCtrl_isCalledBy ilUserTakeOverRemoveDataConfirm: ilUIPluginRouterGUI
  */

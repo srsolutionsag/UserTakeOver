@@ -27,6 +27,7 @@
     },
     "classmap": [
       "./classes/",
+      "./src/UI",
       "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",
       "../../../../../../../Services/Component/classes/class.ilPluginConfigGUI.php",
       "../../../../../../../Services/Exceptions/classes/class.ilException.php",

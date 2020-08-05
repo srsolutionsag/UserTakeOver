@@ -4,7 +4,6 @@ use srag\ActiveRecordConfig\UserTakeOver\ActiveRecordConfig;
 
 /**
  * Class ilUserTakeOverConfig
- *
  * @author Benjamin Seglias <bs@studer-raimann.ch>
  */
 class ilUserTakeOverConfig extends ActiveRecordConfig

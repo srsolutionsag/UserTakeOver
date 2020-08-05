@@ -2,72 +2,79 @@
 
 namespace srag\ActiveRecordConfig\UserTakeOver;
 
-use ilPropertyFormGUI;
-use srag\DIC\UserTakeOver\DICTrait;
+use srag\CustomInputGUIs\UserTakeOver\PropertyFormGUI\ConfigPropertyFormGUI;
 
 /**
  * Class ActiveRecordConfigFormGUI
  *
- * @package srag\ActiveRecordConfig\UserTakeOver
+ * @package    srag\ActiveRecordConfig\UserTakeOver
  *
- * @author  studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ * @author     studer + raimann ag - Team Custom 1 <support-custom1@studer-raimann.ch>
+ *
+ * @deprecated Please use PropertyFormGUI from CustomInputGUIs instead
  */
-abstract class ActiveRecordConfigFormGUI extends ilPropertyFormGUI {
+abstract class ActiveRecordConfigFormGUI extends ConfigPropertyFormGUI
+{
 
-	use DICTrait;
-	/**
-	 * @var ActiveRecordConfigGUI
-	 */
-	protected $parent;
-	/**
-	 * @var string
-	 */
-	protected $tab_id;
-
-
-	/**
-	 * ActiveRecordConfigFormGUI constructor
-	 *
-	 * @param ActiveRecordConfigGUI $parent
-	 * @param string                $tab_id
-	 */
-	public function __construct(ActiveRecordConfigGUI $parent, /*string*/
-		$tab_id) {
-		parent::__construct();
-
-		$this->parent = $parent;
-		$this->tab_id = $tab_id;
-
-		$this->initForm();
-	}
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
+    const LANG_MODULE = ActiveRecordConfigGUI::LANG_MODULE_CONFIG;
+    /**
+     * @var string
+     *
+     * @deprecated
+     */
+    protected $tab_id;
 
 
-	/**
-	 *
-	 */
-	protected function initForm()/*: void*/ {
-		$this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent));
+    /**
+     * ActiveRecordConfigFormGUI constructor
+     *
+     * @param ActiveRecordConfigGUI $parent
+     * @param string                $tab_id
+     *
+     * @deprecated
+     */
+    public function __construct(ActiveRecordConfigGUI $parent, string $tab_id)
+    {
+        $this->tab_id = $tab_id;
 
-		$this->setTitle($this->txt($this->tab_id));
-
-		$this->addCommandButton(ActiveRecordConfigGUI::CMD_UPDATE_CONFIGURE . "_" . $this->tab_id, $this->txt("save"));
-	}
-
-
-	/**
-	 *
-	 */
-	public abstract function updateConfig()/*: void*/
-	;
+        parent::__construct($parent);
+    }
 
 
-	/**
-	 * @param string $key
-	 *
-	 * @return string
-	 */
-	protected final function txt(/*string*/
-		$key)/*: string*/ {
-		return self::plugin()->translate($key, ActiveRecordConfigGUI::LANG_MODULE_CONFIG);
-	}
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    protected function initCommands()/*: void*/
+    {
+        $this->addCommandButton(ActiveRecordConfigGUI::CMD_UPDATE_CONFIGURE . "_" . $this->tab_id, $this->txt("save"));
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    protected function initId()/*: void*/
+    {
+
+    }
+
+
+    /**
+     * @inheritDoc
+     *
+     * @deprecated
+     */
+    protected function initTitle()/*: void*/
+    {
+        $this->setTitle($this->txt($this->tab_id));
+    }
 }
