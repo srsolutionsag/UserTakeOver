@@ -5,13 +5,13 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class usrtoGroupFormGUI
- *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
 class usrtoGroupFormGUI extends ilPropertyFormGUI
 {
 
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     /**
      * @var  usrtoGroup
@@ -26,7 +26,6 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
      */
     protected $is_new;
 
-
     /**
      * @param ilUserTakeOverGroupsGUI $parent_gui
      * @param usrtoGroup              $usrtoGroup
@@ -34,13 +33,12 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
     public function __construct(ilUserTakeOverGroupsGUI $parent_gui, ActiveRecord $usrtoGroup)
     {
         parent::__construct();
-        $this->object = $usrtoGroup;
+        $this->object     = $usrtoGroup;
         $this->parent_gui = $parent_gui;
         $this->ctrl->saveParameter($parent_gui, ilUserTakeOverGroupsGUI::IDENTIFIER);
         $this->is_new = ($this->object->getId() == '');
         $this->initForm();
     }
-
 
     protected function initForm()
     {
@@ -56,7 +54,6 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
         $this->addItem($ta);
     }
 
-
     public function fillForm()
     {
         $array = array(
@@ -66,10 +63,8 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
         $this->setValuesByArray($array);
     }
 
-
     /**
      * returns whether checkinput was successful or not.
-     *
      * @return bool
      */
     public function fillObject()
@@ -83,7 +78,6 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
 
         return true;
     }
-
 
     /**
      * @return bool|string
@@ -101,7 +95,6 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
 
         return true;
     }
-
 
     protected function initButtons()
     {

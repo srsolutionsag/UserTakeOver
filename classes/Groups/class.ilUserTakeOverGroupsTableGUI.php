@@ -5,13 +5,13 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * Class ilUserTakeOverGroupsTableGUI
- *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
 class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
 {
 
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     const TBL_ID = 'tbl_usrto_grps';
     /**
@@ -22,7 +22,6 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
      * @var array
      */
     protected $filter = array();
-
 
     /**
      * @param ilUserTakeOverGroupsGUI $a_parent_obj
@@ -48,7 +47,6 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $this->parseData();
     }
 
-
     protected function addFilterItems()
     {
         $title = new ilTextInputGUI(self::plugin()->translate('title'), 'title');
@@ -57,7 +55,6 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $number_of_members = new ilTextInputGUI(self::plugin()->translate('minimum_number_of_members'), 'number_of_members');
         $this->addAndReadFilterItem($number_of_members);
     }
-
 
     /**
      * @param $item
@@ -72,7 +69,6 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
             $this->filter[$item->getPostVar()] = $item->getValue();
         }
     }
-
 
     /**
      * @param array $a_set
@@ -90,14 +86,12 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $this->tpl->parseCurrentBlock();
     }
 
-
     protected function initColums()
     {
         $this->addColumn(self::plugin()->translate('name_grp'), 'title');
         $this->addColumn(self::plugin()->translate('number_of_members'), 'count');
         $this->addColumn(self::plugin()->translate('common_actions'), '', '150px');
     }
-
 
     /**
      * @param usrtoGroup $usrtoGroup
@@ -114,18 +108,17 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         self::dic()->ctrl()->setParameter($this->parent_obj, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
         if ($access->hasWriteAccess()) {
             $current_selection_list->addItem(self::plugin()->translate('edit_members'), ilUserTakeOverMembersGUI::CMD_CONFIGURE, self::dic()->ctrl()
-                ->getLinkTargetByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverMembersGUI::CMD_CONFIGURE));
+                                                                                                                                     ->getLinkTargetByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverMembersGUI::CMD_CONFIGURE));
             $current_selection_list->addItem(self::plugin()->translate('edit_grp'), ilUserTakeOverGroupsGUI::CMD_EDIT, self::dic()->ctrl()
-                ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT));
+                                                                                                                           ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT));
         }
         if ($access->hasDeleteAccess()) {
             $current_selection_list->addItem(self::plugin()->translate('delete'), ilUserTakeOverGroupsGUI::CMD_DELETE, self::dic()->ctrl()
-                ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_CONFIRM));
+                                                                                                                           ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_CONFIRM));
         }
         $current_selection_list->getHTML();
         $this->tpl->setVariable('ACTIONS', $current_selection_list->getHTML());
     }
-
 
     protected function parseData()
     {
@@ -136,10 +129,10 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $query_string = "SELECT g.id, count(m.id) AS count FROM ui_uihk_usrto_grp AS g LEFT JOIN ui_uihk_usrto_member AS m ON g.id = m.group_id";
 
         $sorting_column = $this->getOrderField() ? $this->getOrderField() : 'title';
-        $offset = $this->getOffset() ? $this->getOffset() : 0;
+        $offset         = $this->getOffset() ? $this->getOffset() : 0;
 
         $sorting_direction = $this->getOrderDirection();
-        $num = $this->getLimit();
+        $num               = $this->getLimit();
 
         foreach ($this->filter as $filter_key => $filter_value) {
             switch ($filter_key) {
@@ -153,7 +146,7 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         }
         $query_string .= " ORDER BY " . $sorting_column . " " . $sorting_direction . " LIMIT " . self::dic()->database()->quote($offset, "integer")
             . ", " . self::dic()->database()->quote($num, "integer");
-        $set = self::dic()->database()->query($query_string);
+        $set          = self::dic()->database()->query($query_string);
         while ($row = self::dic()->database()->fetchAssoc($set)) {
             $res[] = $row;
         }

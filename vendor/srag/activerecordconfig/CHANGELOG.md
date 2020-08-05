@@ -1,5 +1,138 @@
 # Changelog
 
+## [0.19.6]
+- Fix
+
+## [0.19.5]
+- Fix
+
+## [0.19.4]
+- Fix
+
+## [0.19.3]
+- Fix
+
+## [0.19.2]
+- Fix
+
+## [0.19.1]
+- Fix
+
+## [0.19.0]
+- Refactor
+
+## [0.18.7]
+- Fix
+
+## [0.18.6]
+- Fix
+
+## [0.18.5]
+- Fix
+
+## [0.18.4]
+- Fix
+
+## [0.18.3]
+- Fix
+
+## [0.18.2]
+- Fix
+
+## [0.18.1]
+- Fix
+
+## [0.18.0]
+- Refactor, deprecated old `ActiveRecordConfig`
+- Min PHP 7.0
+
+## [0.17.1]
+- Remove ILIAS 5.2 hints
+
+## [0.17.0]
+- Deprecated `ActiveRecordConfigGUI`
+
+## [0.16.4]
+- Add plugin to locator
+
+## [0.16.3]
+- Fix redirect after process table filter
+
+## [0.16.2]
+- Fix
+
+## [0.16.1]
+- Fix
+
+## [0.16.0]
+- `addTab` overridable
+
+## [0.15.1]
+- Fix reset offset
+
+## [0.15.0]
+- Supports an custom command or other gui class as tab
+
+## [0.14.3]
+- Fix initFilterFields
+
+## [0.14.2]
+- Fixes
+
+## [0.14.1]
+- ActiveRecordObjectFormGUI
+
+## [0.14.0]
+- ActiveRecordObjectFormGUI
+
+## [0.13.4]
+- Use ConfigPropertyFormGUI
+
+## [0.13.3]
+- ActiveRecordConfigException::CODE_X
+
+## [0.13.2]
+- Some improvments in PropertyFormGUI
+
+## [0.13.1]
+- New OutputInterface
+
+## [0.13.0]
+- TableGUI
+
+## [0.12.2]
+- BaseTableGUI
+
+## [0.12.1]
+- BaseTableGUI
+
+## [0.12.0]
+- BaseTableGUI
+
+## [0.11.6]
+- Fix
+
+## [0.11.5]
+- Fix
+
+## [0.11.4]
+- Fix
+
+## [0.11.3]
+- Fix
+
+## [0.11.2]
+- Move PropertyFormGUI to CustomInputGUIs
+
+## [0.11.1]
+- Fix and improvment PropertyForm
+
+## [0.11.0]
+- New PropertyForm
+
+## [0.10.0]
+- getDefaultValue
+
 ## [0.9.4]
 - Fix on some strange PHP versions
 

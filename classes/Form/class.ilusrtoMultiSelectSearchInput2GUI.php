@@ -9,7 +9,6 @@ use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchInputGUI\MultiSelectSearc
 
 /**
  * Class ilMultiSelectSearchInput2GUI
- *
  * @author Oskar Truffer <ot@studer-raimann.ch>
  */
 class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI
@@ -17,13 +16,10 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI
 
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 
-
     /**
      * ilusrtoMultiSelectSearchInput2GUI constructor.
-     *
      * @param $title
      * @param $post_var
-     *
      * @throws \ilTemplateException
      * @throws \srag\DIC\UserTakeOver\Exception\DICException
      */
@@ -34,12 +30,11 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI
         $this->setWidth('300px');
     }
 
-
     protected function getValueAsJson()
     {
         $query = "SELECT firstname, lastname, login, usr_id FROM usr_data WHERE " . self::dic()->database()
-                ->in("usr_id", $this->getValue(), false, "integer");
-        $res = self::dic()->database()->query($query);
+                                                                                        ->in("usr_id", $this->getValue(), false, "integer");
+        $res   = self::dic()->database()->query($query);
         while ($user = self::dic()->database()->fetchAssoc($res)) {
             $result[] = [
                 "id"   => $user['usr_id'],

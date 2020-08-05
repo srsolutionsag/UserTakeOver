@@ -4,14 +4,12 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 
 /**
  * Class usrtoMember
- *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
 class usrtoMember extends ActiveRecord
 {
 
     const TABLE_NAME = "ui_uihk_usrto_member";
-
 
     /**
      * @return string
@@ -21,10 +19,8 @@ class usrtoMember extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-
     /**
      * @var string
-     *
      * @db_has_field        true
      * @con_is_unique       true
      * @db_fieldtype        integer
@@ -35,7 +31,6 @@ class usrtoMember extends ActiveRecord
     protected $id;
     /**
      * @var int
-     *
      * @con_has_field  true
      * @con_fieldtype  integer
      * @con_length     8
@@ -44,14 +39,12 @@ class usrtoMember extends ActiveRecord
     protected $group_id;
     /**
      * @var int
-     *
      * @con_has_field  true
      * @con_fieldtype  integer
      * @con_length     8
      * @con_is_notnull
      */
     protected $user_id;
-
 
     /**
      * @return string
@@ -61,7 +54,6 @@ class usrtoMember extends ActiveRecord
         return $this->id;
     }
 
-
     /**
      * @param string $id
      */
@@ -69,7 +61,6 @@ class usrtoMember extends ActiveRecord
     {
         $this->id = $id;
     }
-
 
     /**
      * @return int
@@ -79,7 +70,6 @@ class usrtoMember extends ActiveRecord
         return $this->group_id;
     }
 
-
     /**
      * @param int $group_id
      */
@@ -88,7 +78,6 @@ class usrtoMember extends ActiveRecord
         $this->group_id = $group_id;
     }
 
-
     /**
      * @return int
      */
@@ -96,7 +85,6 @@ class usrtoMember extends ActiveRecord
     {
         return $this->user_id;
     }
-
 
     /**
      * @param int $user_id

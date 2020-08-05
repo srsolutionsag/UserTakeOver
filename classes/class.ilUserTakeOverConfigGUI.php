@@ -5,11 +5,8 @@ use srag\DIC\UserTakeOver\DICTrait;
 
 /**
  * ilUserDefaultsConfigGUI
- *
  * @author            Fabian Schmid <fs@studer-raimann.ch>
- *
  * @version           1.0.00
- *
  * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
  * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupsGUI
  */
@@ -17,9 +14,9 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI
 {
 
     use DICTrait;
+
     const CMD_CONFIGURE = 'configure';
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
 
     public function executeCommand()
     {
@@ -37,11 +34,9 @@ class ilUserTakeOverConfigGUI extends ilPluginConfigGUI
         }
     }
 
-
     public function performCommand($cmd)
     {
-        $cmd = self::dic()->ctrl()->getCmd();
-        switch ($cmd) {
+        switch (self::dic()->ctrl()->getCmd()) {
             case self::CMD_CONFIGURE:
                 self::dic()->ctrl()->saveParameterByClass(ilUserTakeOverGroupsGUI::class, 'admin_mode');
                 self::dic()->ctrl()->saveParameterByClass(ilUserTakeOverGroupsGUI::class, 'ctype');

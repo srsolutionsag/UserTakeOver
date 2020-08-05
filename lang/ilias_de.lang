@@ -43,3 +43,6 @@ group#:#Gruppe
 create_group#:#Gruppe erstellen
 edit_group#:#Gruppe bearbeiten
 back#:#Zurück
+status#:#Status
+status_original_login#:#Ursprünglicher Benutzer
+status_impersonated_login#:#Eingenommene Benutzersicht
