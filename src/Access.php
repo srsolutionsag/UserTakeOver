@@ -47,7 +47,7 @@ class Access
     public function isUserTakeOverAvailableForUser(?Closure $additional = null) : Closure
     {
         $closure = function () use ($additional) : bool {
-            return ($this->hasUserAccessToUserSearch($additional)() || $this->isUserAssignedToAGroup($additional) || $this->isTakeOverRunning($additional));
+            return ($this->hasUserAccessToUserSearch($additional)() || $this->isUserAssignedToAGroup($additional)() || $this->isTakeOverRunning($additional)());
         };
 
         return $this->getClosureWithOptinalClosure(
@@ -65,7 +65,7 @@ class Access
     public function isUserAllowedToImpersonate(?Closure $additional = null) : Closure
     {
         $closure = function () use ($additional) : bool {
-            return ($this->hasUserAccessToUserSearch($additional)() || $this->isUserAssignedToAGroup($additional));
+            return ($this->hasUserAccessToUserSearch($additional)() || $this->isUserAssignedToAGroup($additional)());
         };
         return $this->getClosureWithOptinalClosure($this->getClosureWithOptinalClosure($this->basics->isUserLoggedIn(), $closure), $additional);
     }
