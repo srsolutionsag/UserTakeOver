@@ -117,7 +117,7 @@ class Access
         return $this->getClosureWithOptinalClosure(function () : bool {
             $identifier = ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES;
             if (!isset($this->config[$identifier])) {
-                return true;
+                return false;
             }
 
             return $this->rbac->review()->isAssignedToAtLeastOneGivenRole(
