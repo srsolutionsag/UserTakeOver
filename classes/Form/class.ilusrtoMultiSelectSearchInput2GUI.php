@@ -18,8 +18,7 @@ class ilusrtoMultiSelectSearchInput2GUI extends MultiSelectSearchInput2GUI
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
 
     /**
-     * whysoever this method isn't implemented in parent but used by it's render method.
-     * this must stay here as some sort of hotfix for this stupidity. cheers.
+     * method must be implemented, could (maybe) determine some sort of limit per ajax-search.
      *
      * @return string
      */

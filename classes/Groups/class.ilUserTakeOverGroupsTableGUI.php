@@ -106,6 +106,7 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $current_selection_list->setUseImages(false);
 
         self::dic()->ctrl()->setParameterByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
+        self::dic()->ctrl()->setParameterByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
         if ($access->hasWriteAccess()) {
             $current_selection_list->addItem(
                 self::plugin()->translate('edit_members'),
