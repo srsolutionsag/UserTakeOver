@@ -4,6 +4,7 @@ namespace srag\Plugins\UserTakeOver;
 
 use Closure;
 use ILIAS\GlobalScreen\Helper\BasicAccessCheckClosures;
+use ilUserTakeOverARConfig;
 
 /**
  * Class Access
@@ -23,6 +24,14 @@ class Access
      * @var BasicAccessCheckClosures
      */
     protected $basics;
+    /**
+     * @var \ILIAS\DI\RBACServices
+     */
+    protected $rbac;
+    /**
+     * @var ilUserTakeOverARConfig[]
+     */
+    protected $config;
 
     /**
      * Access constructor.
@@ -30,9 +39,13 @@ class Access
      */
     public function __construct(int $current_user_id, int $original_user_id)
     {
+        global $DIC;
+
         $this->current_user_id  = $current_user_id;
         $this->original_user_id = $original_user_id;
         $this->basics           = BasicAccessCheckClosures::getInstance();
+        $this->rbac             = $DIC->rbac();
+        $this->config           = \ilUserTakeOverARConfig::get();
     }
 
     public function isTakeOverRunning(?Closure $additional = null) : Closure
@@ -58,7 +71,10 @@ class Access
     public function hasUserAccessToUserSearch(?Closure $additional = null) : Closure
     {
         return $this->getClosureWithOptinalClosure(function () use ($additional) : bool {
-            return ($this->basics->hasAdministrationAccess($additional)() && !$this->isTakeOverRunning($additional)());
+            return (($this->basics->hasAdministrationAccess($additional)() ||
+                     $this->isUserAssignedToConfiguredRole($additional)()) &&
+                    !$this->isTakeOverRunning($additional)()
+            );
         }, $additional);
     }
 
@@ -93,6 +109,21 @@ class Access
             }
 
             return $is_in_group;
+        }, $additional);
+    }
+
+    public function isUserAssignedToConfiguredRole(?Closure $additional = null) : Closure
+    {
+        return $this->getClosureWithOptinalClosure(function () : bool {
+            $identifier = ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES;
+            if (!isset($this->config[$identifier])) {
+                return true;
+            }
+
+            return $this->rbac->review()->isAssignedToAtLeastOneGivenRole(
+                $this->current_user_id,
+                $this->config[$identifier]->getValue()
+            );
         }, $additional);
     }
 

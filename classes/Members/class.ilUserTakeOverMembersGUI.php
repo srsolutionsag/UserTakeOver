@@ -3,20 +3,19 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 
 use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
 use srag\DIC\UserTakeOver\DICTrait;
-use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
 /**
  * GUI class ilUserTakeOverMembersGUI
- * @author            : Benjamin Seglias   <bs@studer-raimann.ch>
- * @ilCtrl_IsCalledBy ilUserTakeOverMembersGUI: ilUIPluginRouterGUI
- * @ilCtrl_isCalledBy srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl: ilUserTakeOverMembersGUI
+ *
+ * @author Benjamin Seglias <bs@studer-raimann.ch>
+ * @author Thibeau Fuhrer <thf@studer-raimann.ch>
  */
 class ilUserTakeOverMembersGUI
 {
-
     use DICTrait;
 
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
     const CMD_CONFIGURE = 'configure';
     const CMD_SAVE = 'save';
     const CMD_SEARCH_USERS = 'searchUsers';
@@ -24,28 +23,10 @@ class ilUserTakeOverMembersGUI
 
     public function executeCommand()
     {
-
-        self::dic()->tabs()->clearTargets();
-        $nextClass = self::dic()->ctrl()->getNextClass();
-        switch ($nextClass) {
-            case strtolower(UsersAjaxAutoCompleteCtrl::class):
-                self::dic()->ctrl()->forwardCommand(new UsersAjaxAutoCompleteCtrl());
-                break;
-            default;
-                $this->performCommand(self::dic()->ctrl()->getCmd());
-                break;
-        }
-    }
-
-    public function performCommand($cmd)
-    {
+        $cmd = self::dic()->ctrl()->getCmd(self::CMD_CONFIGURE);
         switch ($cmd) {
             case self::CMD_CONFIGURE:
             case self::CMD_SAVE:
-                self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()
-                                                                                          ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
-                $this->$cmd();
-                break;
             case self::CMD_SEARCH_USERS:
             case self::CMD_CANCEL:
                 $this->$cmd();
@@ -96,7 +77,7 @@ class ilUserTakeOverMembersGUI
 
         $this->initButtons($form);
 
-        $form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
+        $form->setFormAction(self::dic()->ctrl()->getFormActionByClass([ilUserTakeOverMainGUI::class, UsersAjaxAutoCompleteCtrl::class], self::CMD_SAVE));
 
         return $form;
     }
@@ -112,7 +93,7 @@ class ilUserTakeOverMembersGUI
 
     protected function cancel()
     {
-        self::dic()->ctrl()->redirectByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD);
+        self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class], ilUserTakeOverGroupsGUI::CMD_STANDARD);
     }
 
     protected function save()
@@ -142,7 +123,7 @@ class ilUserTakeOverMembersGUI
             }
             ilUtil::sendSuccess(self::plugin()->translate("success"), true);
             self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
-            self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
+            self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_CONFIGURE);
         } else {
             ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
             self::output()->output($form);

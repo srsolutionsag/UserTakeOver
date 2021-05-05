@@ -53,7 +53,7 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
             // Search Field
             $search = new UTOSearchItem($if('uto_search'), $this->dic);
             $search = $search->withSymbol($icon('search'));
-            $search = $search->withUrl($this->dic->ctrl()->getLinkTargetByClass([\ilUIPluginRouterGUI::class, \ilUserTakeOverGUI::class], \ilUserTakeOverGUI::CMD_SEARCH));
+            $search = $search->withUrl($this->dic->ctrl()->getLinkTargetByClass([\ilUIPluginRouterGUI::class, \ilUserTakeOverMainGUI::class], \ilUserTakeOverMainGUI::CMD_SEARCH));
             $search = $search->withTitle($txt('take_over_user_view'));
             $search = $search->withVisibilityCallable($access->hasUserAccessToUserSearch());
 

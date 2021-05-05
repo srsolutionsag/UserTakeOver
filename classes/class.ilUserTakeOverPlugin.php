@@ -20,7 +20,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
 
     const PLUGIN_ID = 'usrto';
     const PLUGIN_NAME = 'UserTakeOver';
-    const PLUGIN_CLASS_NAME = self::class;
+    const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
     /**
      * @var ilUserTakeOverPlugin

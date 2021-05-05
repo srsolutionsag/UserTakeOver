@@ -46,3 +46,4 @@ back#:#Back
 status#:#Status
 status_original_login#:#Original User
 status_impersonated_login#:#Impersonated User
+cnf_global_role_ids#:#Access to impersonate-serach
