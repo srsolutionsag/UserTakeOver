@@ -4,14 +4,12 @@ require_once __DIR__ . "/../../vendor/autoload.php";
 
 /**
  * Class usrtoGroup
- *
  * @author: Benjamin Seglias   <bs@studer-raimann.ch>
  */
 class usrtoGroup extends ActiveRecord
 {
 
     const TABLE_NAME = "ui_uihk_usrto_grp";
-
 
     /**
      * @return string
@@ -21,10 +19,8 @@ class usrtoGroup extends ActiveRecord
         return self::TABLE_NAME;
     }
 
-
     /**
      * @var string
-     *
      * @db_has_field        true
      * @con_is_unique       true
      * @db_fieldtype        integer
@@ -35,7 +31,6 @@ class usrtoGroup extends ActiveRecord
     protected $id;
     /**
      * @var string
-     *
      * @db_has_field        true
      * @db_fieldtype        text
      * @db_length           256
@@ -43,12 +38,10 @@ class usrtoGroup extends ActiveRecord
     protected $title = '';
     /**
      * @var string
-     *
      * @con_has_field  true
      * @con_fieldtype  text
      */
     protected $description = '';
-
 
     /**
      * @return string
@@ -58,7 +51,6 @@ class usrtoGroup extends ActiveRecord
         return $this->id;
     }
 
-
     /**
      * @param string $id
      */
@@ -66,7 +58,6 @@ class usrtoGroup extends ActiveRecord
     {
         $this->id = $id;
     }
-
 
     /**
      * @return string
@@ -76,7 +67,6 @@ class usrtoGroup extends ActiveRecord
         return $this->title;
     }
 
-
     /**
      * @param string $title
      */
@@ -85,7 +75,6 @@ class usrtoGroup extends ActiveRecord
         $this->title = $title;
     }
 
-
     /**
      * @return string
      */
@@ -93,7 +82,6 @@ class usrtoGroup extends ActiveRecord
     {
         return $this->description;
     }
-
 
     /**
      * @param string $description

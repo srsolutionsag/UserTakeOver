@@ -69,9 +69,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
 
                 // If we are admin
                 /** Some Async requests wont instanciate rbacreview. Thus we just terminate. */
-                if ((self::dic()->rbacreview() instanceof ilRbacReview)
-                    && in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))
-                ) {
+                if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole(self::dic()->user()->getId())) {
                     ///////////////// IN THE USER ADMINISTRATION /////////////////
                     $this->initTakeOverToolbar(self::dic()->toolbar());
                 }
@@ -107,10 +105,12 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
     protected function getTopBarHtml()
     {
         $template = self::plugin()->getPluginObject()->getTemplate("tpl.MMUserTakeOver.html", false, false);
-        if (in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole(self::dic()->user()->getId()) ||
+            ilObjUserTakeOverAccess::isUserAdministrator(self::dic()->user()->getId())
+        ) {
             $template->setVariable("SEARCHUSERLINK", self::dic()->ctrl()->getLinkTargetByClass([
                 ilUIPluginRouterGUI::class,
-                //ilUserTakeOverConfigGUI::class,
+                ilUserTakeOverMainGUI::class,
                 ilUserTakeOverMembersGUI::class,
             ], ilUserTakeOverMembersGUI::CMD_SEARCH_USERS));
             // If we already switched user we want to set the backup id to the new takeover but keep the one to the original user.
@@ -135,8 +135,12 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         if (!empty($group_ids)) {
             $groups_html = $this->getGroupsHtml($group_ids, self::dic()->user());
         }
-        //only group members or user with admin role can use search
-        if (in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId())) || !empty($group_ids)) {
+
+        //only group members or user with admin- or configured role can use search
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole(self::dic()->user()->getId()) ||
+            ilObjUserTakeOverAccess::isUserAdministrator(self::dic()->user()->getId()) ||
+            !empty($group_ids)
+        ) {
             $template->setCurrentBlock("DROPDOWN_TOGGLE");
             $template->setVariable("TOGGLE", "<a id=\"srag-toggle\" class=\"dropdown-toggle\"><span class=\"glyphicon glyphicon-eye-open\"><span class=\"caret\"></span></span></a>");
             $template->parseCurrentBlock();

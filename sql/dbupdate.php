@@ -1,8 +1,8 @@
 <#1>
 <?php
-if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
-	\ilUserTakeOverConfig::updateDB();
-}
+//if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
+//	\ilUserTakeOverConfig::updateDB();
+//}
 ?>
 <#2>
 <?php
@@ -43,7 +43,32 @@ if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists('ui_uihk_us
 ?>
 <#5>
 <?php
-if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
-	\ilUserTakeOverConfig::updateDB();
+//if(!\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists(ilUserTakeOverConfig::TABLE_NAME)) {
+//	\ilUserTakeOverConfig::updateDB();
+//}
+?>
+<#6>
+<?php
+if ($ilDB->tableExists('ui_uihk_usrto_config')) {
+    $ilDB->dropTable('ui_uihk_usrto_config');
+}
+?>
+<#7>
+<?php
+$fields = array(
+    'identifier' => array(
+        'notnull' => '1',
+        'type' => 'text',
+        'length' => '250',
+    ),
+    'value' => array(
+        'notnull' => '1',
+        'type' => 'text',
+        'length' => '4000',
+    )
+);
+if (!$ilDB->tableExists('usrto_config')) {
+    $ilDB->createTable('usrto_config', $fields);
+    $ilDB->addPrimaryKey('usrto_config', array( 'identifier' ));
 }
 ?>

@@ -7,15 +7,14 @@ use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 /**
  * GUI class ilUserTakeOverMembersGUI
  *
- * @author            : Benjamin Seglias   <bs@studer-raimann.ch>
- *
- * @ilCtrl_IsCalledBy ilUserTakeOverMembersGUI: ilUIPluginRouterGUI
+ * @author Benjamin Seglias <bs@studer-raimann.ch>
  */
 class ilUserTakeOverMembersGUI
 {
-
     use DICTrait;
+
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
     const CMD_CONFIGURE = 'configure';
     const CMD_SAVE = 'save';
     const CMD_SEARCH_USERS = 'searchUsers';
@@ -24,27 +23,17 @@ class ilUserTakeOverMembersGUI
 
     public function executeCommand()
     {
-
-        self::dic()->tabs()->clearTargets();
-        $nextClass = self::dic()->ctrl()->getNextClass();
-        switch ($nextClass) {
-            default;
-                $this->performCommand(self::dic()->ctrl()->getCmdClass());
-                break;
-        }
-    }
-
-
-    public function performCommand($cmd)
-    {
         $cmd = self::dic()->ctrl()->getCmd();
         switch ($cmd) {
             case self::CMD_CONFIGURE:
             case self::CMD_SAVE:
-                self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()
-                    ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
-                $this->$cmd();
-                break;
+                self::dic()->tabs()->setBackTarget(
+                    self::plugin()->translate('back'),
+                    self::dic()->ctrl()->getLinkTargetByClass(
+                        [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
+                        ilUserTakeOverGroupsGUI::CMD_STANDARD
+                    )
+                );
             case self::CMD_SEARCH_USERS:
             case self::CMD_CANCEL:
                 $this->$cmd();
@@ -84,10 +73,10 @@ class ilUserTakeOverMembersGUI
         }
         $input = new ilusrtoMultiSelectSearchInput2GUI($title, 'grp[' . $group->getId() . ']');
         $input->setInfo(self::plugin()->translate("group_info"));
-        $input->setAjaxLink(self::dic()->ctrl()->getLinkTarget($this, self::CMD_SEARCH_USERS));
+        $input->setAjaxLink(self::dic()->ctrl()->getLinkTargetByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_SEARCH_USERS));
 
         $members_data = \usrtoMember::innerjoin('usr_data', 'user_id', 'usr_id')->where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")
-            ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
+                                    ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
         $options = [];
         foreach ($members_data as $member_data) {
             $options[$member_data['usr_id']] = $member_data['firstname'] . " " . $member_data['lastname'] . " (" . $member_data['login'] . ")";
@@ -97,7 +86,7 @@ class ilUserTakeOverMembersGUI
 
         $this->initButtons($form);
 
-        $form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
+        $form->setFormAction(self::dic()->ctrl()->getFormActionByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_SAVE));
 
         return $form;
     }
@@ -115,7 +104,7 @@ class ilUserTakeOverMembersGUI
 
     protected function cancel()
     {
-        self::dic()->ctrl()->redirectByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD);
+        self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class], ilUserTakeOverGroupsGUI::CMD_STANDARD);
     }
 
 
@@ -146,7 +135,7 @@ class ilUserTakeOverMembersGUI
             }
             ilUtil::sendSuccess(self::plugin()->translate("success"), true);
             self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
-            self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
+            self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_CONFIGURE);
         } else {
             ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
             self::plugin()->output($form);
@@ -181,7 +170,7 @@ class ilUserTakeOverMembersGUI
             exit;
         }
 
-        //when the search was done via select2 input field the term will be send as array. In the search field it won't be send as array.
+        //when the search was done via select2 input field the term will be sent as array. In the search field it won't be sent as array.
         if (is_array($_GET['term'])) {
             $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
         } else {

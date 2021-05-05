@@ -1,0 +1,49 @@
+take_over_user_view#:#Assumir a visão de outro usuário
+leave_user_view#:#Sair da visão do usuário
+user_taker_over_success#:#Você assumiu com sucesso a visão do usuário %s.
+user_taker_back_success#:#Você está logado novamente como:  %s
+user_taker_over_failure#:#Assumir a Visão do Usuário: Ocorreu um erro.
+no_permission#:#Você não tem a permissão necessária
+configuration#:#Configuração
+demo_group#:#Grupo de Demonstração
+demo_group_info#:#Os usuários do grupo de demonstração podem assumir as contas uns dos outros. Tome cuidado: Se você adicionar um administrador ao grupo de demonstração, todas as contas do grupo ganham privilégios de administração de fato.
+save#:#Salvar
+success#:#Salvo com êxito.
+something_went_wrong#:#Algo deu errado.
+loading#:#Carregando...
+no_results#:#Nenhum resultado.
+take_over_user#:#Assumir o controle do usuário:
+title#:#Título
+number_of_members#:#Número de membros
+minimum_number_of_members#:#Número mínimo de membros
+common_actions#:#Ações
+edit_members#:#Editar membros
+edit_grp#:#Editar grupo
+add_grp#:#Adicionar grupo
+description#:#Descrição
+create#:#Criar
+edit#:#Editar
+cancel#:#Cancelar
+name_grp#:#Nome do grupo
+removeplugindataconfirm_cancel#:#Cancelar
+removeplugindataconfirm_confirm_remove_data#:#Você quer remover também os dados de %1$s? No máximo, você só quer desativar o plugin %1$s?
+removeplugindataconfirm_deactivate#:#Basta desativar o plugin %1$s
+removeplugindataconfirm_data#:#%1$s data
+removeplugindataconfirm_keep_data#:#Manter dados %1$s
+removeplugindataconfirm_msg_kept_data#:#Os dados de %1$s foram mantidos
+removeplugindataconfirm_msg_removed_data#:#Os dados de %1$s também foram removidos
+removeplugindataconfirm_remove_data#:#Remover dados %1$s
+create_grp_msg_success#:#O grupo foi criado.
+update_grp_msg_success#:#O grupo foi atualizado.
+delete#:#Deletar
+confirm_delete_grp#:#Você realmente quer apagar o grupo?
+update#:#Atualizar
+group_info#:#Os usuários do grupo podem assumir as contas uns dos outros. Tome cuidado: Se você acrescentar um administrador ao grupo, todas as contas do grupo ganham privilégios de administração de fato.
+group#:#Grupo
+create_group#:#Criar grupo
+edit_group#:#Editar grupo
+back#:#Voltar
+status#:#Status
+status_original_login#:#Usuário original
+status_impersonated_login#:#Usuário imitado
+cnf_global_role_ids#:#Access to impersonate-serach

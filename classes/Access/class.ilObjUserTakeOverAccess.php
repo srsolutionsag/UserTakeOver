@@ -67,4 +67,32 @@ class ilObjUserTakeOverAccess extends ilObjectPluginAccess
 
         return (bool) self::dic()->access()->checkAccessOfUser($user_id, $permission, '', $ref_id);
     }
+
+    /**
+     * @param int $user_id
+     * @return bool
+     */
+    public static function isUserAdministrator(int $user_id)
+    {
+        return self::dic()->rbacreview()->isAssigned($user_id, 2);
+    }
+
+
+    /**
+     * @param int $user_id
+     * @return bool
+     */
+    public static function isUserAssignedToConfiguredRole(int $user_id)
+    {
+        $config = ilUserTakeOverARConfig::get();
+        $identifier = ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES;
+        if (!isset($config[$identifier])) {
+            return false;
+        }
+
+        return self::dic()->rbacreview()->isAssignedToAtLeastOneGivenRole(
+            $user_id,
+            $config[$identifier]->getValue()
+        );
+    }
 }
