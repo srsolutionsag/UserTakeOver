@@ -163,34 +163,35 @@ class ilUserTakeOverMembersGUI
 
     protected function searchUsers()
     {
-        // Only Administrators
-        if (!in_array(2, self::dic()->rbacreview()->assignedGlobalRoles(self::dic()->user()->getId()))) {
-            //self::plugin()->output([], false);
-            echo json_encode([]);
+        $user_id = self::dic()->user()->getId();
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole($user_id) ||
+            ilObjUserTakeOverAccess::isUserAdministrator($user_id)
+        ) {
+            //when the search was done via select2 input field the term will be sent as array. In the search field it won't be sent as array.
+            if (is_array($_GET['term'])) {
+                $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
+            } else {
+                $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT);
+            }
+            $filtered_term = isset($filtered_term) ? $filtered_term : "";
+
+            /** @var ilObjUser[] $users */
+            $users = ilObjUser::searchUsers($filtered_term);
+            $result = [];
+
+            foreach ($users as $user) {
+                $result[] = [
+                    "id"   => $user['usr_id'],
+                    "text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")",
+                ];
+            }
+
+            //self::plugin()->output($result, false);
+            echo json_encode($result);
             exit;
         }
 
-        //when the search was done via select2 input field the term will be sent as array. In the search field it won't be sent as array.
-        if (is_array($_GET['term'])) {
-            $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
-        } else {
-            $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT);
-        }
-        $filtered_term = isset($filtered_term) ? $filtered_term : "";
-
-        /** @var ilObjUser[] $users */
-        $users = ilObjUser::searchUsers($filtered_term);
-        $result = [];
-
-        foreach ($users as $user) {
-            $result[] = [
-                "id"   => $user['usr_id'],
-                "text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")",
-            ];
-        }
-
-        //self::plugin()->output($result, false);
-        echo json_encode($result);
+        echo json_encode([]);
         exit;
     }
 }
