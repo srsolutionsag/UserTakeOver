@@ -157,12 +157,17 @@ class usrtoHelper
             return true;
         }
 
-        // If the user taking over is of id 13? or is not in the admin role he does not have permission.
-        if (!isset($usr_id) || $usr_id == 13 || !in_array(2, self::dic()->rbacreview()->assignedGlobalRoles($usr_id))) {
-            ilUtil::sendFailure(self::plugin()->translate('no_permission'), true);
-            ilUtil::redirect('login.php');
-
-            return false;
+        // If user is assigned to a configured role or is administrator it's also fine.
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole($usr_id) ||
+            ilObjUserTakeOverAccess::isUserAdministrator($usr_id)
+        ) {
+            return true;
         }
+
+        // Anything else isn't fine, show error message and abort.
+        ilUtil::sendFailure(self::plugin()->translate('no_permission'), true);
+        ilUtil::redirect('login.php');
+
+        return false;
     }
 }
