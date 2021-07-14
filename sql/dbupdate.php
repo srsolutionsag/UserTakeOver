@@ -49,6 +49,9 @@ if (\srag\DIC\UserTakeOver\DICStatic::dic()->database()->tableExists('ui_uihk_us
 ?>
 <#6>
 <?php
+/**
+ * @var $ilDB ilDBInterface
+ */
 if ($ilDB->tableExists('ui_uihk_usrto_config')) {
     $ilDB->dropTable('ui_uihk_usrto_config');
 }

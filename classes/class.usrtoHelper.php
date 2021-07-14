@@ -113,7 +113,7 @@ class usrtoHelper
         self::dic()->log()->write('Plugin usrto: ' . self::dic()->user()->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
         ilUtil::sendSuccess(self::plugin()->translate('user_taker_over_success', "", [$ilObjUser->getLogin()]), true);
-        ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
+        ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
     }
 
     /**
@@ -129,7 +129,7 @@ class usrtoHelper
                                     ->translate('user_taker_back_success', "", [ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
             unset($_SESSION[self::USR_ID_BACKUP]);
         }
-        ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
+        ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
     }
 
     /**

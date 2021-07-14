@@ -3,6 +3,7 @@
 namespace srag\Plugins\UserTakeOver\UI;
 
 use Closure;
+use ilImagePathResolver;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\LegacySubSlate;
 use ILIAS\UI\Implementation\DefaultRenderer;
@@ -55,7 +56,9 @@ class SlateLoaderDetector extends AbstractLoaderDetector
                 $DIC["ui.template_factory"],
                 $DIC["lng"],
                 $DIC["ui.javascript_binding"],
-                $DIC['refinery']);
+                $DIC['refinery'],
+                new ilImagePathResolver()
+            );
         }
 
         return parent::getRendererFor($component, $contexts);
