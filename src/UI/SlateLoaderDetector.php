@@ -8,7 +8,10 @@ use ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\LegacySu
 use ILIAS\UI\Implementation\DefaultRenderer;
 use ILIAS\UI\Implementation\Render\ComponentRenderer;
 use ILIAS\UI\Renderer;
+use ilPluginAdmin;
 use Pimple\Container;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Class SlateLoaderDetector
@@ -56,6 +59,27 @@ class SlateLoaderDetector extends AbstractLoaderDetector
                 $DIC["lng"],
                 $DIC["ui.javascript_binding"],
                 $DIC['refinery']);
+        }
+
+        $plugins =  ilPluginAdmin::getActivePlugins();
+        foreach ($plugins as $plugin) {
+            if (str_contains(__DIR__ , $plugin['name'])) {
+                continue;
+            }
+            $class = 'il' . $plugin['name'] . 'Plugin';
+            try {
+                $reflector = new ReflectionMethod($class, 'exchangeUIRendererAfterInitialization');
+            } catch (ReflectionException $e) {
+                continue;
+            }
+            $class = new $class();
+            if ($reflector->class === get_class($class)) {
+                $RenderClass = $class->exchangeUIRendererAfterInitialization($DIC);
+                $newRenderer = $RenderClass()->getRendererFor($component);
+                if ($newRenderer !== parent::getRendererFor($component, $contexts)) {
+                    return $newRenderer;
+                }
+            }
         }
 
         return parent::getRendererFor($component, $contexts);
