@@ -10,8 +10,6 @@ use ILIAS\UI\Implementation\Render\ComponentRenderer;
 use ILIAS\UI\Renderer;
 use ilPluginAdmin;
 use Pimple\Container;
-use ReflectionException;
-use ReflectionMethod;
 
 /**
  * Class SlateLoaderDetector
