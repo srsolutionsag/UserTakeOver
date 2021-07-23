@@ -67,18 +67,10 @@ class SlateLoaderDetector extends AbstractLoaderDetector
                 continue;
             }
             $class = 'il' . $plugin['name'] . 'Plugin';
-            try {
-                $reflector = new ReflectionMethod($class, 'exchangeUIRendererAfterInitialization');
-            } catch (ReflectionException $e) {
-                continue;
-            }
             $class = new $class();
-            if ($reflector->class === get_class($class)) {
-                $RenderClass = $class->exchangeUIRendererAfterInitialization($DIC);
-                $newRenderer = $RenderClass()->getRendererFor($component);
-                if ($newRenderer !== parent::getRendererFor($component, $contexts)) {
-                    return $newRenderer;
-                }
+            $RenderClosure = $class->exchangeUIRendererAfterInitialization($DIC);
+            if ($RenderClosure !== $DIC->raw('ui.renderer')) {
+                return $RenderClosure()->getRendererFor($component);
             }
         }
 
