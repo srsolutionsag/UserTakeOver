@@ -67,6 +67,10 @@ class SlateLoaderDetector extends AbstractLoaderDetector
             $class = 'il' . $plugin['name'] . 'Plugin';
             $class = new $class();
             $RenderClosure = $class->exchangeUIRendererAfterInitialization($DIC);
+            $RenderClass = $RenderClosure();
+            foreach ($contexts as $context){
+                $RenderClass = $RenderClass->withAdditionalContext($context);
+            }
             if ($RenderClosure !== $DIC->raw('ui.renderer')) {
                 return $RenderClosure()->getRendererFor($component);
             }
