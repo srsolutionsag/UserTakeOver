@@ -186,6 +186,7 @@ class ComposerStaticInit2eb26a471b4c027e1477d7e8613e2b5a
         'srag\\Plugins\\UserTakeOver\\Access' => __DIR__ . '/../..' . '/src/Access.php',
         'srag\\Plugins\\UserTakeOver\\GlobalScreen\\LegacySubItem' => __DIR__ . '/../..' . '/src/GlobalScreen/LegacySubItem.php',
         'srag\\Plugins\\UserTakeOver\\GlobalScreen\\MetaBarProvider' => __DIR__ . '/../..' . '/src/GlobalScreen/MetaBarProvider.php',
+        'srag\\Plugins\\UserTakeOver\\GlobalScreen\\ModificationProvider' => __DIR__ . '/../..' . '/src/GlobalScreen/ModificationProvider.php',
         'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOSearchItem' => __DIR__ . '/../..' . '/src/GlobalScreen/UTOSearchItem.php',
         'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOStatusItem' => __DIR__ . '/../..' . '/src/GlobalScreen/UTOStatusItem.php',
         'srag\\Plugins\\UserTakeOver\\Handler' => __DIR__ . '/../..' . '/src/Handler.php',
