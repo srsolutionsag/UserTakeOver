@@ -7,6 +7,7 @@ use ILIAS\GlobalScreen\ScreenContext\Stack\ContextCollection;
 use srag\Plugins\UserTakeOver\GlobalScreen\MetaBarProvider;
 use srag\Plugins\UserTakeOver\UI\SlateLoaderDetector;
 use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
+use srag\Plugins\UserTakeOver\GlobalScreen\ModificationProvider;
 
 /**
  * ilUserTakeOverPlugin
@@ -22,6 +23,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     const PLUGIN_NAME = 'UserTakeOver';
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
     const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
+    const PLUGIN_BASE = './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver';
     /**
      * @var ilUserTakeOverPlugin
      */
@@ -32,19 +34,11 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
         global $DIC;
         parent::__construct();
 
-        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
-
-
-//        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/node_modules/autocomplete-js/dist/autocomplete.js', false, 3);
-        $DIC->globalScreen()->layout()->meta()->addJs('./Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/js/dist/main.js', false, 3);
+        $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
+        $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 3);
 
         $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
-        $this->provider_collection->setModificationProvider(new class($DIC, $this) extends AbstractModificationPluginProvider {
-            public function isInterestedInContexts() : ContextCollection
-            {
-                return $this->context_collection->main()->internal();
-            }
-        });
+        $this->provider_collection->setModificationProvider(new ModificationProvider($DIC, $this));
     }
 
     /**
