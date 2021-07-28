@@ -59,10 +59,10 @@ class ilUserTakeOverSettingsGUI
     {
         $form = new ilUserTakeOverSettingsFormGUI();
         if ($form->checkInput()) {
-            ilUtil::sendSuccess(self::MSG_SUCCESS, true);
+            ilUtil::sendSuccess(self::plugin()->translate(self::MSG_SUCCESS), true);
             $form->save();
         } else {
-            ilUtil::sendSuccess(self::MSG_FAILURE, true);
+            ilUtil::sendSuccess(self::plugin()->translate(self::MSG_FAILURE), true);
         }
 
         $this->cancel();
