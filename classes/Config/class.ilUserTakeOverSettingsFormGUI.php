@@ -39,6 +39,7 @@ class ilUserTakeOverSettingsFormGUI extends ilPropertyFormGUI
             self::plugin()->translate(ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES),
             ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES);
         $global_roles_input->setOptions($this->getAvailableGlobalRoles());
+        $global_roles_input->setInfo(self::plugin()->translate(ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES . '_info'));
         $this->addItem($global_roles_input);
 
         $this->setFormAction(self::dic()->ctrl()->getFormActionByClass(
