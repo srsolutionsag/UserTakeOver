@@ -89,20 +89,20 @@ class ilUserTakeOverMainGUI
         );
 
         self::dic()->tabs()->addTab(
-            self::TAB_GROUPS,
-            self::plugin()->translate(self::TAB_GROUPS),
+            self::TAB_SETTINGS,
+            self::plugin()->translate('tab_' . self::TAB_SETTINGS),
             self::dic()->ctrl()->getLinkTargetByClass(
-                [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
-                ilUserTakeOverGroupsGUI::CMD_STANDARD
+                [ilUserTakeOverMainGUI::class, ilUserTakeOverSettingsGUI::class],
+                ilUserTakeOverSettingsGUI::CMD_STANDARD
             )
         );
 
         self::dic()->tabs()->addTab(
-            self::TAB_SETTINGS,
-            self::plugin()->translate(self::TAB_SETTINGS),
+            self::TAB_GROUPS,
+            self::plugin()->translate('tab_' . self::TAB_GROUPS),
             self::dic()->ctrl()->getLinkTargetByClass(
-                [ilUserTakeOverMainGUI::class, ilUserTakeOverSettingsGUI::class],
-                ilUserTakeOverSettingsGUI::CMD_STANDARD
+                [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
+                ilUserTakeOverGroupsGUI::CMD_STANDARD
             )
         );
     }

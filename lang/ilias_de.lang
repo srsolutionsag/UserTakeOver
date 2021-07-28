@@ -4,7 +4,7 @@ user_taker_over_success#:#Sie haben die Benutzersicht von %s erfolgreich eingeno
 user_taker_back_success#:#Sie sind nun wieder eingeloggt als:  %s
 user_taker_over_failure#:#Bei der Benutzerübernahme ist ein Fehler aufgetreten
 no_permission#:#Sie haben nicht die entsprechenden Zugriffsrechte
-configuration#:#Einstellungen
+tab_configuration#:#Einstellungen
 demo_group#:#Demo Gruppe
 demo_group_info#:#Benutzer in der Demo Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Demo Gruppe sein, alle Demo Gruppen Benutzer de facto Administrationsrechte haben.
 save#:#Speichern
@@ -40,6 +40,7 @@ confirm_delete_grp#:#Möchten Sie die Gruppe wirklich löschen?
 update#:#Aktualisieren
 group_info#:#Benutzer in der Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Gruppe sein, alle Gruppen Benutzer de facto Administrationsrechte haben.
 group#:#Gruppe
+tab_group#:#Gruppen
 create_group#:#Gruppe erstellen
 edit_group#:#Gruppe bearbeiten
 back#:#Zurück
