@@ -113,7 +113,7 @@ class usrtoHelper
         self::dic()->log()->write('Plugin usrto: ' . self::dic()->user()->getLogin() . ' has taken over the user view of ' . $ilObjUser->getLogin());
 
         ilUtil::sendSuccess(self::plugin()->translate('user_taker_over_success', "", [$ilObjUser->getLogin()]), true);
-        ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
+        ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
     }
 
     /**
@@ -129,7 +129,7 @@ class usrtoHelper
                                     ->translate('user_taker_back_success', "", [ilObjUser::_lookupLogin($_SESSION[self::USR_ID_BACKUP])]), true);
             unset($_SESSION[self::USR_ID_BACKUP]);
         }
-        ilUtil::redirect('ilias.php?baseClass=' . ilPersonalDesktopGUI::class . '&cmd=jumpToSelectedItems');
+        ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
     }
 
     /**
@@ -146,12 +146,17 @@ class usrtoHelper
             return true;
         }
 
-        // If the user taking over is of id 13? or is not in the admin role he does not have permission.
-        if (!isset($usr_id) || $usr_id == 13 || !in_array(2, self::dic()->rbacreview()->assignedGlobalRoles($usr_id))) {
-            ilUtil::sendFailure(self::plugin()->translate('no_permission'), true);
-            ilUtil::redirect('login.php');
-
-            return false;
+        // If user is assigned to a configured role or is administrator it's also fine.
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole($usr_id) ||
+            ilObjUserTakeOverAccess::isUserAdministrator($usr_id)
+        ) {
+            return true;
         }
+
+        // Anything else isn't fine, show error message and abort.
+        ilUtil::sendFailure(self::plugin()->translate('no_permission'), true);
+        ilUtil::redirect('login.php');
+
+        return false;
     }
 }

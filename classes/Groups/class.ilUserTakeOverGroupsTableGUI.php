@@ -35,12 +35,12 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $this->setId(self::TBL_ID);
         $this->setPrefix(self::TBL_ID);
         $this->setFormName(self::TBL_ID);
-        self::dic()->ctrl()->saveParameter($a_parent_obj, $this->getNavParameter());
+        self::dic()->ctrl()->saveParameterByClass(ilUserTakeOverGroupsGUI::class, $this->getNavParameter());
 
         parent::__construct($a_parent_obj, $a_parent_cmd);
         $this->parent_obj = $a_parent_obj;
         $this->setRowTemplate('tpl.groups.html', 'Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver');
-        $this->setFormAction(self::dic()->ctrl()->getFormAction($a_parent_obj));
+        $this->setFormAction(self::dic()->ctrl()->getFormActionByClass([ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class]));
         $this->setExternalSorting(true);
         $this->initColums();
         $this->addFilterItems();
@@ -105,16 +105,36 @@ class ilUserTakeOverGroupsTableGUI extends ilTable2GUI
         $current_selection_list->setId('grp_actions_' . $usrtoGroup->getId());
         $current_selection_list->setUseImages(false);
 
-        self::dic()->ctrl()->setParameter($this->parent_obj, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
+        self::dic()->ctrl()->setParameterByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
+        self::dic()->ctrl()->setParameterByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverGroupsGUI::IDENTIFIER, $usrtoGroup->getId());
         if ($access->hasWriteAccess()) {
-            $current_selection_list->addItem(self::plugin()->translate('edit_members'), ilUserTakeOverMembersGUI::CMD_CONFIGURE, self::dic()->ctrl()
-                                                                                                                                     ->getLinkTargetByClass(ilUserTakeOverMembersGUI::class, ilUserTakeOverMembersGUI::CMD_CONFIGURE));
-            $current_selection_list->addItem(self::plugin()->translate('edit_grp'), ilUserTakeOverGroupsGUI::CMD_EDIT, self::dic()->ctrl()
-                                                                                                                           ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_EDIT));
+            $current_selection_list->addItem(
+                self::plugin()->translate('edit_members'),
+                ilUserTakeOverMembersGUI::CMD_CONFIGURE,
+                self::dic()->ctrl()->getLinkTargetByClass(
+                    [ilUserTakeOverMainGUI::class, ilUserTakeOverMembersGUI::class],
+                    ilUserTakeOverMembersGUI::CMD_CONFIGURE
+                )
+            );
+
+            $current_selection_list->addItem(
+                self::plugin()->translate('edit_grp'),
+                ilUserTakeOverGroupsGUI::CMD_EDIT,
+                self::dic()->ctrl()->getLinkTargetByClass(
+                    [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
+                    ilUserTakeOverGroupsGUI::CMD_EDIT
+                )
+            );
         }
         if ($access->hasDeleteAccess()) {
-            $current_selection_list->addItem(self::plugin()->translate('delete'), ilUserTakeOverGroupsGUI::CMD_DELETE, self::dic()->ctrl()
-                                                                                                                           ->getLinkTarget($this->parent_obj, ilUserTakeOverGroupsGUI::CMD_CONFIRM));
+            $current_selection_list->addItem(
+                self::plugin()->translate('delete'),
+                ilUserTakeOverGroupsGUI::CMD_DELETE,
+                self::dic()->ctrl()->getLinkTargetByClass(
+                    [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
+                    ilUserTakeOverGroupsGUI::CMD_CONFIRM
+                )
+            );
         }
         $current_selection_list->getHTML();
         $this->tpl->setVariable('ACTIONS', $current_selection_list->getHTML());

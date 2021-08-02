@@ -4,7 +4,7 @@ user_taker_over_success#:#You have taken successfully the user view of user %s.
 user_taker_back_success#:#You are now logged in again as:  %s
 user_taker_over_failure#:#Take over User View: An error has occured.
 no_permission#:#You do not have the necessary permission
-configuration#:#Configuration
+tab_configuration#:#Configuration
 demo_group#:#Demo Group
 demo_group_info#:#Users in the demo group can take over each others accounts. Take care: If you add an administrator to the demo group all the accounts in the group gain de facto administration privileges.
 save#:#Save
@@ -40,9 +40,12 @@ confirm_delete_grp#:#Do you really want to delete the group?
 update#:#Update
 group_info#:#Users in the group can take over each others accounts. Take care: If you add an administrator to the group all the accounts in the group gain de facto administration privileges.
 group#:#Group
+tab_group#:#Groups
 create_group#:#Create group
 edit_group#:#Edit group
 back#:#Back
 status#:#Status
 status_original_login#:#Original User
 status_impersonated_login#:#Impersonated User
+cnf_global_role_ids#:#Access to Impersonate-Search
+cnf_global_role_ids_info#:#Role "Administrator" has always access to the Impersonate-Search

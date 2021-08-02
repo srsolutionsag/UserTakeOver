@@ -1,51 +1,39 @@
 <?php
 require_once __DIR__ . "/../../vendor/autoload.php";
 
-use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
 use srag\DIC\UserTakeOver\DICTrait;
 use srag\plugins\UserTakeOver\ilusrtoMultiSelectSearchInput2GUI;
 
 /**
  * GUI class ilUserTakeOverMembersGUI
- * @author            : Benjamin Seglias   <bs@studer-raimann.ch>
- * @ilCtrl_IsCalledBy ilUserTakeOverMembersGUI: ilUIPluginRouterGUI
- * @ilCtrl_isCalledBy srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl: ilUserTakeOverMembersGUI
+ *
+ * @author Benjamin Seglias <bs@studer-raimann.ch>
  */
 class ilUserTakeOverMembersGUI
 {
-
     use DICTrait;
 
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+
     const CMD_CONFIGURE = 'configure';
     const CMD_SAVE = 'save';
     const CMD_SEARCH_USERS = 'searchUsers';
     const CMD_CANCEL = 'cancel';
 
+
     public function executeCommand()
     {
-
-        self::dic()->tabs()->clearTargets();
-        $nextClass = self::dic()->ctrl()->getNextClass();
-        switch ($nextClass) {
-            case strtolower(UsersAjaxAutoCompleteCtrl::class):
-                self::dic()->ctrl()->forwardCommand(new UsersAjaxAutoCompleteCtrl());
-                break;
-            default;
-                $this->performCommand(self::dic()->ctrl()->getCmd());
-                break;
-        }
-    }
-
-    public function performCommand($cmd)
-    {
+        $cmd = self::dic()->ctrl()->getCmd();
         switch ($cmd) {
             case self::CMD_CONFIGURE:
             case self::CMD_SAVE:
-                self::dic()->tabs()->setBackTarget(self::plugin()->translate('back'), self::dic()->ctrl()
-                                                                                          ->getLinkTargetByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD));
-                $this->$cmd();
-                break;
+                self::dic()->tabs()->setBackTarget(
+                    self::plugin()->translate('back'),
+                    self::dic()->ctrl()->getLinkTargetByClass(
+                        [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
+                        ilUserTakeOverGroupsGUI::CMD_STANDARD
+                    )
+                );
             case self::CMD_SEARCH_USERS:
             case self::CMD_CANCEL:
                 $this->$cmd();
@@ -56,6 +44,7 @@ class ilUserTakeOverMembersGUI
         }
     }
 
+
     public function configure()
     {
         self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
@@ -63,6 +52,7 @@ class ilUserTakeOverMembersGUI
         $this->fillForm($form);
         self::output()->output($form);
     }
+
 
     /**
      * @return ilPropertyFormGUI
@@ -81,13 +71,13 @@ class ilUserTakeOverMembersGUI
         } else {
             $title = self::plugin()->translate("group");
         }
-        $input = new srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\MultiSelectSearchNewInputGUI($title, 'grp[' . $group->getId() . ']');
+        $input = new ilusrtoMultiSelectSearchInput2GUI($title, 'grp[' . $group->getId() . ']');
         $input->setInfo(self::plugin()->translate("group_info"));
-        $input->setAjaxAutoCompleteCtrl(new UsersAjaxAutoCompleteCtrl());
+        $input->setAjaxLink(self::dic()->ctrl()->getLinkTargetByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_SEARCH_USERS));
 
         $members_data = \usrtoMember::innerjoin('usr_data', 'user_id', 'usr_id')->where(["group_id" => filter_input(INPUT_GET, "usrtoGrp")], "=")
                                     ->getArray(null, ["usr_id", "firstname", "lastname", "login"]);
-        $options      = [];
+        $options = [];
         foreach ($members_data as $member_data) {
             $options[$member_data['usr_id']] = $member_data['firstname'] . " " . $member_data['lastname'] . " (" . $member_data['login'] . ")";
         }
@@ -96,10 +86,11 @@ class ilUserTakeOverMembersGUI
 
         $this->initButtons($form);
 
-        $form->setFormAction(self::dic()->ctrl()->getFormAction($this, self::CMD_SAVE));
+        $form->setFormAction(self::dic()->ctrl()->getFormActionByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_SAVE));
 
         return $form;
     }
+
 
     /**
      * @param ilPropertyFormGUI &$form
@@ -110,17 +101,19 @@ class ilUserTakeOverMembersGUI
         $form->addCommandButton(self::CMD_CANCEL, self::plugin()->translate("cancel"));
     }
 
+
     protected function cancel()
     {
-        self::dic()->ctrl()->redirectByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::CMD_STANDARD);
+        self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class], ilUserTakeOverGroupsGUI::CMD_STANDARD);
     }
+
 
     protected function save()
     {
         $form = $this->getForm();
         $form->setValuesByPost();
         if ($form->checkInput()) {
-            $group_id       = filter_input(INPUT_GET, "usrtoGrp");
+            $group_id = filter_input(INPUT_GET, "usrtoGrp");
             $grp_user_array = filter_var(filter_input(INPUT_POST, "grp", FILTER_DEFAULT, FILTER_FORCE_ARRAY)[$group_id], FILTER_DEFAULT, FILTER_FORCE_ARRAY);
             foreach ($grp_user_array as $key => $user_id) {
                 $usrtoMember = usrtoMember::where(['group_id' => $group_id, 'user_id' => $user_id], '=')->first();
@@ -142,12 +135,13 @@ class ilUserTakeOverMembersGUI
             }
             ilUtil::sendSuccess(self::plugin()->translate("success"), true);
             self::dic()->ctrl()->saveParameterByClass(self::class, "usrtoGrp");
-            self::dic()->ctrl()->redirect($this, self::CMD_CONFIGURE);
+            self::dic()->ctrl()->redirectByClass([ilUserTakeOverMainGUI::class, self::class], self::CMD_CONFIGURE);
         } else {
             ilUtil::sendFailure(self::plugin()->translate("something_went_wrong"), true);
             self::output()->output($form);
         }
     }
+
 
     /**
      * @param ilPropertyFormGUI $form
@@ -164,5 +158,40 @@ class ilUserTakeOverMembersGUI
         ];
 
         $form->setValuesByArray($values);
+    }
+
+
+    protected function searchUsers()
+    {
+        $user_id = self::dic()->user()->getId();
+        if (ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole($user_id) ||
+            ilObjUserTakeOverAccess::isUserAdministrator($user_id)
+        ) {
+            //when the search was done via select2 input field the term will be sent as array. In the search field it won't be sent as array.
+            if (is_array($_GET['term'])) {
+                $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT, FILTER_FORCE_ARRAY)["term"];
+            } else {
+                $filtered_term = filter_input(INPUT_GET, "term", FILTER_DEFAULT);
+            }
+            $filtered_term = isset($filtered_term) ? $filtered_term : "";
+
+            /** @var ilObjUser[] $users */
+            $users = ilObjUser::searchUsers($filtered_term);
+            $result = [];
+
+            foreach ($users as $user) {
+                $result[] = [
+                    "id"   => $user['usr_id'],
+                    "text" => $user['firstname'] . " " . $user['lastname'] . " (" . $user['login'] . ")",
+                ];
+            }
+
+            //self::plugin()->output($result, false);
+            echo json_encode($result);
+            exit;
+        }
+
+        echo json_encode([]);
+        exit;
     }
 }

@@ -35,7 +35,7 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
         parent::__construct();
         $this->object     = $usrtoGroup;
         $this->parent_gui = $parent_gui;
-        $this->ctrl->saveParameter($parent_gui, ilUserTakeOverGroupsGUI::IDENTIFIER);
+        $this->ctrl->saveParameterByClass(ilUserTakeOverGroupsGUI::class, ilUserTakeOverGroupsGUI::IDENTIFIER);
         $this->is_new = ($this->object->getId() == '');
         $this->initForm();
     }
@@ -43,7 +43,7 @@ class usrtoGroupFormGUI extends ilPropertyFormGUI
     protected function initForm()
     {
         $this->setTarget('_top');
-        $this->setFormAction(self::dic()->ctrl()->getFormAction($this->parent_gui));
+        $this->setFormAction(self::dic()->ctrl()->getFormActionByClass([ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class]));
         $this->initButtons();
 
         $te = new ilTextInputGUI(self::plugin()->translate('title'), 'title');
