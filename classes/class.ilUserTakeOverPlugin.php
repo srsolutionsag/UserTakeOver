@@ -71,7 +71,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
      */
     protected function deleteData()/*: void*/
     {
-        self::dic()->database()->dropTable(ilUserTakeOverConfig::TABLE_NAME, false);
+        self::dic()->database()->dropTable(ilUserTakeOverARConfig::TABLE_NAME, false);
         self::dic()->database()->dropTable('ui_uihk_usrto_config', false);
         self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
         self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);

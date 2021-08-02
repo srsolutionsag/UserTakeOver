@@ -48,9 +48,25 @@ class SlateLoaderDetector extends AbstractLoaderDetector
      */
     public function getRendererFor(Component $component, array $contexts) : ComponentRenderer
     {
+        if ($component instanceof LegacySubSlate) {
+            return $this->getRendererForIliasVersion();
+        }
+
+        return parent::getRendererFor($component, $contexts);
+    }
+
+    /**
+     * Instantiates the custom renderer according to the ILIAS version.
+     *
+     * @return ComponentRenderer
+     */
+    private function getRendererForIliasVersion() : ComponentRenderer
+    {
         global $DIC;
 
-        if ($component instanceof LegacySubSlate) {
+        // ILIAS 7 Renderer is instantiated differently than in ILIAS 6, as it
+        // needs an additional ImagePathResolver which is not yet known in V6.
+        if (version_compare(ILIAS_VERSION_NUMERIC, '7.0') >= 0) {
             return new \ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\Renderer(
                 $DIC["ui.factory"],
                 $DIC["ui.template_factory"],
@@ -61,6 +77,12 @@ class SlateLoaderDetector extends AbstractLoaderDetector
             );
         }
 
-        return parent::getRendererFor($component, $contexts);
+        return new \ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\Renderer(
+            $DIC["ui.factory"],
+            $DIC["ui.template_factory"],
+            $DIC["lng"],
+            $DIC["ui.javascript_binding"],
+            $DIC['refinery']
+        );
     }
 }
