@@ -13,7 +13,7 @@ git clone https://github.com/studer-raimann/UserTakeOver.git
 As ILIAS administrator go to "Administration->Plugins" and install/activate the plugin.
 
 ### Requirements
-* ILIAS 6.x
+* ILIAS 6.x / 7.x
 * PHP >=7.0
 
 ### ILIAS Plugin SLA

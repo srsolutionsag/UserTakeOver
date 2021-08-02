@@ -146,6 +146,7 @@ return array(
     'srag\\Plugins\\UserTakeOver\\Access' => $baseDir . '/src/Access.php',
     'srag\\Plugins\\UserTakeOver\\GlobalScreen\\LegacySubItem' => $baseDir . '/src/GlobalScreen/LegacySubItem.php',
     'srag\\Plugins\\UserTakeOver\\GlobalScreen\\MetaBarProvider' => $baseDir . '/src/GlobalScreen/MetaBarProvider.php',
+    'srag\\Plugins\\UserTakeOver\\GlobalScreen\\ModificationProvider' => $baseDir . '/src/GlobalScreen/ModificationProvider.php',
     'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOSearchItem' => $baseDir . '/src/GlobalScreen/UTOSearchItem.php',
     'srag\\Plugins\\UserTakeOver\\GlobalScreen\\UTOStatusItem' => $baseDir . '/src/GlobalScreen/UTOStatusItem.php',
     'srag\\Plugins\\UserTakeOver\\Handler' => $baseDir . '/src/Handler.php',
