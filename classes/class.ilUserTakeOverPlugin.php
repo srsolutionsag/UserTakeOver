@@ -39,10 +39,11 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
         if ($DIC->offsetExists('global_screen')) {
             $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
             $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 3);
-        }
 
-        $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
-        $this->provider_collection->setModificationProvider(new ModificationProvider($DIC, $this));
+            // provider also depend on global screen service.
+            $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
+            $this->provider_collection->setModificationProvider(new ModificationProvider($DIC, $this));
+        }
     }
 
     /**
