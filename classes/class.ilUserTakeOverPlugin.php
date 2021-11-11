@@ -34,8 +34,12 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
         global $DIC;
         parent::__construct();
 
-        $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
-        $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 3);
+        // global screen service might not be available yet,
+        // if this class is called from the setup CLI.
+        if ($DIC->offsetExists('global_screen')) {
+            $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
+            $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 3);
+        }
 
         $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
         $this->provider_collection->setModificationProvider(new ModificationProvider($DIC, $this));
