@@ -109,6 +109,13 @@ class ilUserTakeOverMainGUI
 
     private function search()
     {
+        
+         //if the user isn't in a configured role or isn't an administrator, don't let them search.
+        if(!ilObjUserTakeOverAccess::isUserAssignedToConfiguredRole(self::dic()->user()->getId())
+            && !ilObjUserTakeOverAccess::isUserAdministrator(self::dic()->user()->getId())){
+            exit;
+        }
+        
         $term = "%" . self::dic()->http()->request()->getQueryParams()['q'] . "%";
 
         $q = "SELECT usr_id, firstname, lastname, login FROM usr_data 
