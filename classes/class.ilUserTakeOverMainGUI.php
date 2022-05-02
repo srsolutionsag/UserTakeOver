@@ -1,7 +1,7 @@
 <?php
 
-use srag\DIC\UserTakeOver\DICTrait;
 use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAutoCompleteCtrl;
+use srag\Plugins\UserTakeOver\Access;
 
 /**
  * Class ilUserTakeOverMainGUI
@@ -18,46 +18,93 @@ use srag\CustomInputGUIs\UserTakeOver\MultiSelectSearchNewInputGUI\UsersAjaxAuto
  */
 class ilUserTakeOverMainGUI
 {
-    use DICTrait;
-
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
+    
     /**
      * commands
      */
     public const CMD_SEARCH = 'search';
-    public const CMD_INDEX  = 'index';
-
+    public const CMD_INDEX = 'index';
+    
     /**
      * tab id's (also used as lang vars)
      */
-    public const TAB_SETTINGS  = 'configuration';
-    public const TAB_GROUPS    = 'group';
-
+    public const TAB_SETTINGS = 'configuration';
+    public const TAB_GROUPS = 'group';
+    /**
+     * @var ilCtrl
+     */
+    protected $ctrl;
+    /**
+     * @var ilTabsGUI
+     */
+    protected $tabs;
+    /**
+     * @var ilGlobalPageTemplate
+     */
+    protected $main_tpl;
+    /**
+     * @var ilDBInterface
+     */
+    protected $db;
+    /**
+     * @var \Psr\Http\Message\RequestInterface|\Psr\Http\Message\ServerRequestInterface
+     */
+    protected $request;
+    /**
+     * @var ilUserTakeOverPlugin
+     */
+    protected $plugin;
+    /**
+     * @var ilObjUserTakeOverAccess
+     */
+    protected $access;
+    /**
+     * @var int
+     */
+    protected $user_id;
+    /**
+     * @var Access
+     */
+    protected $access_checks;
+    
+    public function __construct()
+    {
+        global $DIC;
+        $this->ctrl = $DIC->ctrl();
+        $this->tabs = $DIC->tabs();
+        $this->main_tpl = $DIC->ui()->mainTemplate();
+        $this->db = $DIC->database();
+        $this->request = $DIC->http()->request();
+        $this->plugin = ilUserTakeOverPlugin::getInstance();
+        $this->user_id = $DIC->user()->getId();
+        $this->access_checks = new Access($this->user_id, $this->user_id);
+    }
+    
     /**
      * @throws ilCtrlException
      */
     public function executeCommand() : void
     {
         $this->initPage();
-        $next_class = self::dic()->ctrl()->getNextClass($this);
-        $cmd = self::dic()->ctrl()->getCmd(self::CMD_INDEX);
-
+        $next_class = $this->ctrl->getNextClass($this);
+        $cmd = $this->ctrl->getCmd(self::CMD_INDEX);
+        
         switch ($next_class) {
             case strtolower(ilUserTakeOverSettingsGUI::class):
-                self::dic()->tabs()->activateTab(self::TAB_SETTINGS);
-                self::dic()->ctrl()->forwardCommand(new ilUserTakeOverSettingsGUI());
+                $this->tabs->activateTab(self::TAB_SETTINGS);
+                $this->ctrl->forwardCommand(new ilUserTakeOverSettingsGUI());
                 break;
             case strtolower(ilUserTakeOverGroupsGUI::class):
-                self::dic()->tabs()->activateTab(self::TAB_GROUPS);
-                self::dic()->ctrl()->forwardCommand(new ilUserTakeOverGroupsGUI());
+                $this->tabs->activateTab(self::TAB_GROUPS);
+                $this->ctrl->forwardCommand(new ilUserTakeOverGroupsGUI());
                 break;
             case strtolower(ilUserTakeOverMembersGUI::class):
-                self::dic()->tabs()->activateTab(self::TAB_GROUPS);
-                self::dic()->ctrl()->forwardCommand(new ilUserTakeOverMembersGUI());
+                $this->tabs->activateTab(self::TAB_GROUPS);
+                $this->ctrl->forwardCommand(new ilUserTakeOverMembersGUI());
                 break;
             case strtolower(UsersAjaxAutoCompleteCtrl::class):
-                self::dic()->ctrl()->forwardCommand(new UsersAjaxAutoCompleteCtrl());
+                $this->ctrl->forwardCommand(new UsersAjaxAutoCompleteCtrl());
                 break;
             case strtolower(self::class):
             default:
@@ -65,69 +112,65 @@ class ilUserTakeOverMainGUI
                 break;
         }
     }
-
+    
     public function performCommand(string $cmd) : void
     {
         switch ($cmd) {
             case self::CMD_SEARCH:
-                $this->{$cmd}();
+                if ($this->access_checks->isUserAllowedToImpersonate()) {
+                    $this->{$cmd}();
+                }
                 break;
             default:
                 throw new ilException('command not found');
-                break;
         }
     }
-
+    
     /**
      * sets up the configuration page.
      */
     private function initPage() : void
     {
-        self::dic()->mainTemplate()->setDescription("");
-        self::dic()->mainTemplate()->setTitle(
-            self::dic()->language()->txt("cmps_plugin") . ": " . ilUserTakeOverPlugin::PLUGIN_CLASS_NAME
+        $this->main_tpl->setDescription("");
+        $this->main_tpl->setTitle(
+            $this->plugin->txt("cmps_plugin") . ": " . ilUserTakeOverPlugin::PLUGIN_CLASS_NAME
         );
-
-        self::dic()->tabs()->addTab(
+        
+        $this->tabs->addTab(
             self::TAB_SETTINGS,
-            self::plugin()->translate('tab_' . self::TAB_SETTINGS),
-            self::dic()->ctrl()->getLinkTargetByClass(
+            $this->plugin->txt('tab_' . self::TAB_SETTINGS),
+            $this->ctrl->getLinkTargetByClass(
                 [ilUserTakeOverMainGUI::class, ilUserTakeOverSettingsGUI::class],
                 ilUserTakeOverSettingsGUI::CMD_STANDARD
             )
         );
-
-        self::dic()->tabs()->addTab(
+        
+        $this->tabs->addTab(
             self::TAB_GROUPS,
-            self::plugin()->translate('tab_' . self::TAB_GROUPS),
-            self::dic()->ctrl()->getLinkTargetByClass(
+            $this->plugin->txt('tab_' . self::TAB_GROUPS),
+            $this->ctrl->getLinkTargetByClass(
                 [ilUserTakeOverMainGUI::class, ilUserTakeOverGroupsGUI::class],
                 ilUserTakeOverGroupsGUI::CMD_STANDARD
             )
         );
     }
-
+    
     private function search()
     {
-        $term = "%" . self::dic()->http()->request()->getQueryParams()['q'] . "%";
-
-        $q = "SELECT usr_id, firstname, lastname, login FROM usr_data 
-                WHERE 
-                firstname LIKE %s OR 
-                lastname LIKE %s OR 
-                email LIKE %s OR 
+        $term = "%" . $this->request->getQueryParams()['q'] . "%";
+        
+        $q = "SELECT usr_id, firstname, lastname, login FROM usr_data
+                WHERE
+                firstname LIKE %s OR
+                lastname LIKE %s OR
+                email LIKE %s OR
                 login LIKE %s";
-
-        $r    = self::dic()->database()->queryF($q, ['text', 'text', 'text', 'text'], [$term, $term, $term, $term]);
+        
+        $r = $this->db->queryF($q, ['text', 'text', 'text', 'text'], [$term, $term, $term, $term]);
         $json = [];
-        while ($d = self::dic()->database()->fetchObject($r)) {
-//            $json[$d->usr_id] = "{$d->firstname} {$d->lastname}";
+        while ($d = $this->db->fetchObject($r)) {
             $json[] = $d;
         }
-        $result = [
-            'title' => 'Results',
-            'data'  => $json
-        ];
         echo json_encode($json);
         exit;
     }

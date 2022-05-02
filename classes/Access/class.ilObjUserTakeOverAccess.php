@@ -95,4 +95,9 @@ class ilObjUserTakeOverAccess extends ilObjectPluginAccess
             $config[$identifier]->getValue()
         );
     }
+    
+    public  function isUserAllowedToPerformSearch(int $user_id) : bool
+    {
+        return self::isUserAdministrator($user_id);
+    }
 }
