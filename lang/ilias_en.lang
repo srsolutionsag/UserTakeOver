@@ -49,3 +49,4 @@ status_original_login#:#Original User
 status_impersonated_login#:#Impersonated User
 cnf_global_role_ids#:#Access to Impersonate-Search
 cnf_global_role_ids_info#:#Role "Administrator" has always access to the Impersonate-Search
+configuration#:#Configuration

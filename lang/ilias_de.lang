@@ -49,3 +49,4 @@ status_original_login#:#Ursprünglicher Benutzer
 status_impersonated_login#:#Eingenommene Benutzersicht
 cnf_global_role_ids#:#Zugriff auf Suchfunktion
 cnf_global_role_ids_info#:#Die Role "Administrator" hat immer Zugriff auf die Suche.
+configuration#:#Konfiguration

@@ -47,3 +47,4 @@ status#:#Status
 status_original_login#:#Usuário original
 status_impersonated_login#:#Usuário imitado
 cnf_global_role_ids#:#Access to impersonate-serach
+configuration#:#Configuration

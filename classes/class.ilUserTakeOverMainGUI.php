@@ -67,6 +67,10 @@ class ilUserTakeOverMainGUI
      * @var Access
      */
     protected $access_checks;
+    /**
+     * @var ilLanguage
+     */
+    protected $lng;
     
     public function __construct()
     {
@@ -79,6 +83,7 @@ class ilUserTakeOverMainGUI
         $this->plugin = ilUserTakeOverPlugin::getInstance();
         $this->user_id = $DIC->user()->getId();
         $this->access_checks = new Access($this->user_id, $this->user_id);
+        $this->lng = $DIC->language();
     }
     
     /**
@@ -133,7 +138,7 @@ class ilUserTakeOverMainGUI
     {
         $this->main_tpl->setDescription("");
         $this->main_tpl->setTitle(
-            $this->plugin->txt("cmps_plugin") . ": " . ilUserTakeOverPlugin::PLUGIN_CLASS_NAME
+            $this->lng->txt("cmps_plugin") . ": " . ilUserTakeOverPlugin::PLUGIN_CLASS_NAME
         );
         
         $this->tabs->addTab(
