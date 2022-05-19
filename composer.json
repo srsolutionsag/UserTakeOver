@@ -1,5 +1,5 @@
 {
-  "name": "srag/plugins/usertakeover",
+  "name": "srag/usertakeover",
   "description": "ILIAS UserTakeOver plugin",
   "type": "project",
   "license": "GPL-3.0+",
@@ -9,17 +9,17 @@
     "user",
     "role"
   ],
-  "homepage": "https://github.com/studer-raimann/UserTakeOver",
+  "homepage": "https://github.com/srsolutionsag/UserTakeOver",
   "authors": [
     {
-      "name": "studer + raimann ag - Team Core",
-      "email": "support-core@studer-raimann.ch",
-      "homepage": "https://studer-raimann.ch",
+      "name": "sr solutions ag",
+      "email": "support@sr.solutions",
+      "homepage": "https://sr.solutions",
       "role": "Developer"
     }
   ],
   "support": {
-    "email": "support-core@studer-raimann.ch"
+    "email": "support@sr.solutions"
   },
   "autoload": {
     "psr-4": {

@@ -2,10 +2,7 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use ILIAS\GlobalScreen\Scope\Layout\Provider\AbstractModificationPluginProvider;
-use ILIAS\GlobalScreen\ScreenContext\Stack\ContextCollection;
 use srag\Plugins\UserTakeOver\GlobalScreen\MetaBarProvider;
-use srag\Plugins\UserTakeOver\UI\SlateLoaderDetector;
 use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
 use srag\Plugins\UserTakeOver\GlobalScreen\ModificationProvider;
 
@@ -22,7 +19,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     const PLUGIN_ID = 'usrto';
     const PLUGIN_NAME = 'UserTakeOver';
     const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-    const REMOVE_PLUGIN_DATA_CONFIRM_CLASS_NAME = ilUserTakeOverRemoveDataConfirm::class;
     const PLUGIN_BASE = './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver';
     /**
      * @var ilUserTakeOverPlugin
@@ -64,11 +60,6 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     public function getPluginName()
     {
         return self::PLUGIN_NAME;
-    }
-
-    public function exchangeUIRendererAfterInitialization(\ILIAS\DI\Container $dic) : Closure
-    {
-        return SlateLoaderDetector::exchange();
     }
 
     /**
