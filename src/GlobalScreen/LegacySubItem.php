@@ -13,7 +13,6 @@ use ILIAS\GlobalScreen\Scope\MetaBar\Factory\isItem;
 use ILIAS\UI\Component\Component;
 use ILIAS\UI\Component\Legacy\Legacy;
 use ILIAS\UI\Component\Symbol\Symbol;
-use ILIAS\UI\Factory;
 use ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\LegacySubSlate;
 
 /**
@@ -22,11 +21,6 @@ use ILIAS\UI\Implementation\Component\MainControls\Slate\LegacySubSlate\LegacySu
  */
 abstract class LegacySubItem extends AbstractChildItem implements hasSymbol, hasTitle
 {
-
-    /**
-     * @var Factory
-     */
-    private $ui;
     /**
      * @var Legacy
      */
