@@ -42,6 +42,14 @@ class ilUserTakeOverSettingsFormGUI extends ilPropertyFormGUI
         $global_roles_input->setInfo(self::plugin()->translate(ilUserTakeOverARConfig::CNF_ID_GLOBAL_ROLES . '_info'));
         $this->addItem($global_roles_input);
 
+        $allow_impersonate_admins_input = new ilCheckboxInputGUI(
+            self::plugin()->translate(ilUserTakeOverARConfig::CNF_ALLOW_IMPERSONATE_ADMINS),
+            ilUserTakeOverARConfig::CNF_ALLOW_IMPERSONATE_ADMINS
+        );
+        $allow_impersonate_admins_input->setInfo(self::plugin()->translate(ilUserTakeOverARConfig::CNF_ALLOW_IMPERSONATE_ADMINS . '_info'));
+
+        $this->addItem($allow_impersonate_admins_input);
+
         $this->setFormAction(self::dic()->ctrl()->getFormActionByClass(
             [ilUserTakeOverMainGUI::class, ilUserTakeOverSettingsGUI::class],
             ilUserTakeOverSettingsGUI::CMD_STANDARD
@@ -133,10 +141,14 @@ class ilUserTakeOverSettingsFormGUI extends ilPropertyFormGUI
     public function save() : void
     {
         /**
-         * @var $input ilCheckboxGroupInputGUI (for now)
+         * @var $input ilCheckboxInputGUI (for now)
          */
         foreach ($this->getInputItemsRecursive() as $input) {
-            $this->storeConfig($input->getPostVar(), $input->getValue());
+            if ($input instanceof ilCheckboxInputGUI) {
+                $this->storeConfig($input->getPostVar(), $input->getChecked());
+            } else {
+                $this->storeConfig($input->getPostVar(), $input->getValue());
+            }
         }
     }
 }

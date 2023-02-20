@@ -54,6 +54,7 @@ final class ilUserTakeOverARConfig extends ActiveRecord
      * configuration identifiers
      */
     public const CNF_ID_GLOBAL_ROLES = 'cnf_global_role_ids';
+    public const CNF_ALLOW_IMPERSONATE_ADMINS = 'cnf_allow_impersonate_admins';
 
     /**
      * @var string

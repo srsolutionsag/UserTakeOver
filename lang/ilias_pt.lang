@@ -48,3 +48,12 @@ status_original_login#:#Usuário original
 status_impersonated_login#:#Usuário imitado
 cnf_global_role_ids#:#Access to impersonate-serach
 configuration#:#Configuration
+cnf_allow_impersonate_admins#:#Allow impersonation of Admins
+cnf_allow_impersonate_admins_info#:#If enabled, all users permitted to use this plugin can take over administrators.
+restrict_to_members#:#Restrict to group members
+restrict_to_members_info#:#If enabled, group members are only allowed to impersonate other group members.
+restrict_to_roles#:#Restrict to global roles
+restrict_to_roles_info#:#If enabled, group members can only impersonate users assigned to selected global roles.
+allowed_roles#:#Allowed roles
+yes#:#Yes
+no#:#No

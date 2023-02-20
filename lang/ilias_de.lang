@@ -50,3 +50,12 @@ status_impersonated_login#:#Eingenommene Benutzersicht
 cnf_global_role_ids#:#Zugriff auf Suchfunktion
 cnf_global_role_ids_info#:#Die Role "Administrator" hat immer Zugriff auf die Suche.
 configuration#:#Konfiguration
+cnf_allow_impersonate_admins#:#Impersonalisierung von Admins zulassen
+cnf_allow_impersonate_admins_info#:#Wenn aktiv, können alle Benutzer die berechtigt sind dieses Plugin zu benutzen Administratoren übernehmen.
+restrict_to_members#:#Impersonalisierung auf Mitglieder einschränken
+restrict_to_members_info#:#Wenn aktiv, können Mitglieder nur andere Mitglieder impersonalisieren.
+restrict_to_roles#:#Impersonalisierung auf Rollen einschränken
+restrict_to_roles_info#:#Wenn aktiv, können Mitglieder nur Benutzer mit ausgewählten Rollen impersonalisieren.
+allowed_roles#:#Erlaubte Rollen
+yes#:#Ja
+no#:#Nein

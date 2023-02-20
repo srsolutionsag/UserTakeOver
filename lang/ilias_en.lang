@@ -50,3 +50,13 @@ status_impersonated_login#:#Impersonated User
 cnf_global_role_ids#:#Access to Impersonate-Search
 cnf_global_role_ids_info#:#Role "Administrator" has always access to the Impersonate-Search
 configuration#:#Configuration
+cnf_allow_impersonate_admins#:#Allow impersonation of Admins
+cnf_allow_impersonate_admins_info#:#If enabled, all users permitted to use this plugin can take over administrators.
+restricted_to_members#:#Restricted to members
+restrict_to_members#:#Restrict to group members
+restrict_to_members_info#:#If enabled, group members are only allowed to impersonate other group members.
+restrict_to_roles#:#Restrict to global roles
+restrict_to_roles_info#:#If enabled, group members can only impersonate users assigned to selected global roles.
+allowed_roles#:#Allowed roles
+yes#:#Yes
+no#:#No

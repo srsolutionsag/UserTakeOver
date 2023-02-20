@@ -65,7 +65,7 @@ class Handler
     public function impersonateUser(Redirect $redirect) : void
     {
         $access = new Access($this->original_user_id, $this->impersonate_user_id);
-        if ($access->isUserAllowedToImpersonate()()) {
+        if ($access->canUserBeImpersonated($this->impersonate_user_id, $access->isUserAllowedToImpersonate())()) {
             $this->save();
             $_SESSION[self::USR_ID_GLOBAL]      = $this->impersonate_user_id;
             $_SESSION[self::USR_ID_AUTHSESSION] = $this->impersonate_user_id;
