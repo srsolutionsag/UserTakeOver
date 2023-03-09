@@ -69,6 +69,10 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
         // Groups
         if ($access->isUserAssignedToGroup()()) {
             foreach ($group_repository->getGroupsOfUser($this->dic->user()->getId()) as $group) {
+                if (!$group->isRestrictedToMembers()) {
+                    continue;
+                }
+
                 $is_group_restricted_to_roles = $group->isRestrictedToRoles();
                 $group_members = [];
 

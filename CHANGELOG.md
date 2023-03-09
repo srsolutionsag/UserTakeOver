@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## v4.1.1
+
+- Groups which are only restricted to roles are no longer shown in the metabar slate.
+- Added a small description about the two kinds of groups to the documentation.
+
 ## v4.1.0
 
 - Added new feature to restrict the impersonation of users by global roles.
