@@ -5,6 +5,7 @@
 - Groups which are only restricted to roles are no longer shown in the metabar slate.
 - Added a small description about the two kinds of groups to the documentation.
 - Fixed missing translation `restricted_to_members` and added bylines to the group-form.
+- Added gitlab CI config for creating review-apps.
 
 ## v4.1.0
 
