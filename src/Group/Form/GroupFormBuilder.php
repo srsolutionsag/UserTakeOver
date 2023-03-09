@@ -66,7 +66,8 @@ class GroupFormBuilder
         )->withValue($this->group->getDescription());
 
         $inputs[Group::F_RESTRICT_TO_MEMBERS] = $this->components->input()->field()->checkbox(
-            $this->translator->txt(Group::F_RESTRICT_TO_MEMBERS)
+            $this->translator->txt(Group::F_RESTRICT_TO_MEMBERS),
+            $this->translator->txt(Group::F_RESTRICT_TO_MEMBERS . '_info')
         )->withValue($this->group->isRestrictedToMembers());
 
         $inputs[self::I_OPTIONAL] = $this->components->input()->field()->optionalGroup([
@@ -74,7 +75,10 @@ class GroupFormBuilder
                 $this->translator->txt(Group::F_ALLOWED_ROLES),
                 $this->global_roles
             ),
-        ], $this->translator->txt(self::I_OPTIONAL))->withValue(
+        ],
+            $this->translator->txt(self::I_OPTIONAL),
+            $this->translator->txt(self::I_OPTIONAL . '_info'),
+        )->withValue(
             $this->group->isRestrictedToRoles() ? [
                 Group::F_ALLOWED_ROLES => $this->group->getAllowedRoles(),
             ] : null
