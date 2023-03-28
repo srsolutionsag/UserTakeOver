@@ -57,7 +57,7 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
                     ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
                 }
             });
-            ilUtil::sendSuccess(self::plugin()->translate('no_permission', ""), true);
+            ilUtil::sendFailure(self::plugin()->translate('no_permission', ""), true);
             ilUtil::redirect('#');
         }
         if (preg_match("/usr_takeback/uim", filter_input(INPUT_GET, 'target'), $matches)) {

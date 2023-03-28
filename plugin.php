@@ -1,9 +1,9 @@
 <?php
 
-$id                = 'usrto';
-$version           = '4.0.4';
+$id = 'usrto';
+$version = '4.1.1';
 $ilias_min_version = '6.0';
 $ilias_max_version = '7.9999';
 $responsible       = 'sr solutions ag';
 $responsible_mail  = 'support@sr.solutions';
-$supports_cli_setup = false;
+$supports_cli_setup = true;

@@ -2,28 +2,29 @@
 
 require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\Plugins\UserTakeOver\GlobalScreen\MetaBarProvider;
-use srag\RemovePluginDataConfirm\UserTakeOver\PluginUninstallTrait;
 use srag\Plugins\UserTakeOver\GlobalScreen\ModificationProvider;
+use srag\Plugins\UserTakeOver\GlobalScreen\MetaBarProvider;
+use srag\Plugins\UserTakeOver\ITranslator;
 
 /**
- * ilUserTakeOverPlugin
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @version $Id$
+ * @author       Thibeau Fuhrer <thibeau@sr.solutions>
+ * @noinspection AutoloadingIssuesInspection
  */
-class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
+class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin implements ITranslator
 {
-
-    use PluginUninstallTrait;
-
-    const PLUGIN_ID = 'usrto';
-    const PLUGIN_NAME = 'UserTakeOver';
-    const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-    const PLUGIN_BASE = './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver';
+    public const PLUGIN_CLASS_NAME = self::class;
+    public const PLUGIN_BASE = './Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver';
+    public const PLUGIN_NAME = 'UserTakeOver';
+    public const PLUGIN_ID = 'usrto';
     /**
-     * @var ilUserTakeOverPlugin
+     * @var self|null
      */
     protected static $instance;
+
+    /**
+     * @var ilDBInterface
+     */
+    protected $database;
 
     public function __construct()
     {
@@ -32,22 +33,29 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
 
         // global screen service might not be available yet,
         // if this class is called from the setup CLI.
-        if ($DIC->offsetExists('global_screen')) {
-            $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js', false, 3);
+        if ($this->isActive() && $DIC->offsetExists('global_screen')) {
+            $DIC->globalScreen()->layout()->meta()->addJs(
+                self::PLUGIN_BASE . '/node_modules/@varvet/tiny-autocomplete/src/tiny-autocomplete.js',
+                false,
+                3
+            );
             $DIC->globalScreen()->layout()->meta()->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 3);
 
             // provider also depend on global screen service.
             $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
             $this->provider_collection->setModificationProvider(new ModificationProvider($DIC, $this));
         }
+
+        if ($DIC->offsetExists('ilDB')) {
+            $this->database = $DIC->database();
+        }
+
+        self::$instance = $this;
     }
 
-    /**
-     * @return ilUserTakeOverPlugin
-     */
-    public static function getInstance()
+    public static function getInstance(): self
     {
-        if (!isset(self::$instance)) {
+        if (null === self::$instance) {
             self::$instance = new self();
         }
 
@@ -57,19 +65,25 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin
     /**
      * @return string
      */
-    public function getPluginName()
+    public function getPluginName(): string
     {
         return self::PLUGIN_NAME;
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
-    protected function deleteData()/*: void*/
+    protected function afterUninstall(): void
     {
-        self::dic()->database()->dropTable(ilUserTakeOverARConfig::TABLE_NAME, false);
-        self::dic()->database()->dropTable('ui_uihk_usrto_config', false);
-        self::dic()->database()->dropTable(usrtoGroup::TABLE_NAME, false);
-        self::dic()->database()->dropTable(usrtoMember::TABLE_NAME, false);
+        // normal groups
+        $this->database->dropTable('ui_uihk_usrto_grp');
+        $this->database->dropSequence('ui_uihk_usrto_grp');
+        // role based groups
+        $this->database->dropTable('ui_uihk_usrto_rb_grp');
+        // group members
+        $this->database->dropTable('ui_uihk_usrto_member');
+        $this->database->dropSequence('ui_uihk_usrto_member');
+        // config
+        $this->database->dropTable('usrto_config');
     }
 }

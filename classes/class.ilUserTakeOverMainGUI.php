@@ -174,7 +174,9 @@ class ilUserTakeOverMainGUI
         $r = $this->db->queryF($q, ['text', 'text', 'text', 'text'], [$term, $term, $term, $term]);
         $json = [];
         while ($d = $this->db->fetchObject($r)) {
-            $json[] = $d;
+            if ($this->access_checks->canUserBeImpersonated((int) $d->usr_id)()) {
+                $json[] = $d;
+            }
         }
         echo json_encode($json);
         exit;
