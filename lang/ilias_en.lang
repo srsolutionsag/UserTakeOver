@@ -1,62 +1,48 @@
-take_over_user_view#:#Take over user view
-leave_user_view#:#Leave User view
-user_taker_over_success#:#You have taken successfully the user view of user %s.
-user_taker_back_success#:#You are now logged in again as:  %s
-user_taker_over_failure#:#Take over User View: An error has occured.
-no_permission#:#You do not have the necessary permission
-tab_configuration#:#Configuration
-demo_group#:#Demo Group
-demo_group_info#:#Users in the demo group can take over each others accounts. Take care: If you add an administrator to the demo group all the accounts in the group gain de facto administration privileges.
-save#:#Save
-success#:#Saved successfully.
-something_went_wrong#:#Something went wrong.
-loading#:#Loading...
-no_results#:#No results.
-take_over_user#:#Take over user:
-title#:#Title
-number_of_members#:#Number of members
-minimum_number_of_members#:#Minimum number of members
-common_actions#:#Actions
-edit_members#:#Edit members
-edit_grp#:#Edit group
-add_grp#:#Add group
-description#:#Description
-create#:#Create
-edit#:#Edit
-cancel#:#Cancel
-name_grp#:#Name group
-removeplugindataconfirm_cancel#:#Cancel
-removeplugindataconfirm_confirm_remove_data#:#Do you want to remove the %1$s data as well? At most, you just want to disable the %1$s plugin?
-removeplugindataconfirm_deactivate#:#Just deactivate %1$s plugin
-removeplugindataconfirm_data#:#%1$s data
-removeplugindataconfirm_keep_data#:#Keep %1$s data
-removeplugindataconfirm_msg_kept_data#:#The %1$s data was kept
-removeplugindataconfirm_msg_removed_data#:#The %1$s data was also removed
-removeplugindataconfirm_remove_data#:#Remove %1$s data
-create_grp_msg_success#:#The group was created.
-update_grp_msg_success#:#The group was updated.
-delete#:#Delete
-confirm_delete_grp#:#Do you really want to delete the group?
-update#:#Update
-group_info#:#Users in the group can take over each others accounts. Take care: If you add an administrator to the group all the accounts in the group gain de facto administration privileges.
+settings#:#Settings
+settings_allowed_global_roles#:#Available to
+settings_allowed_global_roles_info#:#Select which global roles are permitted to use UserTakeOver.
+settings_allow_admin_impersonation#:#Impersonate admins
+settings_allow_admin_impersonation_info#:#If enabled, users with access to UserTakeOver may impersonate administrators.
+
 group#:#Group
-tab_group#:#Groups
-create_group#:#Create group
-edit_group#:#Edit group
-back#:#Back
-status#:#Status
-status_original_login#:#Original User
-status_impersonated_login#:#Impersonated User
-cnf_global_role_ids#:#Access to Impersonate-Search
-cnf_global_role_ids_info#:#Role "Administrator" has always access to the Impersonate-Search
-configuration#:#Configuration
-cnf_allow_impersonate_admins#:#Allow impersonation of Admins
-cnf_allow_impersonate_admins_info#:#If enabled, administrators can be found and impersonated by users with access to this plugin.
-restricted_to_members#:#Restricted to members
-restrict_to_members#:#Restrict to group members
-restrict_to_members_info#:#If enabled, group members are only allowed to impersonate other group members.
-restrict_to_roles#:#Restrict to global roles
-restrict_to_roles_info#:#If enabled, group members can only impersonate users assigned to selected global roles.
-allowed_roles#:#Allowed roles
-yes#:#Yes
-no#:#No
+groups#:#Groups
+group_title#:#Title
+group_description#:#Description
+group_restriction_members#:#Restrict to group members
+group_restriction_members_info#:#If enabled, members of this group are only permitted to impersonate other members of this group.
+group_restriction_roles#:#Restrict to global roles
+group_restriction_roles_info#:#If enabled, members of this group can only impersonate users assigned to the selected global roles. <br> This option can be used in combination with "Restrict to group members".
+group_allowed_roles#:#Allowed global roles
+group_members#:#Group members
+group_filter_min_member_amount#:#Member amount (min)
+group_table_member_amount#:#Members:
+group_table_no_members#:#There are no group members.
+group_table_restriction#:#Restrictions:
+group_table_restriction_status_members#:#Members
+group_table_restriction_status_roles#:#Roles
+group_table_restriction_status_none#:#None
+group_action_add#:#Add group
+group_action_edit#:#Edit
+group_action_delete#:#Delete
+group_action_edit_members#:#Edit members
+
+tool_title#:#UserTakeOver
+tool_title_leave#:#Stop impersonation
+tool_title_search#:#Search users
+
+msg_invalid_original_user#:#You cannot impersonate another user while you are logged in as %s.
+msg_invalid_user_id#:#The requested user could not be found.
+msg_invalid_permissions#:#You are not permitted to impersonate %s.
+msg_invalid_ref_ids#:#One or more reference ids (ref-id) are invalid.
+msg_invalid_ref_id#:#This reference id (ref-id) is invalid.
+msg_invalid_email#:#This email address is invalid.
+msg_invalid_range_number#:#This number is out of range, it must be between %d and %d.
+msg_invalid_range_text#:#This text-lengt is out of range, it must be between %d and %d characters.
+msg_impersonation_success#:#You are now logged in as %s.
+msg_settings_success#:#Settings saved.
+msg_group_success#:#Group saved.
+msg_group_deleted#:#Group deleted.
+msg_group_not_found#:#The requested group could not be found.
+
+general_action_impersonate#:#Impersonate
+general_action_back#:#Back

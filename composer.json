@@ -1,57 +1,30 @@
 {
-  "name": "srag/usertakeover",
-  "description": "ILIAS UserTakeOver plugin",
+  "name": "srag/user-take-over",
+  "description": "",
   "type": "project",
-  "license": "GPL-3.0+",
-  "keywords": [
-    "ILIAS",
-    "Plugin",
-    "user",
-    "role"
-  ],
-  "homepage": "https://github.com/srsolutionsag/UserTakeOver",
+  "license": "GPL-3.0",
   "authors": [
     {
-      "name": "sr solutions ag",
-      "email": "support@sr.solutions",
-      "homepage": "https://sr.solutions",
-      "role": "Developer"
+      "name": "Thibeau Fuhrer",
+      "email": "thibeau@sr.solutions",
+      "homepage": "https://sr.solutions"
     }
   ],
   "support": {
-    "email": "support@sr.solutions"
+    "issues": "https://support.sr.solutions"
   },
   "autoload": {
     "psr-4": {
       "srag\\Plugins\\UserTakeOver\\": "src/"
     },
     "classmap": [
-      "./classes/",
-      "./src/UI",
-      "../../../../../../../Services/ActiveRecord/class.ActiveRecord.php",
-      "../../../../../../../Services/Component/classes/class.ilPluginConfigGUI.php",
-      "../../../../../../../Services/Exceptions/classes/class.ilException.php",
-      "../../../../../../../Services/Form/classes/class.ilMultiSelectInputGUI.php",
-      "../../../../../../../Services/Form/classes/class.ilPropertyFormGUI.php",
-      "../../../../../../../Services/UIComponent/classes/class.ilUIHookPluginGUI.php",
-      "../../../../../../../Services/UIComponent/classes/class.ilUserInterfaceHookPlugin.php",
-      "../../../../../../../Services/UICore/classes/class.ilTemplate.php",
-      "../../../../../../../Services/User/classes/class.ilObjUser.php"
+      "classes/"
     ]
   },
   "config": {
-    "optimize-autoloader": true,
-    "sort-packages": true,
-    "classmap-authoritative": true
+    "optimize-autoloader": true
   },
   "require": {
-    "srag/activerecordconfig": ">=0.1.0",
-    "srag/custominputguis": ">=0.1.0",
-    "srag/dic": ">=0.1.0",
-    "srag/librariesnamespacechanger": ">=0.1.0",
-    "srag/removeplugindataconfirm": ">=0.1.0"
-  },
-  "scripts": {
-    "pre-autoload-dump": "srag\\LibrariesNamespaceChanger\\LibrariesNamespaceChanger::rewriteLibrariesNamespaces"
+    "php": ">=8.0"
   }
 }

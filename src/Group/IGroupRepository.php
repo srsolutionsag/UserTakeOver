@@ -14,7 +14,7 @@ interface IGroupRepository
     /**
      * @return Group[]
      */
-    public function getGroupsOfUser(int $user_id): array;
+    public function getGroupsOfUser(int $user_id, bool $use_cache = false): array;
 
     /**
      * @return Group[]
@@ -22,4 +22,8 @@ interface IGroupRepository
     public function getAllGroups(bool $array_data = false): array;
 
     public function deleteGroup(Group $group): self;
+
+    public function removeGroupMemberFrom(int $user_id, Group $group): self;
+
+    public function deleteGroupMembersOf(Group $group): self;
 }
