@@ -9,50 +9,33 @@ namespace srag\Plugins\UserTakeOver\Group;
  */
 class Group
 {
-    public const F_ID = 'id';
-    public const F_TITLE = 'title';
-    public const F_DESCRIPTION = 'description';
-    public const F_RESTRICT_TO_MEMBERS = 'restrict_to_members';
-    public const F_ALLOWED_ROLES = 'allowed_roles';
+    public const MAX_TITLE_LENGTH = 254;
 
-    protected const MAX_TITLE_LENGTH = 254;
-
-    /**
-     * @var int|null
-     */
-    protected $id;
-    /**
-     * @var string
-     */
-    protected $title;
-    /**
-     * @var string
-     */
-    protected $description;
-    /**
-     * @var int[]
-     */
-    protected $allowed_roles;
-    /**
-     * @var bool
-     */
-    protected $restrict_to_members;
+    protected ?int $id;
+    protected string $description = '';
+    protected array $restrict_to_roles = [];
+    protected bool $restrict_to_members = true;
+    protected array $group_members = [];
+    protected string $title;
 
     /**
      * @param int[] $restrict_to_roles
+     * @param int[] $group_members
      */
     public function __construct(
         ?int $id,
         string $title,
         string $description = '',
         array $restrict_to_roles = [],
-        bool $restrict_to_members = true
+        bool $restrict_to_members = true,
+        array $group_members = []
     ) {
         $this->id = $id;
         $this->setTitle($title);
         $this->description = $description;
-        $this->allowed_roles = $restrict_to_roles;
+        $this->restrict_to_roles = $restrict_to_roles;
         $this->restrict_to_members = $restrict_to_members;
+        $this->group_members = $group_members;
     }
 
     public function getId(): ?int
@@ -94,7 +77,7 @@ class Group
      */
     public function getAllowedRoles(): array
     {
-        return $this->allowed_roles;
+        return $this->restrict_to_roles;
     }
 
     /**
@@ -102,7 +85,7 @@ class Group
      */
     public function setAllowedRoles(array $allowed_roles): self
     {
-        $this->allowed_roles = $allowed_roles;
+        $this->restrict_to_roles = $allowed_roles;
         return $this;
     }
 
@@ -119,13 +102,32 @@ class Group
 
     public function isRestrictedToRoles(): bool
     {
-        return !empty($this->allowed_roles);
+        return !empty($this->restrict_to_roles);
+    }
+
+    /**
+     * @return int[]
+     */
+    public function getGroupMembers(): array
+    {
+        return $this->group_members;
+    }
+
+    /**
+     * @param int[] $group_members
+     */
+    public function setGroupMembers(array $group_members): self
+    {
+        $this->group_members = $group_members;
+        return $this;
     }
 
     protected function abortIfTitleTooLarge(string $title): void
     {
         if (self::MAX_TITLE_LENGTH < strlen($title)) {
-            throw new \LogicException(self::class . "::\$title must only have " . self::MAX_TITLE_LENGTH . " characters.");
+            throw new \LogicException(
+                self::class . "::\$title must only have " . self::MAX_TITLE_LENGTH . " characters."
+            );
         }
     }
 }

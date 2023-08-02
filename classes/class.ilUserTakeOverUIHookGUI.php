@@ -1,82 +1,143 @@
 <?php
-/* Copyright (c) 1998-2010 ILIAS open source, Extended GPL, see docs/LICENSE */
-require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\UserTakeOver\DICTrait;
-use srag\Plugins\UserTakeOver\Handler;
-use srag\Plugins\UserTakeOver\Redirect;
+declare(strict_types=1);
+
+use srag\Plugins\UserTakeOver\IGeneralRepository;
+use srag\Plugins\UserTakeOver\IRequestParameters;
+use srag\Plugins\UserTakeOver\RequestHelper;
+use srag\Plugins\UserTakeOver\ITranslator;
+use ILIAS\HTTP\Wrapper\RequestWrapper;
+use ILIAS\Refinery\Factory as Refinery;
+use Psr\Http\Message\ServerRequestInterface;
 
 /**
- * Class ilUserTakeOverUIHookGUI
- * @author  Fabian Schmid <fs@studer-raimann.ch>
- * @author  Martin Studer <ms@studer-raimann.ch>
- * @version $Id$
- * @ingroup ServicesUIComponent
+ * @author       Thibeau Fuhrer <thibeau@sr.solutions>
+ * @noinspection AutoloadingIssuesInspection
  */
 class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
 {
+    use ilUserTakeOverOnScreenMessages;
+    use ilUserTakeOverPluginInstance;
+    use RequestHelper;
 
-    use DICTrait;
+    protected ilUserTakeOverImpersonationHandler $impersonation_handler;
+    protected IGeneralRepository $repository;
+    protected ITranslator $translator;
 
-    const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
+    protected ilGlobalTemplateInterface $template;
+    protected ilCtrlInterface $ctrl;
+    protected ServerRequestInterface $request;
+    protected RequestWrapper $get_request;
+    protected ilObjUser $current_user;
+    protected Refinery $refinery;
+
+    protected bool $is_initialized = false;
 
     /**
-     * @var int
+     * This method is called in order to initialize this class. We cannot use the
+     * constructor here because this class will be loaded by ILIAS automatically in
+     * an early stage of the bootup process, where some dependencies are not yet
+     * available.
      */
-    protected static $num = 0;
+    public function init(): void
+    {
+        global $DIC;
+
+        if ($this->is_initialized) {
+            return;
+        }
+
+        $plugin = $this->getPlugin($DIC);
+
+        $this->repository = new ilUserTakeOverGeneralRepository($DIC->rbac()->review());
+        $this->impersonation_handler = new ilUserTakeOverImpersonationHandler(
+            $this->repository,
+            $plugin,
+            new ilUserTakeOverAccessHandler(
+                new ilUserTakeOverGroupRepository($DIC->database()),
+                (new ilUserTakeOverSettingsRepository($DIC->database()))->get(),
+                $DIC->http()->wrapper()->query(),
+                $DIC->refinery(),
+                $DIC->user(),
+                $DIC->rbac()->review(),
+                $DIC->rbac()->system()
+            ),
+            new ilUserTakeOverSessionWrapper(),
+            $DIC->refinery(),
+            $DIC->ui()->mainTemplate(),
+            $DIC->ctrl(),
+            $DIC->user()
+        );
+
+        $this->template = $DIC->ui()->mainTemplate();
+        $this->request = $DIC->http()->request();
+        $this->get_request = $DIC->http()->wrapper()->query();
+        $this->refinery = $DIC->refinery();
+        $this->current_user = $DIC->user();
+        $this->ctrl = $DIC->ctrl();
+        $this->translator = $plugin;
+
+        $this->is_initialized = true;
+    }
 
     /**
-     * @param string $a_comp
-     * @param string $a_part
-     * @param array  $a_par
-     * @return array
+     * @inheritDoc
      */
-    public function getHTML($a_comp, $a_part, $a_par = [])
+    public function gotoHook(): void
     {
-        return ['mode' => ilUIHookPluginGUI::KEEP, "html" => ''];
+        $this->init();
+
+        // check if the current request should be handled by UserTakeOver.
+        if (null === ($target = $this->getRequestedString($this->get_request, IRequestParameters::TARGET)) ||
+            ilUserTakeOverPlugin::PLUGIN_ID !== $target
+        ) {
+            $this->redirectToPreviousUrl();
+            return;
+        }
+
+        if (null === ($user_id = $this->getRequestedInteger($this->get_request, IRequestParameters::USER_ID))) {
+            $this->sendFailure($this->translator->txt(ITranslator::MSG_USER_NOT_FOUND));
+            $this->redirectToPreviousUrl();
+            return;
+        }
+
+        $user = $this->repository->getUser($user_id);
+        if ($user->getId() === $this->current_user->getId()) {
+            $this->redirectToPreviousUrl();
+            return;
+        }
+
+        if (ANONYMOUS_USER_ID === $user->getId()) {
+            $this->sendFailure($this->translator->txt(ITranslator::MSG_USER_NOT_FOUND));
+            $this->redirectToPreviousUrl();
+            return;
+        }
+
+        $this->impersonation_handler->impersonate($user);
     }
 
-    public function gotoHook()
+    protected function redirectToPreviousUrl(): void
     {
-        if (preg_match("/usr_takeover_(.*)/uim", filter_input(INPUT_GET, 'target'), $matches)) {
-            $handler = new Handler(self::dic()->ctrl());
-            $handler->setOriginalUserId(self::dic()->user()->getId());
-            $handler->setImpersonateUserId((int) $matches[1]);
-            $handler->impersonateUser(new class implements Redirect {
-
-                use DICTrait;
-
-                const PLUGIN_CLASS_NAME = \ilUserTakeOverPlugin::class;
-
-                public function performRedirect(int $user_id) : void
-                {
-                    $original_login     = self::dic()->user()->getLogin();
-                    $impersonated_login = ilObjUser::_lookupLogin($user_id);
-                    self::dic()->logger()->root()->log("UserTakeOver: {$original_login} has taken over the user view of {$impersonated_login}");
-                    ilUtil::sendSuccess(self::plugin()->translate('user_taker_over_success', "", [$impersonated_login]), true);
-                    ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
-                }
-            });
-            ilUtil::sendFailure(self::plugin()->translate('no_permission', ""), true);
-            ilUtil::redirect('#');
+        $referer = $this->request->getHeader('referer')[0] ?? null;
+        if (null === $referer) {
+            $this->redirectToDashboard();
         }
-        if (preg_match("/usr_takeback/uim", filter_input(INPUT_GET, 'target'), $matches)) {
-            $handler = new Handler();
-            $handler->switchBack(new class implements Redirect {
-                use DICTrait;
 
-                const PLUGIN_CLASS_NAME = \ilUserTakeOverPlugin::class;
-
-                public function performRedirect(int $user_id) : void
-                {
-                    $impersonated_login = self::dic()->user()->getLogin();
-                    $original_login     = ilObjUser::_lookupLogin($user_id);
-                    self::dic()->logger()->root()->log("UserTakeOver: {$impersonated_login} switched back to {$original_login}");
-                    ilUtil::sendSuccess(self::plugin()->translate('user_taker_back_success', "", [$original_login]), true);
-                    ilUtil::redirect('ilias.php?baseClass=' . ilDashboardGUI::class . '&cmd=jumpToSelectedItems');
-                }
-            });
-        }
+        $this->ctrl->redirectToURL($referer);
     }
 
+    protected function redirectToDashboard(): void
+    {
+        $this->ctrl->redirectByClass(ilDashboardGUI::class, 'jumpToSelectedItems');
+    }
+
+    protected function getTemplate(): ilGlobalTemplateInterface
+    {
+        return $this->template;
+    }
+
+    protected function getRefinery(): Refinery
+    {
+        return $this->refinery;
+    }
 }

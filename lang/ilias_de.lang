@@ -1,62 +1,48 @@
-take_over_user_view#:#Benutzersicht einnehmen
-leave_user_view#:#Benutzersicht verlassen
-user_taker_over_success#:#Sie haben die Benutzersicht von %s erfolgreich eingenommen.
-user_taker_back_success#:#Sie sind nun wieder eingeloggt als:  %s
-user_taker_over_failure#:#Bei der Benutzerübernahme ist ein Fehler aufgetreten
-no_permission#:#Sie haben nicht die entsprechenden Zugriffsrechte
-tab_configuration#:#Einstellungen
-demo_group#:#Demo Gruppe
-demo_group_info#:#Benutzer in der Demo Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Demo Gruppe sein, alle Demo Gruppen Benutzer de facto Administrationsrechte haben.
-save#:#Speichern
-success#:#Erfolgreich gespeichert.
-something_went_wrong#:#Etwas ist schief gelaufen.
-loading#:#Lade...
-no_results#:#Keine Resultate
-take_over_user#:#Benutzerübernahme:
-title#:#Titel
-number_of_members#:#Anzahl Mitglieder
-minimum_number_of_members#:#Minimum Anzahl Mitglieder
-common_actions#:#Aktionen
-edit_members#:#Mitglieder bearbeiten
-edit_grp#:#Gruppe bearbeiten
-add_grp#:#Gruppe hinzufügen
-description#:#Beschreibung
-create#:#Erstellen
-edit#:#Bearbeiten
-cancel#:#Abbrechen
-name_grp#:#Name Gruppe
-removeplugindataconfirm_cancel#:#Abbrechen
-removeplugindataconfirm_confirm_remove_data#:#Möchten Sie die %1$s-Daten auch entfernen? Allenfalls möchten Sie das %1$s-Plugin nur deaktivieren?
-removeplugindataconfirm_deactivate#:#%1$s-Plugin nur deaktivieren
-removeplugindataconfirm_data#:#%1$s-Daten
-removeplugindataconfirm_keep_data#:#%1$s-Daten behalten
-removeplugindataconfirm_msg_kept_data#:#Die %1$s-Daten wurden behalten
-removeplugindataconfirm_msg_removed_data#:#Die %1$s-Daten wurden auch entfernt
-removeplugindataconfirm_remove_data#:#Entferne %1$s-Daten
-create_grp_msg_success#:#Die Gruppe wurde erstellt.
-update_grp_msg_success#:#Die Gruppe wurde aktualisiert.
-delete#:#Löschen
-confirm_delete_grp#:#Möchten Sie die Gruppe wirklich löschen?
-update#:#Aktualisieren
-group_info#:#Benutzer in der Gruppe können sich gegenseitig übernehmen. Beachten Sie, dass, sollte ein Administrator in der Gruppe sein, alle Gruppen Benutzer de facto Administrationsrechte haben.
+settings#:#Einstellungen
+settings_allowed_global_roles#:#Verfügbar für
+settings_allowed_global_roles_info#:#Wählen Sie aus, welche globalen Rollen UserTakeOver benutzen können.
+settings_allow_admin_impersonation#:#Admins übernehmen
+settings_allow_admin_impersonation_info#:#Wenn aktiv, können Benutzer mit Zugriff auf UserTakeOver Benutzer der Rolle Administrator übernehmen.
+
 group#:#Gruppe
-tab_group#:#Gruppen
-create_group#:#Gruppe erstellen
-edit_group#:#Gruppe bearbeiten
-back#:#Zurück
-status#:#Status
-status_original_login#:#Ursprünglicher Benutzer
-status_impersonated_login#:#Eingenommene Benutzersicht
-cnf_global_role_ids#:#Zugriff auf Suchfunktion
-cnf_global_role_ids_info#:#Die Role "Administrator" hat immer Zugriff auf die Suche.
-configuration#:#Konfiguration
-cnf_allow_impersonate_admins#:#Impersonalisierung von Admins zulassen
-cnf_allow_impersonate_admins_info#:#Wenn aktiv, können Administratoren gefunden und impersonalisiert (übernommen) werden.
-restricted_to_members#:#Eingeschränkt auf Mitglieder
-restrict_to_members#:#Impersonalisierung auf Mitglieder einschränken
-restrict_to_members_info#:#Wenn aktiv, können Mitglieder nur andere Mitglieder impersonalisieren (übernehmen).
-restrict_to_roles#:#Impersonalisierung auf Rollen einschränken
-restrict_to_roles_info#:#Wenn aktiv, können Mitglieder nur Benutzer mit ausgewählten Rollen impersonalisieren (übernehmen).
-allowed_roles#:#Erlaubte Rollen
-yes#:#Ja
-no#:#Nein
+groups#:#Gruppen
+group_title#:#Titel
+group_description#:#Beschreibung
+group_restriction_members#:#Einschränken auf Gruppenmitglieder
+group_restriction_members_info#:#Wenn aktiv, können Mitglieder dieser Gruppe nur andere Mitglieder dieser Benutzer übernehmen.
+group_restriction_roles#:#Einschränken auf globale Rollen
+group_restriction_roles_info#:#Wenn aktiv, können Mitglieder dieser Gruppe nur noch Benutzer übernehmen, die den ausgewählten globalen Rollen zugewiesen sind. <br> Diese Option kann in Kombination mit "Einschränken auf Gruppenmitglieder" benutzt werden.
+group_allowed_roles#:#Erlaubte globale Rollen
+group_members#:#Gruppenmitglieder
+group_filter_min_member_amount#:#Mitgliederanzahl (min)
+group_table_member_amount#:#Mitglieder:
+group_table_no_members#:#Es wurden noch keine Mitglieder hinzugefügt.
+group_table_restriction#:#Einschränkungen:
+group_table_restriction_status_members#:#Mitglieder
+group_table_restriction_status_roles#:#Rollen
+group_table_restriction_status_none#:#Keine
+group_action_add#:#Gruppe hinzufügen
+group_action_edit#:#Bearbeiten
+group_action_delete#:#Löschen
+group_action_edit_members#:#Mitglieder bearbeiten
+
+tool_title#:#UserTakeOver
+tool_title_leave#:#Übernahme beenden
+tool_title_search#:#Benutzer suchen
+
+msg_invalid_original_user#:#Sie können keinen Benutzer übernehmen, während Sie als %s eingeloggt sind.
+msg_invalid_user_id#:#Der angefragte Benutzer konnte nicht gefunden werden.
+msg_invalid_permissions#:#Sie haben nicht die Berechtigung, um den Benutzer %s zu übernehmen.
+msg_invalid_ref_ids#:#Eine oder mehrere Referenz-IDs (ref-ids) sind ungültig.
+msg_invalid_ref_id#:#Die Referenz-ID (ref-id) ist ungültig.
+msg_invalid_email#:#Die E-Mail-Adresse ist ungültig.
+msg_invalid_range_number#:#Die Zahl ist ungültig, sie muss zwischen %d und %d liegen.
+msg_invalid_range_text#:#Der Text ist ungültig, er muss zwischen %d und %d Zeichen lang sein.
+msg_impersonation_success#:#Sie sind nun als %s eingeloggt.
+msg_settings_success#:#Einstellungen gespeichert.
+msg_group_success#:#Gruppe gespeichert.
+msg_group_deleted#:#Gruppe gelöscht.
+msg_group_not_found#:#Die angefragte Gruppe konnte nicht gefunden werden.
+
+general_action_impersonate#:#Übernehmen
+general_action_back#:#Zurück

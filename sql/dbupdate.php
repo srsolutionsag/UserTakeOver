@@ -158,3 +158,11 @@ if ($ilDB->tableExists('ui_uihk_usrto_config_n')) {
     $ilDB->dropTable('ui_uihk_usrto_config_n');
 }
 ?>
+<#10>
+<?php
+/** @var $ilDB ilDBInterface */
+if ($ilDB->tableExists('usrto_config')) {
+    $ilDB->query("INSERT IGNORE INTO usrto_config (identifier, `value`) VALUES ('cnf_allow_impersonate_admins', '');");
+    $ilDB->query("INSERT IGNORE INTO usrto_config (identifier, `value`) VALUES ('cnf_global_role_ids', '');");
+}
+?>

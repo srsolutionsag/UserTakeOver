@@ -6,10 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'srag\\RemovePluginDataConfirm\\UserTakeOver\\' => array($vendorDir . '/srag/removeplugindataconfirm/src'),
     'srag\\Plugins\\UserTakeOver\\' => array($baseDir . '/src'),
-    'srag\\LibrariesNamespaceChanger\\' => array($vendorDir . '/srag/librariesnamespacechanger/src'),
-    'srag\\DIC\\UserTakeOver\\' => array($vendorDir . '/srag/dic/src'),
-    'srag\\CustomInputGUIs\\UserTakeOver\\' => array($vendorDir . '/srag/custominputguis/src'),
-    'srag\\ActiveRecordConfig\\UserTakeOver\\' => array($vendorDir . '/srag/activerecordconfig/src'),
 );

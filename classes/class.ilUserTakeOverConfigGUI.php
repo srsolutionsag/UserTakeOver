@@ -1,43 +1,54 @@
 <?php
-require_once __DIR__ . "/../vendor/autoload.php";
 
-use srag\DIC\UserTakeOver\DICTrait;
+declare(strict_types=1);
 
 /**
- * ilUserDefaultsConfigGUI
+ * This class serves as a dispatcher for all plugin controllers which are
+ * accessed in the ILIAS administration context.
  *
- * @author            Fabian Schmid <fs@studer-raimann.ch>
- * @author            Thibeau Fuhrer <thf@studer-raimann.ch>
+ * If a new class is added, please add it to the switch statement and enter¨
+ * an according ilCtrl-control-statement.
  *
- * @version           2.0.00
+ * @author            Thibeau Fuhrer <thibeau@sr.solutions>
  *
- * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilUIPluginRouterGUI,ilObjComponentSettingsGUI
- * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverMainGUI
+ * @ilCtrl_IsCalledBy ilUserTakeOverConfigGUI: ilObjComponentSettingsGUI
+ * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverSettingsGUI
+ * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupMemberGUI
+ * @ilCtrl_Calls      ilUserTakeOverConfigGUI: ilUserTakeOverGroupGUI
+ *
+ * @noinspection      AutoloadingIssuesInspection
  */
 class ilUserTakeOverConfigGUI extends ilPluginConfigGUI
 {
-    use DICTrait;
-
-    public const PLUGIN_CLASS_NAME = ilUserTakeOverPlugin::class;
-
-    public const CMD_CONFIGURE = 'configure';
-
     /**
      * @inheritDoc
      */
-    public function performCommand($cmd) : void
+    public function performCommand(string $cmd): void
     {
-        $next_class = self::dic()->ctrl()->getNextClass($this);
-        switch ($next_class) {
-            case strtolower(ilUserTakeOverMainGUI::class):
-                self::dic()->ctrl()->forwardCommand(new ilUserTakeOverMainGUI());
+        global $DIC;
+
+        switch ($DIC->ctrl()->getNextClass()) {
+            case strtolower(ilUserTakeOverSettingsGUI::class):
+                $DIC->ctrl()->forwardCommand(new ilUserTakeOverSettingsGUI());
                 break;
+            case strtolower(ilUserTakeOverGroupGUI::class):
+                $DIC->ctrl()->forwardCommand(new ilUserTakeOverGroupGUI());
+                break;
+
             default:
-                self::dic()->ctrl()->redirectByClass(
-                    [ilUserTakeOverMainGUI::class, ilUserTakeOverSettingsGUI::class]
+                // this is redirect-abuse and should be somehow prevented in the future.
+                $DIC->ctrl()->redirectByClass(
+                    [ilAdministrationGUI::class, ilObjComponentSettingsGUI::class, self::class, $this->getEntryPoint()],
+                    ilUserTakeOverSettingsGUI::CMD_EDIT
                 );
-                break;
         }
     }
-}
 
+    /**
+     * Returns which controller should be called first.
+     */
+    protected function getEntryPoint(): string
+    {
+        return ilUserTakeOverSettingsGUI::class;
+    }
+}
