@@ -91,7 +91,6 @@ class ilUserTakeOverUIHookGUI extends ilUIHookPluginGUI
         if (null === ($target = $this->getRequestedString($this->get_request, IRequestParameters::TARGET)) ||
             ilUserTakeOverPlugin::PLUGIN_ID !== $target
         ) {
-            $this->redirectToPreviousUrl();
             return;
         }
 

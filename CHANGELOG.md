@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## 5.0.1
+
+- Fixed an issue where other ILIAS goto-links no longer worked and e.g. the repository was could not be accessed
+  anymore.
+
 ## 5.0.0
 
 - Improved over-complicated access-check collection and removed the need for `Closure`'s.
