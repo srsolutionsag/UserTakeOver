@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 5.0.2
+
+- Restore legacy meta bar slates for the impersonation search and status.
+
 ## 5.0.1
 
 - Fixed an issue where other ILIAS goto-links no longer worked and e.g. the repository was could not be accessed
@@ -11,7 +15,7 @@
 - Improved the impersonation mechanism and removed the need for `Redirect` handlers.
 - Replaced all usages of the legacy package `DICTrait` by using proper dependency injection (whenever possible).
 - Replaced `ActiveRecord` implementation by using the repository pattern.
-- Replaced usages of `filter_input` by using using the ILIAS request wrappers.
+- Replaced usages of `filter_input` by using the ILIAS request wrappers.
 - Replaced legacy UI input for the user search by a UI component.
 - Replaces all legacy tables by new UI components.
 - Replaced all legacy forms by new UI components.
