@@ -46,3 +46,7 @@ msg_group_not_found#:#The requested group could not be found.
 
 general_action_impersonate#:#Impersonate
 general_action_back#:#Back
+
+status_original_login#:#Original User
+status_impersonated_login#:#Impersonated User
+status#:#Status

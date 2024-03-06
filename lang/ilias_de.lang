@@ -46,3 +46,7 @@ msg_group_not_found#:#Die angefragte Gruppe konnte nicht gefunden werden.
 
 general_action_impersonate#:#Übernehmen
 general_action_back#:#Zurück
+
+status_original_login#:#Ursprünglicher Benutzer
+status_impersonated_login#:#Eingenommene Benutzersicht
+status#:#Status

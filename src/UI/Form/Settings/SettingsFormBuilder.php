@@ -39,11 +39,17 @@ class SettingsFormBuilder extends AbstractFormBuilder
 
     public function getForm(): UIForm
     {
+        $inputs = [];
         $inputs[ITranslator::SETTINGS_ALLOWED_GLOBAL_ROLES] = $this->fields->multiSelect(
             $this->translator->txt(ITranslator::SETTINGS_ALLOWED_GLOBAL_ROLES),
             $this->available_global_roles,
             $this->translator->txt(ITranslator::SETTINGS_ALLOWED_GLOBAL_ROLES_INFO),
-        )->withValue($this->settings->getAllowedGlobalRoleIds());
+        )->withValue(
+            array_intersect(
+                array_map('intval', $this->settings->getAllowedGlobalRoleIds()),
+                array_keys($this->available_global_roles)
+            )
+        );
 
         $inputs[ITranslator::SETTINGS_ALLOW_ADMIN_IMPERSONATION] = $this->fields->checkbox(
             $this->translator->txt(ITranslator::SETTINGS_ALLOW_ADMIN_IMPERSONATION),

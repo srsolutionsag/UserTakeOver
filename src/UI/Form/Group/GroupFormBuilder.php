@@ -43,6 +43,7 @@ class GroupFormBuilder extends AbstractFormBuilder
 
     public function getForm(): Form
     {
+        $inputs = [];
         $inputs[ITranslator::GROUP_TITLE] = $this->fields->text(
             $this->translator->txt(ITranslator::GROUP_TITLE)
         )->withRequired(true)->withAdditionalTransformation(

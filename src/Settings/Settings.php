@@ -10,7 +10,7 @@ namespace srag\Plugins\UserTakeOver\Settings;
 class Settings
 {
     protected array $allowed_global_role_ids = [];
-protected bool $allow_impersonation_of_admins = false;
+    protected bool $allow_impersonation_of_admins = false;
 
     /**
      * @param int[] $allow_impersonation_of_admins

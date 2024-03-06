@@ -146,7 +146,7 @@ class GroupPresentationTableBuilder implements IPresentationTableBuilder
             $user_names[] = "{$user->getLogin()} ({$user->getFirstname()} {$user->getLastname()})";
         }
 
-        if (empty($user_names)) {
+        if ($user_names === []) {
             $user_names[] = $this->translator->txt(ITranslator::GROUP_TABLE_NO_MEMBERS);
         }
 

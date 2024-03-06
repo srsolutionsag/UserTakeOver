@@ -1,39 +1,35 @@
 <?php
 
-declare(strict_types=1);
+namespace srag\Plugins\UserTakeOver\GlobalScreen;
 
-use srag\Plugins\UserTakeOver\UI\Form\TagInputAutoCompleteBinder;
-use srag\Plugins\UserTakeOver\Group\IGroupRepository;
-use srag\Plugins\UserTakeOver\Group\Group;
-use srag\Plugins\UserTakeOver\IGeneralRepository;
-use srag\Plugins\UserTakeOver\ITranslator;
-use ILIAS\UI\Component\Symbol\Symbol;
-use ILIAS\Refinery\Factory as Refinery;
-use ILIAS\GlobalScreen\Scope\MetaBar\Provider\AbstractStaticMetaBarPluginProvider;
-use ILIAS\GlobalScreen\Scope\MetaBar\Factory\isItem;
 use ILIAS\GlobalScreen\Identification\IdentificationInterface;
-use ILIAS\UI\Component\Component;
+use ILIAS\GlobalScreen\Scope\MetaBar\Provider\AbstractStaticMetaBarPluginProvider;
+use ILIAS\UI\Component\Symbol\Icon\Icon;
+use srag\Plugins\UserTakeOver\UI\Form\TagInputAutoCompleteBinder;
 use ILIAS\UI\Factory as Components;
 use ILIAS\UI\Renderer;
+use ILIAS\Refinery\Factory as Refinery;
+use srag\Plugins\UserTakeOver\IGeneralRepository;
+use srag\Plugins\UserTakeOver\Group\IGroupRepository;
+use srag\Plugins\UserTakeOver\ITranslator;
+use ILIAS\UI\Component\Symbol\Symbol;
+use srag\Plugins\UserTakeOver\Group\Group;
+use ILIAS\GlobalScreen\Scope\MetaBar\Factory\isItem;
 
-/**
- * @author       Thibeau Fuhrer <thibeau@sr.solutions>
- * @noinspection AutoloadingIssuesInspection
- */
-class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
+class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
 {
-    use ilUserTakeOverImpersonationTarget;
-    use ilUserTakeOverPluginInstance;
-    use ilUserTakeOverDisplayName;
+    use \ilUserTakeOverImpersonationTarget;
+    use \ilUserTakeOverPluginInstance;
+    use \ilUserTakeOverDisplayName;
     use TagInputAutoCompleteBinder;
 
     protected const ICON_DIRECTORY = 'Customizing/global/plugins/Services/UIComponent/UserInterfaceHook/UserTakeOver/templates/images/';
 
-    protected ilUserTakeOverImpersonationHandler $impersonation_handler;
-    protected ilUserTakeOverAccessHandler $access_handler;
-    protected ilUserTakeOverSessionWrapper $session;
-    protected ilCtrlInterface $ctrl;
-    protected ilObjUser $current_user;
+    protected \ilUserTakeOverImpersonationHandler $impersonation_handler;
+    protected \ilUserTakeOverAccessHandler $access_handler;
+    protected \ilUserTakeOverSessionWrapper $session;
+    protected \ilCtrlInterface $ctrl;
+    protected \ilObjUser $current_user;
     protected Components $factory;
     protected Renderer $renderer;
     protected Refinery $refinery;
@@ -56,9 +52,9 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
 
         $plugin = $this->getPlugin($this->dic);
 
-        $this->access_handler = new ilUserTakeOverAccessHandler(
-            new ilUserTakeOverGroupRepository($this->dic->database()),
-            (new ilUserTakeOverSettingsRepository($this->dic->database()))->get(),
+        $this->access_handler = new \ilUserTakeOverAccessHandler(
+            new \ilUserTakeOverGroupRepository($this->dic->database()),
+            (new \ilUserTakeOverSettingsRepository($this->dic->database()))->get(),
             $this->dic->http()->wrapper()->query(),
             $this->dic->refinery(),
             $this->dic->user(),
@@ -66,20 +62,20 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
             $this->dic->rbac()->system()
         );
 
-        $this->impersonation_handler = new ilUserTakeOverImpersonationHandler(
-            new ilUserTakeOverGeneralRepository($this->dic->rbac()->review()),
+        $this->impersonation_handler = new \ilUserTakeOverImpersonationHandler(
+            new \ilUserTakeOverGeneralRepository($this->dic->rbac()->review()),
             $plugin,
             $this->access_handler,
-            new ilUserTakeOverSessionWrapper(),
+            new \ilUserTakeOverSessionWrapper(),
             $this->dic->refinery(),
             $this->dic->ui()->mainTemplate(),
             $this->dic->ctrl(),
             $this->dic->user()
         );
 
-        $this->general_repository = new ilUserTakeOverGeneralRepository($this->dic->rbac()->review());
-        $this->group_repository = new ilUserTakeOverGroupRepository($this->dic->database());
-        $this->session = new ilUserTakeOverSessionWrapper();
+        $this->general_repository = new \ilUserTakeOverGeneralRepository($this->dic->rbac()->review());
+        $this->group_repository = new \ilUserTakeOverGroupRepository($this->dic->database());
+        $this->session = new \ilUserTakeOverSessionWrapper();
         $this->factory = $this->dic->ui()->factory();
         $this->renderer = $this->dic->ui()->renderer();
         $this->refinery = $this->dic->refinery();
@@ -90,29 +86,45 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
         $this->is_initialized = true;
     }
 
-    /**
-     * @inheritDoc
-     */
     public function getMetaBarItems(): array
     {
+        $items = [];
         $this->init();
 
+        // Status & Leave
         if ($this->impersonation_handler->isImpersonationActive()) {
-            return [
-                $this->meta_bar
-                    ->linkItem($this->getItemId('leave'))
-                    ->withTitle($this->translator->txt(ITranslator::TOOL_TITLE_LEAVE))
-                    ->withSymbol($this->getIcon('leave.svg'))
-                    ->withAction($this->getImpersonateTarget($this->impersonation_handler->getOriginalUser()))
-            ];
+            $items[] = (new StatusItem(
+                $this->getItemId('uto_status'),
+                $this->dic->ui()->factory(),
+                $this->impersonation_handler->getOriginalUser()->getId(),
+                $this->translator
+            ))->withTitle($this->translator->txt('status'))
+              ->withSymbol($this->getIcon('info.svg'));
+
+            $items[] = $this->meta_bar->linkItem($this->getItemId('uto_leave'))
+                                      ->withTitle($this->translator->txt(ITranslator::TOOL_TITLE_LEAVE))
+                                      ->withAction(
+                                          $this->getImpersonateTarget($this->impersonation_handler->getOriginalUser())
+                                      )
+                                      ->withSymbol($this->getIcon('leave.svg'));
         }
 
-        $items[] = $this->meta_bar
-            ->topLegacyItem($this->getItemId('search'))
-            ->withTitle($this->translator->txt(ITranslator::TOOL_TITLE_SEARCH))
-            ->withSymbol($this->getIcon('search.svg'))
-            ->withLegacyContent(
-                $this->factory->legacy($this->renderer->render($this->getUserSearchItem()))
+        $items[] = (new SearchItem($this->getItemId('search'), $this->dic->ui()->factory()))
+            ->withVisibilityCallable(
+                fn (): bool => $this->access_handler->canCurrentUserUsePlugin()
+            )->withSymbol($this->getIcon('search.svg'))
+            ->withUrl(
+                $this->ctrl->getLinkTargetByClass(
+                    [\ilObjPluginDispatchGUI::class, \ilUserTakeOverGroupGUI::class],
+                    \ilUserTakeOverGroupGUI::CMD_FIND_TARGETS,
+                    null,
+                    true
+                )
+            )
+            ->withTitle(
+                $this->translator->txt(
+                    ITranslator::TOOL_TITLE_SEARCH
+                )
             );
 
         $groups = $this->group_repository->getGroupsOfUser($this->dic->user()->getId());
@@ -127,7 +139,7 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
                 ->withTitle($this->translator->txt(ITranslator::TOOL_TITLE))
                 ->withSymbol($this->getIcon('index.svg'))
                 ->withVisibilityCallable(
-                    fn () => !empty($items) &&
+                    fn (): bool => !empty($items) &&
                         $this->plugin->isActive() &&
                         (
                             $this->access_handler->canCurrentUserUsePlugin() ||
@@ -135,46 +147,6 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
                         )
                 ),
         ];
-    }
-
-    protected function getUserSearchItem(): Component
-    {
-        return $this->factory->input()->container()->form()->standard('#', [
-            $this->factory->input()->field()->tag(
-                $this->translator->txt(ITranslator::TOOL_TITLE_SEARCH),
-                []
-            )->withMaxTags(1)->withAdditionalOnLoadCode(
-                $this->getTagInputAutoCompleteBinder(
-                    $this->ctrl->getLinkTargetByClass(
-                        [ilObjPluginDispatchGUI::class, ilUserTakeOverGroupGUI::class],
-                        ilUserTakeOverGroupGUI::CMD_FIND_TARGETS,
-                        null,
-                        true
-                    )
-                )
-            )->withAdditionalOnLoadCode(fn ($id) => "
-                // this snippet was sponsored by ChatGPT :):
-                function findFirstNumber(arr) {
-                  for (let i = 0; i < arr.length; i++) {
-                    const parsedValue = parseInt(arr[i]);
-                    if (!isNaN(parsedValue)) {
-                      return parsedValue;
-                    }
-                  }
-                  return null;
-                }
-
-                const input = document.getElementById('$id');
-                input?.closest('form')?.addEventListener('submit', (event) => {
-                    event.preventDefault();
-                    const value = input.value.split(',');
-                    let userId = findFirstNumber(value);
-                    if (null !== userId) {
-                        window.location = '" . ILIAS_HTTP_PATH . "/" . $this->getImpersonateTarget(null) . "' + userId;
-                    }
-                });
-            ")
-        ])->withSubmitCaption($this->translator->txt(ITranslator::GENERAL_ACTION_IMPERSONATE));
     }
 
     protected function getGroupItem(Group $group, int $count): isItem
@@ -207,7 +179,7 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
             ->withVisibilityCallable(
                 // this is most likely an ILIAS bug, because this callable will not be used
                 // and the item will be shown without any items anyways.
-                fn () => !empty($member_items) && !$this->impersonation_handler->isImpersonationActive()
+                fn (): bool => $member_items !== [] && !$this->impersonation_handler->isImpersonationActive()
             );
     }
 
@@ -224,4 +196,5 @@ class ilUserTakeOverMetaBarProvider extends AbstractStaticMetaBarPluginProvider
     {
         return $this->if->identifier("{$this->plugin->getId()}_$item_name");
     }
+
 }

@@ -22,7 +22,7 @@ trait TagInputAutoCompleteBinder
      */
     protected function getTagInputAutoCompleteBinder(string $ajax_action): Closure
     {
-        return static function ($id) use ($ajax_action) {
+        return static function ($id) use ($ajax_action): string {
             return "
                 var {$id}_requests = [];
                 let searchCategories = async function (event) {
