@@ -83,10 +83,12 @@ class ilUserTakeOverAccessHandler
             }
 
             if ($group->isRestrictedToRoles()) {
-                $group_role_check = $group_role_check || $this->review->isAssignedToAtLeastOneGivenRole(
+                $group_role_check = $this->review->isAssignedToAtLeastOneGivenRole(
                     $target_user->getId(),
                     $group->getAllowedRoles()
-                );
+                ) || $group_role_check;
+            } else {
+                $group_role_check = true;
             }
         }
 
