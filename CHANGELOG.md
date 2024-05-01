@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## 5.0.3
+
+- Fixed an issue where targets could not be impersonated if the current user was not inside any group with a role
+  restriction.
+
 ## 5.0.2
 
 - Restore legacy meta bar slates for the impersonation search and status.
