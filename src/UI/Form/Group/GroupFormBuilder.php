@@ -10,7 +10,6 @@ use srag\Plugins\UserTakeOver\ITranslator;
 use ILIAS\UI\Component\Input\Container\Form\Factory as FormFactory;
 use ILIAS\UI\Component\Input\Field\Factory as FieldFactory;
 use ILIAS\UI\Component\Input\Container\Form\Form;
-use ILIAS\UI\Component\Input\Field\Input;
 use ILIAS\Refinery\Factory;
 
 /**
