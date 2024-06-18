@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 6.0.0
+
+- Added ILIAS 9 compatibility.
+
 ## 5.0.3
 
 - Fixed an issue where targets could not be impersonated if the current user was not inside any group with a role

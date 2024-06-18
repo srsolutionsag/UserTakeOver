@@ -18,8 +18,8 @@ git clone https://github.com/srsolutionsag/UserTakeOver.git
 As ILIAS administrator go to "Administration->Plugins" and install/activate the plugin.
 
 ### Requirements
-* ILIAS 8.x / 8.x
-* PHP >=8.0
+* ILIAS 9.x / 9.x
+* PHP >=8.1
 
 # ILIAS Plugin SLA
 We love and live the philosophy of Open Source Software! Most of our developments, which we develop on behalf of customers or in our own work, we make publicly available to all interested parties free of charge at https://github.com/srsolutionsag.
