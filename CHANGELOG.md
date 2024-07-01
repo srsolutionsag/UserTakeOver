@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## 5.0.4
+
+- Fixed an issue where the user-search was visible during impersonations even though the target user could not use it.
+- Fixed an issue where an impersonation was not properly ended if the session expired (not logout).
+
 ## 5.0.3
 
 - Fixed an issue where targets could not be impersonated if the current user was not inside any group with a role
