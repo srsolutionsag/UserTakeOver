@@ -109,23 +109,23 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
                                       ->withSymbol($this->getIcon('leave.svg'));
         }
 
-        $items[] = (new SearchItem($this->getItemId('search'), $this->dic->ui()->factory()))
-            ->withVisibilityCallable(
-                fn (): bool => $this->access_handler->canCurrentUserUsePlugin()
-            )->withSymbol($this->getIcon('search.svg'))
-            ->withUrl(
-                $this->ctrl->getLinkTargetByClass(
-                    [\ilObjPluginDispatchGUI::class, \ilUserTakeOverGroupGUI::class],
-                    \ilUserTakeOverGroupGUI::CMD_FIND_TARGETS,
-                    null,
-                    true
+        if ($this->access_handler->canCurrentUserUsePlugin()) {
+            $items[] = (new SearchItem($this->getItemId('search'), $this->dic->ui()->factory()))
+                ->withSymbol($this->getIcon('search.svg'))
+                ->withUrl(
+                    $this->ctrl->getLinkTargetByClass(
+                        [\ilObjPluginDispatchGUI::class, \ilUserTakeOverGroupGUI::class],
+                        \ilUserTakeOverGroupGUI::CMD_FIND_TARGETS,
+                        null,
+                        true
+                    )
                 )
-            )
-            ->withTitle(
-                $this->translator->txt(
-                    ITranslator::TOOL_TITLE_SEARCH
-                )
-            );
+                ->withTitle(
+                    $this->translator->txt(
+                        ITranslator::TOOL_TITLE_SEARCH
+                    )
+                );
+        }
 
         $groups = $this->group_repository->getGroupsOfUser($this->dic->user()->getId());
         foreach ($groups as $index => $group) {
