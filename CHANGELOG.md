@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## 6.0.1
+
+- Fixed an issue where the user-search was visible during impersonations even though the target user could not use it.
+- Fixed an issue where an impersonation was not properly ended if the session expired (not logout).
+
 ## 6.0.0
 
 - Added ILIAS 9 compatibility.
