@@ -63,7 +63,13 @@ class ilUserTakeOverImpersonationHandler
      */
     public function isImpersonationActive(): bool
     {
-        return $this->session->has(self::ORIGINAL_USER_ID);
+        $original_user_id = $this->getOriginalUserId();
+
+        if (null === $original_user_id) {
+            return false;
+        }
+
+        return ($original_user_id !== $this->current_user->getId());
     }
 
     /**
@@ -81,22 +87,12 @@ class ilUserTakeOverImpersonationHandler
 
     public function getOriginalUser(): ilObjUser
     {
-        $user_id = ($this->session->has(self::ORIGINAL_USER_ID)) ? $this->session->retrieve(
-            self::ORIGINAL_USER_ID,
-            $this->refinery->kindlyTo()->int()
-        ) : -1;
-
-        return $this->general_repository->getUser($user_id);
+        return $this->general_repository->getUser($this->getOriginalUserId() ?? -1);
     }
 
     protected function stopImpersonation(ilObjUser $target_user): void
     {
-        $original_user = $this->general_repository->getUser(
-            $this->session->retrieve(
-                self::ORIGINAL_USER_ID,
-                $this->refinery->kindlyTo()->int()
-            )
-        );
+        $original_user = $this->getOriginalUser();
 
         if ($original_user->getId() !== $target_user->getId()) {
             $this->sendFailure(
@@ -148,6 +144,15 @@ class ilUserTakeOverImpersonationHandler
         );
 
         $this->redirectToDashboard();
+    }
+
+    protected function getOriginalUserId(): ?int
+    {
+        if (!$this->session->has(self::ORIGINAL_USER_ID)) {
+            return null;
+        }
+
+        return (int) $this->session->retrieve(self::ORIGINAL_USER_ID, $this->refinery->kindlyTo()->int());
     }
 
     protected function redirectToDashboard(): void
