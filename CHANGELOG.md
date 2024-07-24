@@ -1,5 +1,10 @@
 # UserTakeOver Changelog
 
+## 6.0.2
+
+- Fixed an issue where redundant colons (:) have been visible in ILIAS>=9 presentation tables.
+- Fixed an issue where the existence of users was not sufficiently checked.
+
 ## 6.0.1
 
 - Fixed an issue where the user-search was visible during impersonations even though the target user could not use it.
