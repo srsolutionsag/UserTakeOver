@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 5.0.5
+
+- Fixed an issue where the existence of users was not sufficiently checked.
+
 ## 5.0.4
 
 - Fixed an issue where the user-search was visible during impersonations even though the target user could not use it.
