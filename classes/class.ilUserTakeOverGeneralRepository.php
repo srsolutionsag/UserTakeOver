@@ -66,10 +66,16 @@ class ilUserTakeOverGeneralRepository implements IGeneralRepository
      */
     public function getUser(int $user_id): \ilObjUser
     {
-        if (!ilObjUser::_exists($user_id)) {
-            $user_id = ANONYMOUS_USER_ID;
-        }
+        // we cannot use ilObjUser::_exists() because this only checks the object_data
+        // table. we therefore simply try to read the user from the database and catch
+        // any throwable along the way. see https://jira.sr.solutions/browse/PLSRLCM-62
 
-        return new ilObjUser($user_id);
+        try {
+            $user = new ilObjUser($user_id);
+        } catch (Throwable $any) {
+            $user = new ilObjUser(ANONYMOUS_USER_ID);
+        } finally {
+            return $user;
+        }
     }
 }
