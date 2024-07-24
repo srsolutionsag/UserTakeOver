@@ -15,9 +15,9 @@ group_restriction_roles_info#:#If enabled, members of this group can only impers
 group_allowed_roles#:#Allowed global roles
 group_members#:#Group members
 group_filter_min_member_amount#:#Member amount (min)
-group_table_member_amount#:#Members:
+group_table_member_amount#:#Members
 group_table_no_members#:#There are no group members.
-group_table_restriction#:#Restrictions:
+group_table_restriction#:#Restrictions
 group_table_restriction_status_members#:#Members
 group_table_restriction_status_roles#:#Roles
 group_table_restriction_status_none#:#None
