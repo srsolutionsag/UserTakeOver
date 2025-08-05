@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 6.1.0
+
+- Show a `MainControls\ModeInfo` UI component during active impersonations and remove meta-bar slate for leaving.
+
 ## 6.0.2
 
 - Fixed an issue where redundant colons (:) have been visible in ILIAS>=9 presentation tables.
