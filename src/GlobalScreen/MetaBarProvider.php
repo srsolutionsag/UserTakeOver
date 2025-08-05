@@ -91,24 +91,6 @@ class MetaBarProvider extends AbstractStaticMetaBarPluginProvider
         $items = [];
         $this->init();
 
-        // Status & Leave
-        if ($this->impersonation_handler->isImpersonationActive()) {
-            $items[] = (new StatusItem(
-                $this->getItemId('uto_status'),
-                $this->dic->ui()->factory(),
-                $this->impersonation_handler->getOriginalUser()->getId(),
-                $this->translator
-            ))->withTitle($this->translator->txt('status'))
-              ->withSymbol($this->getIcon('info.svg'));
-
-            $items[] = $this->meta_bar->linkItem($this->getItemId('uto_leave'))
-                                      ->withTitle($this->translator->txt(ITranslator::TOOL_TITLE_LEAVE))
-                                      ->withAction(
-                                          $this->getImpersonateTarget($this->impersonation_handler->getOriginalUser())
-                                      )
-                                      ->withSymbol($this->getIcon('leave.svg'));
-        }
-
         if ($this->access_handler->canCurrentUserUsePlugin()) {
             $items[] = (new SearchItem($this->getItemId('search'), $this->dic->ui()->factory()))
                 ->withSymbol($this->getIcon('search.svg'))

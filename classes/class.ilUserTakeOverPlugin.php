@@ -31,6 +31,7 @@ class ilUserTakeOverPlugin extends ilUserInterfaceHookPlugin implements ITransla
             $meta_content->addJs(self::PLUGIN_BASE . '/js/dist/main.js', false, 1);
             $meta_content->addOnloadCode("il.Plugins.UserTakeOver.init('.uto-search')");
 
+            $this->provider_collection->setModificationProvider(new ilUserTakeOverImpersonationPageModificationProvider($DIC, $this));
             $this->provider_collection->setMetaBarProvider(new MetaBarProvider($DIC, $this));
         }
     }

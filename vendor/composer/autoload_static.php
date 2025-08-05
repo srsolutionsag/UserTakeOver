@@ -31,6 +31,7 @@ class ComposerStaticInitd961a5c263c191e636c115e73a3e81fd
         'ilUserTakeOverGroupRepository' => __DIR__ . '/../..' . '/classes/Group/class.ilUserTakeOverGroupRepository.php',
         'ilUserTakeOverGroupRequestHelper' => __DIR__ . '/../..' . '/classes/Group/trait.ilUserTakeOverGroupRequestHelper.php',
         'ilUserTakeOverImpersonationHandler' => __DIR__ . '/../..' . '/classes/Impersonation/class.ilUserTakeOverImpersonationHandler.php',
+        'ilUserTakeOverImpersonationPageModificationProvider' => __DIR__ . '/../..' . '/classes/Impersonation/class.ilUserTakeOverImpersonationPageModificationProvider.php',
         'ilUserTakeOverImpersonationTarget' => __DIR__ . '/../..' . '/classes/Helper/trait.ilUserTakeOverImpersonationTarget.php',
         'ilUserTakeOverOnScreenMessages' => __DIR__ . '/../..' . '/classes/Helper/trait.ilUserTakeOverOnScreenMessages.php',
         'ilUserTakeOverPlugin' => __DIR__ . '/../..' . '/classes/class.ilUserTakeOverPlugin.php',

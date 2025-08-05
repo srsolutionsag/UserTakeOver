@@ -16,6 +16,7 @@ return array(
     'ilUserTakeOverGroupRepository' => $baseDir . '/classes/Group/class.ilUserTakeOverGroupRepository.php',
     'ilUserTakeOverGroupRequestHelper' => $baseDir . '/classes/Group/trait.ilUserTakeOverGroupRequestHelper.php',
     'ilUserTakeOverImpersonationHandler' => $baseDir . '/classes/Impersonation/class.ilUserTakeOverImpersonationHandler.php',
+    'ilUserTakeOverImpersonationPageModificationProvider' => $baseDir . '/classes/Impersonation/class.ilUserTakeOverImpersonationPageModificationProvider.php',
     'ilUserTakeOverImpersonationTarget' => $baseDir . '/classes/Helper/trait.ilUserTakeOverImpersonationTarget.php',
     'ilUserTakeOverOnScreenMessages' => $baseDir . '/classes/Helper/trait.ilUserTakeOverOnScreenMessages.php',
     'ilUserTakeOverPlugin' => $baseDir . '/classes/class.ilUserTakeOverPlugin.php',

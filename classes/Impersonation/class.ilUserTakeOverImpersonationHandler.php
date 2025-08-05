@@ -98,7 +98,7 @@ class ilUserTakeOverImpersonationHandler
             $this->sendFailure(
                 sprintf(
                     $this->translator->txt(ITranslator::MSG_INVALID_ORIGINAL_USER),
-                    $this->getDisplayName($target_user)
+                    $this->getDisplayName($this->current_user)
                 )
             );
 
