@@ -136,7 +136,7 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
         $this->translator = $plugin;
 
         $this->conflicting_core_providers = [
-            new \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic),
+            new \ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic),
             new \ILIAS\Container\Screen\MemberViewLayoutProvider($this->dic),
             new \ILIAS\LTI\Screen\LtiViewLayoutProvider($this->dic),
             new ilLSViewLayoutProvider($this->dic),
