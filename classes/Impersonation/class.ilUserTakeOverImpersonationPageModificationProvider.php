@@ -24,7 +24,7 @@ use ILIAS\Data\URI;
  * they are treated as nested. In such cases, this provider must not return its own mode
  * info component, since another one already provides one. See conflicting providers:
  *
- * @see \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider
+ * @see \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider, \ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider
  * @see \ILIAS\Container\Screen\MemberViewLayoutProvider
  * @see \ILIAS\LTI\Screen\LtiViewLayoutProvider
  * @see \ilLSViewLayoutProvider
@@ -136,11 +136,20 @@ class ilUserTakeOverImpersonationPageModificationProvider extends AbstractModifi
         $this->translator = $plugin;
 
         $this->conflicting_core_providers = [
-            new \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic),
             new \ILIAS\Container\Screen\MemberViewLayoutProvider($this->dic),
             new \ILIAS\LTI\Screen\LtiViewLayoutProvider($this->dic),
             new ilLSViewLayoutProvider($this->dic),
         ];
+
+        // for ILIAS<=v9.14:
+        if (class_exists('\ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider')) {
+            $this->conflicting_core_providers[] = new \ILIAS\Services\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic);
+        }
+        // for ILIAS>=v9.15:
+        if (class_exists('\ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider')) {
+            $this->conflicting_core_providers[] = new \ILIAS\WOPI\Embed\EmbeddedApplicationGSProvider($this->dic);
+        }
+
         $this->access_handler = new \ilUserTakeOverAccessHandler(
             new \ilUserTakeOverGroupRepository($this->dic->database()),
             (new \ilUserTakeOverSettingsRepository($this->dic->database()))->get(),
