@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 6.1.1
+
+- Fix compatibility issue with ILIAS v9.15.
+
 ## 6.1.0
 
 - Show a `MainControls\ModeInfo` UI component during active impersonations and remove meta-bar slate for leaving.
