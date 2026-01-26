@@ -1,5 +1,9 @@
 # UserTakeOver Changelog
 
+## 6.1.2
+
+- Fixed an issue where inactive users appeard inside the impersonation search.
+
 ## 6.1.1
 
 - Fix compatibility issue with ILIAS v9.15.
